@@ -1,0 +1,14 @@
+D:\Hochschule\3. Semester\INFO - Pacman\bin\Debug\net8.0\INFO - Pacman.exe
+D:\Hochschule\3. Semester\INFO - Pacman\bin\Debug\net8.0\INFO - Pacman.deps.json
+D:\Hochschule\3. Semester\INFO - Pacman\bin\Debug\net8.0\INFO - Pacman.runtimeconfig.json
+D:\Hochschule\3. Semester\INFO - Pacman\bin\Debug\net8.0\INFO - Pacman.dll
+D:\Hochschule\3. Semester\INFO - Pacman\bin\Debug\net8.0\INFO - Pacman.pdb
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.GeneratedMSBuildEditorConfig.editorconfig
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.AssemblyInfoInputs.cache
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.AssemblyInfo.cs
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.csproj.CoreCompileInputs.cache
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.dll
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\refint\INFO - Pacman.dll
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.pdb
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.genruntimeconfig.cache
+D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\ref\INFO - Pacman.dll
