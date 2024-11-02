@@ -12,3 +12,17 @@ D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\refint\INFO - Pacman.dl
 D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.pdb
 D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\INFO - Pacman.genruntimeconfig.cache
 D:\Hochschule\3. Semester\INFO - Pacman\obj\Debug\net8.0\ref\INFO - Pacman.dll
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\bin\Debug\net8.0\INFO - Pacman.exe
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\bin\Debug\net8.0\INFO - Pacman.deps.json
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\bin\Debug\net8.0\INFO - Pacman.runtimeconfig.json
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\bin\Debug\net8.0\INFO - Pacman.dll
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\bin\Debug\net8.0\INFO - Pacman.pdb
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.AssemblyInfoInputs.cache
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.AssemblyInfo.cs
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.csproj.CoreCompileInputs.cache
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.dll
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\refint\INFO - Pacman.dll
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.pdb
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\INFO - Pacman.genruntimeconfig.cache
+C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\obj\Debug\net8.0\ref\INFO - Pacman.dll
