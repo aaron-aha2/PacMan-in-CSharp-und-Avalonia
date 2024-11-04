@@ -4,6 +4,9 @@ public class Pacman
     public int pacmanX = 1; //Startposition Pacman x-Koordinate
     public int pacmanY = 1; //Startposition Pacman y-Koordinate
 
+    public int score = 0;
+    public int leben = 3;
+
     public Pacman(Spielfeld spielfeld)
     {
         this.spielfeld = spielfeld;
@@ -30,8 +33,12 @@ public class Pacman
                 break;
         }
 
-        if (spielfeld.Feld[neueX, neueY] != '#') //Prüfen, ob es eine Wand ist
+        if (spielfeld.Feld[neueX, neueY] != '#')
         {
+            if (spielfeld.Feld[neueX, neueY] == '.')
+            {
+                score += 10;
+            }
             spielfeld.Feld[pacmanX, pacmanY] = ' '; //Alte Position cleanen
             pacmanX = neueX; //Koordinaten werden neu gesetzt
             pacmanY = neueY;

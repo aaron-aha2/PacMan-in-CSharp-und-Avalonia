@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 public class Spielfeld
 {
     public char[,] Feld { get; private set;}
@@ -41,6 +43,13 @@ public class Spielfeld
 
      public void ZeichneSpielfeld() 
     {
+        Console.WriteLine();
+        Console.WriteLine("Bewege Pacman mit WASD und sammle die Punkte ein!");
+        Console.WriteLine("_____________________________________________________");
+        Console.WriteLine("Score: " + Program.pacman.score);
+        Console.WriteLine("_____________________________________________________");
+        Console.WriteLine();
+
         for (int x = 0; x < Feld.GetLength(0); x++)
         {
             for (int y = 0; y < Feld.GetLength(1); y++)
@@ -61,5 +70,10 @@ public class Spielfeld
             }
             Console.WriteLine(); //Absatz nach jeder Zeile
         }
+
+        Console.WriteLine();
+        Console.WriteLine("_____________________________________________________");
+        Console.WriteLine("Leben: " + Program.pacman.leben);
+        Console.WriteLine("_____________________________________________________");
     }
 }    
