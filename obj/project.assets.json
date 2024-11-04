@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Aaron\\.nuget\\packages\\": {}
+    "C:\\Users\\veres\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Hochschule\\3. Semester\\INFO - Pacman\\INFO - Pacman.csproj",
+      "projectUniqueName": "C:\\Users\\veres\\Documents\\Code\\Visual Studio\\3. Fachsemester\\codeworriers-pacman-cs\\INFO - Pacman.csproj",
       "projectName": "INFO - Pacman",
-      "projectPath": "D:\\Hochschule\\3. Semester\\INFO - Pacman\\INFO - Pacman.csproj",
-      "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-      "outputPath": "D:\\Hochschule\\3. Semester\\INFO - Pacman\\obj\\",
+      "projectPath": "C:\\Users\\veres\\Documents\\Code\\Visual Studio\\3. Fachsemester\\codeworriers-pacman-cs\\INFO - Pacman.csproj",
+      "packagesPath": "C:\\Users\\veres\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\veres\\Documents\\Code\\Visual Studio\\3. Fachsemester\\codeworriers-pacman-cs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\veres\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
