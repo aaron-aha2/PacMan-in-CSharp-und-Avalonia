@@ -1,5 +1,8 @@
 using System.Security.Cryptography.X509Certificates;
 
+
+
+
 public class Spielfeld
 {
     public char[,] Feld { get; private set;}
@@ -41,7 +44,7 @@ public class Spielfeld
         };
     }    
 
-     public void ZeichneSpielfeld() 
+    public void ZeichneSpielfeld(List<Geist> geister) 
     {
         Console.WriteLine();
         Console.WriteLine("Bewege Pacman mit WASD und sammle die Punkte ein!");
@@ -55,17 +58,34 @@ public class Spielfeld
             for (int y = 0; y < Feld.GetLength(1); y++)
             {
                 char symbol = Feld[x, y];
-                if (symbol == '#')
+                bool geistGezeigt = false; //Reset für jede Position
+                foreach (var geist in geister)
                 {
-                    Console.Write("# ");
+                    if (geist.getsetY == x && geist.getsetX == y) //Vergleich der Positionen
+                    {
+                        Console.Write(geist.Symbol + " "); //Geist anzeigen
+                        geistGezeigt = true;
+                        break; //Geist gefunden, also aus der Schleife raus
+                    }
                 }
-                else if (symbol == '.')
+                if (!geistGezeigt) //Wenn kein Geist angezeigt wurde
                 {
-                    Console.Write(". ");
-                }
-                else
-                {
-                    Console.Write(symbol + " ");
+                    if (symbol == '#')
+                    {
+                        Console.Write("# ");//Wand
+                    }
+                    else if (symbol == '.')
+                    {
+                        Console.Write(". ");//Essen
+                    }
+                    else if (symbol == 'P')
+                    {
+                        Console.Write("P ");//Pacman
+                    }
+                    else
+                    {
+                        Console.Write(symbol + " "); //Anderes Symbol
+                    }
                 }
             }
             Console.WriteLine(); //Absatz nach jeder Zeile
@@ -76,4 +96,4 @@ public class Spielfeld
         Console.WriteLine("Leben: " + Program.pacman.leben);
         Console.WriteLine("_____________________________________________________");
     }
-}    
+}

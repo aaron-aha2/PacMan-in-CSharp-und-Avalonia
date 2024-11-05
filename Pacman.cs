@@ -20,29 +20,29 @@ public class Pacman
         switch (eingabe)
         {
             case ConsoleKey.W:
-                neueX--; //nach oben
+                neueY--; //nach oben
                 break;
             case ConsoleKey.S:
-                neueX++; //nach unten
+                neueY++; //nach unten
                 break;
             case ConsoleKey.A:
-                neueY--; //nach links
+                neueX--; //nach links
                 break;
             case ConsoleKey.D:
-                neueY++; //nach rechts
+                neueX++; //nach rechts
                 break;
         }
 
-        if (spielfeld.Feld[neueX, neueY] != '#')
+        if (spielfeld.Feld[neueY, neueX] != '#')
         {
-            if (spielfeld.Feld[neueX, neueY] == '.')
+            if (spielfeld.Feld[neueY, neueX] == '.')
             {
                 score += 10;
             }
-            spielfeld.Feld[pacmanX, pacmanY] = ' '; //Alte Position cleanen
+            spielfeld.Feld[pacmanY, pacmanX] = ' '; //Alte Position cleanen
             pacmanX = neueX; //Koordinaten werden neu gesetzt
             pacmanY = neueY;
-            spielfeld.Feld[pacmanX, pacmanY] = 'P'; //Pacman auf die neue Position setzen
+            spielfeld.Feld[pacmanY, pacmanX] = 'P'; //Pacman auf die neue Position setzen
         }
     }
 }

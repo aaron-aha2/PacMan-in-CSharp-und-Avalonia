@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\veres\\.nuget\\packages\\": {}
+    "/Users/efeozkan/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\veres\\Documents\\Code\\Visual Studio\\3. Fachsemester\\codeworriers-pacman-cs\\INFO - Pacman.csproj",
+      "projectUniqueName": "/Users/efeozkan/Desktop/Info3 Aktuell 04.11.24/codeworriers-pacman-cs/INFO - Pacman.csproj",
       "projectName": "INFO - Pacman",
-      "projectPath": "C:\\Users\\veres\\Documents\\Code\\Visual Studio\\3. Fachsemester\\codeworriers-pacman-cs\\INFO - Pacman.csproj",
-      "packagesPath": "C:\\Users\\veres\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\veres\\Documents\\Code\\Visual Studio\\3. Fachsemester\\codeworriers-pacman-cs\\obj\\",
+      "projectPath": "/Users/efeozkan/Desktop/Info3 Aktuell 04.11.24/codeworriers-pacman-cs/INFO - Pacman.csproj",
+      "packagesPath": "/Users/efeozkan/.nuget/packages/",
+      "outputPath": "/Users/efeozkan/Desktop/Info3 Aktuell 04.11.24/codeworriers-pacman-cs/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\veres\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/efeozkan/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -64,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

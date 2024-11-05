@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = INFO___Pacman
-build_property.ProjectDir = C:\Users\veres\Documents\Code\Visual Studio\3. Fachsemester\codeworriers-pacman-cs\
+build_property.ProjectDir = /Users/efeozkan/Desktop/Info3 Aktuell 04.11.24/codeworriers-pacman-cs/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
