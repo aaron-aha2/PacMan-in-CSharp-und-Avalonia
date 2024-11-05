@@ -24,8 +24,8 @@ public class Geist
     }
     
    public void Bewegeaggresiv(int pacmanX, int pacmanY, char[,] spielfeld) {
-    int dx = pacmanX - getsetX; //Unterschied in der X-Richtung
-    int dy = pacmanY - getsetY; //Unterschied in der Y-Richtung
+    int dx = pacmanX - getsetX; //Unterschied X-Richtung
+    int dy = pacmanY - getsetY; //Unterschied Y-Richtung
     int neueX = getsetX;  
     int neueY = getsetY; 
 
