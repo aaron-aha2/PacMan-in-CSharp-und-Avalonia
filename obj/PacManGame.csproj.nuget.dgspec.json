@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\PacManGame.csproj": {}
+    "C:\\Users\\oezka\\OneDrive\\Dokumente\\Info3\\codeworriers-pacman-cs\\PacManGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\PacManGame.csproj": {
+    "C:\\Users\\oezka\\OneDrive\\Dokumente\\Info3\\codeworriers-pacman-cs\\PacManGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\PacManGame.csproj",
+        "projectUniqueName": "C:\\Users\\oezka\\OneDrive\\Dokumente\\Info3\\codeworriers-pacman-cs\\PacManGame.csproj",
         "projectName": "PacManGame",
-        "projectPath": "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\PacManGame.csproj",
-        "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\obj\\",
+        "projectPath": "C:\\Users\\oezka\\OneDrive\\Dokumente\\Info3\\codeworriers-pacman-cs\\PacManGame.csproj",
+        "packagesPath": "C:\\Users\\oezka\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\oezka\\OneDrive\\Dokumente\\Info3\\codeworriers-pacman-cs\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\oezka\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"

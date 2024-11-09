@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
 using Avalonia.Controls.Shapes;
 using Avalonia.Threading;
 using Avalonia.Media;
@@ -14,14 +13,20 @@ namespace PacManGame.Views
         private Pacman pacMan;
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
+        private RedGhost redGhost;
+        private bool isWhiteBackground; // Option für weißen Hintergrund
 
-        public MainWindow(int ghostCount, bool isWhiteBackground)
+        public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
 
-            // Pac-Man- und Spielfeld-Objekte initialisieren
-            pacMan = new Pacman { X = 1, Y = 1 }; // Pac-Man startet im Spielfeld
+            // Speichern der Auswahl für den weißen Hintergrund (noch keine Umsetzung)
+            this.isWhiteBackground = isWhiteBackground;
+
+            // Pac-Man, Spielfeld und Geist initialisieren
+            pacMan = new Pacman { X = 1, Y = 1 }; // Startposition von Pac-Man
             gamefield = new Gamefield(ghostCount, isWhiteBackground); // Spielfeld erstellen
+            redGhost = new RedGhost(5, 5); // Startposition für den roten Geist
             
             // Spiel-Timer konfigurieren
             gameTimer = new DispatcherTimer
@@ -58,14 +63,18 @@ namespace PacManGame.Views
         // Tick-Handler des Spiel-Timers
         private void OnGameTick(object sender, EventArgs e)
         {
-            pacMan.Move(gamefield);
-            DrawGame();
+            pacMan.Move(gamefield);             // Pac-Man bewegen
+            redGhost.Move(pacMan, gamefield);   // Geist bewegen
+            DrawGame();                         // Spiel neu zeichnen
         }
 
-        // Spielfeld und Pac-Man zeichnen
+        // Spielfeld, Pac-Man und RedGhost zeichnen
         private void DrawGame()
         {
             GameCanvas.Children.Clear();
+
+            // Die Auswahl für weißen Hintergrund wird gespeichert, aber noch nicht umgesetzt
+            // Sie könnte später verwendet werden, um die Spielfläche anzupassen.
 
             // Spielfeld zeichnen
             for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
@@ -108,8 +117,18 @@ namespace PacManGame.Views
             };
             Canvas.SetLeft(pacManEllipse, pacMan.X * 20);
             Canvas.SetTop(pacManEllipse, pacMan.Y * 20);
-
             GameCanvas.Children.Add(pacManEllipse);
+
+            // RedGhost zeichnen
+            var ghostEllipse = new Ellipse
+            {
+                Width = 20,
+                Height = 20,
+                Fill = Brushes.Red
+            };
+            Canvas.SetLeft(ghostEllipse, redGhost.X * 20);
+            Canvas.SetTop(ghostEllipse, redGhost.Y * 20);
+            GameCanvas.Children.Add(ghostEllipse);
         }
     }
 }
