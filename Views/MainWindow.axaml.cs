@@ -15,13 +15,13 @@ namespace PacManGame.Views
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
 
-        public MainWindow()
+        public MainWindow(int ghostCount, bool isWhiteBackground)
         {
             InitializeComponent();
 
             // Pac-Man- und Spielfeld-Objekte initialisieren
             pacMan = new Pacman { X = 1, Y = 1 }; // Pac-Man startet im Spielfeld
-            gamefield = new Gamefield(); // Spielfeld erstellen
+            gamefield = new Gamefield(ghostCount, isWhiteBackground); // Spielfeld erstellen
             
             // Spiel-Timer konfigurieren
             gameTimer = new DispatcherTimer
