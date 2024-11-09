@@ -1477,11 +1477,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Aaron\\Documents\\CodeWorriers-Pacman_cs\\PacManGame\\PacManGame.csproj",
+      "projectUniqueName": "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\PacManGame.csproj",
       "projectName": "PacManGame",
-      "projectPath": "C:\\Users\\Aaron\\Documents\\CodeWorriers-Pacman_cs\\PacManGame\\PacManGame.csproj",
+      "projectPath": "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\PacManGame.csproj",
       "packagesPath": "C:\\Users\\Aaron\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Aaron\\Documents\\CodeWorriers-Pacman_cs\\PacManGame\\obj\\",
+      "outputPath": "C:\\Users\\Aaron\\Documents\\codeworriers-pacman-cs\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Aaron\\AppData\\Roaming\\NuGet\\NuGet.Config"

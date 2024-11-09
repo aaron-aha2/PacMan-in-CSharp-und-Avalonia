@@ -7,7 +7,7 @@ namespace PacManGame.Models
         public int[,] GameFieldData { get; set; }
 
         // Konstruktor, der die Spielfeldstruktur initialisiert
-        public Gamefield()
+        public Gamefield(int ghostCount, bool isWhiteBackground)
         {
             // Beispiel-Spielfeldstruktur: 0 = leer, 1 = Wand, 2 = Punkt
             GameFieldData = new int[,] 
