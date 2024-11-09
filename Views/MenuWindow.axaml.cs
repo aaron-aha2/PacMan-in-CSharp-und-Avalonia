@@ -1,11 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Controls.Shapes;
-using Avalonia.Threading;
-using Avalonia.Media;
-using Avalonia.Input;
 using System;
-using PacManGame.Models;
 
 namespace PacManGame.Views
 {
@@ -18,17 +13,17 @@ namespace PacManGame.Views
 
         private void OnStartButtonClick(object sender, RoutedEventArgs e)
         {
-            // Anzahl der Geister abrufen
+            //Anzahl der Geister abrufen
             var selectedGhostCountItem = GhostCountComboBox.SelectedItem as ComboBoxItem;
             int ghostCount = int.Parse(selectedGhostCountItem?.Content.ToString() ?? "1");
 
-            // Hintergrundfarbe bestimmen
+            //Hintergrundfarbe bestimmen
             bool isWhiteBackground = WhiteBackgroundRadio.IsChecked ?? true;
 
-            // Das Hauptspiel mit den ausgewählten Optionen starten
+            //Hauptspiel-Fenster mit den Einstellungen öffnen
             MainWindow mwindow = new MainWindow(ghostCount, isWhiteBackground);
             mwindow.Show();
-            this.Close(); // Schließt das Menüfenster
+            this.Close(); // Menüfenster schließen
         }
     }
 }

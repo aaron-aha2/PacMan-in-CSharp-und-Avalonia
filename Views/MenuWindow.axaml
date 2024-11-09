@@ -6,24 +6,25 @@
         Width="800" Height="600">
     <StackPanel Margin="20" Spacing="10">
 
-        <TextBlock Text="MENU" />
+        <!-- Titel -->
+        <TextBlock Text="PacMan Settings" FontSize="20" FontWeight="Bold" />
+
         <!-- Dropdown zur Auswahl der Geisteranzahl -->
-        <TextBlock Text="Amount of Ghosts:" />
+        <TextBlock Text="Number of Ghosts: " />
         <ComboBox x:Name="GhostCountComboBox" Width="200">
             <ComboBoxItem Content="1" />
             <ComboBoxItem Content="2" />
             <ComboBoxItem Content="3" />
             <ComboBoxItem Content="4" />
         </ComboBox>
-        
+
         <!-- Radiobuttons zur Auswahl des Hintergrunds -->
-        <TextBlock Text="Backgroundcolor:" />
+        <TextBlock Text="Backgroundcolor: " />
         <StackPanel Orientation="Horizontal">
-            <RadioButton x:Name="WhiteBackgroundRadio" Content="White" GroupName="Background" IsChecked="True"/>
-            <TextBlock Text=" "/>
-            <RadioButton x:Name="BlackBackgroundRadio" Content="Black" GroupName="Background"/>
+            <RadioButton x:Name="WhiteBackgroundRadio" Content="Light " GroupName="Background" IsChecked="True"/>
+            <RadioButton x:Name="BlackBackgroundRadio" Content="Dark" GroupName="Background"/>
         </StackPanel>
-        
+
         <!-- Start Button -->
         <Button Content="Start Game" Width="200" Click="OnStartButtonClick"/>
     </StackPanel>

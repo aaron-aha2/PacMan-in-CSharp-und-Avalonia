@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PacManGame")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d817dfaa9c56bb0b1aac65bb64a69d8b4ece9f87")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c085dd911cb6be344809716cdf8f458641eb3f09")]
 [assembly: System.Reflection.AssemblyProductAttribute("PacManGame")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PacManGame")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
