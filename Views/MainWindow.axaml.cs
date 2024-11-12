@@ -14,44 +14,42 @@ namespace PacManGame.Views
         private Pacman pacMan;
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
-        private List<RedGhost> ghosts;  //Liste für mehrere Geister
+        private List<RedGhost> ghosts;  //List of multiple ghosts
         private bool isWhiteBackground;
 
         public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
 
-            //Hintergrundfarbe anwenden
+            //Backround-color
             this.isWhiteBackground = isWhiteBackground;
             Background = isWhiteBackground ? Brushes.White : Brushes.Black;
 
-            //Pac-Man und Spielfeld initialisieren
+            //Initializing pacman and gamefield
             pacMan = new Pacman { X = 1, Y = 1 };
             gamefield = new Gamefield(ghostCount, isWhiteBackground);
 
-            //Geister-Liste initialisieren und basierend auf ghostCount Geister hinzufügen
+            //Intializing ghosts and adding them to the list
             ghosts = new List<RedGhost>();
             for (int i = 0; i < ghostCount; i++)
             {
-                //Geister an zufälligen Positionen hinzufügen
+                //Add ghosts to the random positions
                 int ghostX = 3 + i * 2;
                 int ghostY = 3 + i * 2;
                 ghosts.Add(new RedGhost(ghostX, ghostY));
             }
 
-            //Spiel-Timer konfigurieren
-            gameTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(200)
-            };
+            //Initializing the game timer
+            gameTimer = new DispatcherTimer();
+            gameTimer.Interval = TimeSpan.FromMilliseconds(200);
             gameTimer.Tick += OnGameTick;
             gameTimer.Start();
 
-            //Tastenereignisse für Pac-Man-Steuerung
+            //Initializing Pacman control
             KeyDown += OnKeyDown;
         }
 
-        //Pac-Man Steuerung
+        //Pacman control
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.Key)
@@ -71,12 +69,12 @@ namespace PacManGame.Views
             }
         }
 
-        //Spiel-Update-Tick
+        //Game-Update-Tick
         private void OnGameTick(object sender, EventArgs e)
         {
-            pacMan.Move(gamefield);  //Pac-Man bewegen
+            pacMan.Move(gamefield);
 
-            //Alle Geister bewegen
+            //Move all ghosts
             foreach (var ghost in ghosts)
             {
                 ghost.Move(pacMan, gamefield);
@@ -85,17 +83,17 @@ namespace PacManGame.Views
             DrawGame();
         }
 
-        //Spielfeld und Figuren zeichnen
+        //Draw Gamefield and all objects
         private void DrawGame()
         {
             GameCanvas.Children.Clear();
 
-            //spielfeld zeichnen
+            //Draw gamefield
             for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
             {
                 for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
                 {
-                    if (gamefield.GameFieldData[y, x] == 1)  //Wand
+                    if (gamefield.GameFieldData[y, x] == 1)  //Wall
                     {
                         var wallRectangle = new Rectangle
                         {
@@ -107,7 +105,7 @@ namespace PacManGame.Views
                         Canvas.SetTop(wallRectangle, y * 20);
                         GameCanvas.Children.Add(wallRectangle);
                     }
-                    else if (gamefield.GameFieldData[y, x] == 2)  //Essen
+                    else if (gamefield.GameFieldData[y, x] == 2)  //Food
                     {
                         var pointEllipse = new Ellipse
                         {
@@ -122,7 +120,7 @@ namespace PacManGame.Views
                 }
             }
 
-            //Pac-Man zeichnen
+            //Draw Pacman
             var pacManEllipse = new Ellipse
             {
                 Width = 20,
@@ -133,7 +131,7 @@ namespace PacManGame.Views
             Canvas.SetTop(pacManEllipse, pacMan.Y * 20);
             GameCanvas.Children.Add(pacManEllipse);
 
-            //Alle Geister zeichnen
+            //Draw all Ghosts
             foreach (var ghost in ghosts)
             {
                 var ghostEllipse = new Ellipse
