@@ -14,7 +14,7 @@ namespace PacManGame.Views
         private Pacman pacMan;
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
-        private List<RedGhost> ghosts;  //Liste für mehrere Geister
+        private List <Ghost> ghosts;  //Liste für mehrere Geister
         private bool isWhiteBackground;
 
         public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
@@ -30,13 +30,26 @@ namespace PacManGame.Views
             gamefield = new Gamefield(ghostCount, isWhiteBackground);
 
             //Geister-Liste initialisieren und basierend auf ghostCount Geister hinzufügen
-            ghosts = new List<RedGhost>();
+            ghosts = new List<Ghost>();
             for (int i = 0; i < ghostCount; i++)
             {
+                if(i==1){
+                    int ghostX = 3 + i * 2;
+                    int ghostY = 3 + i * 2;
+                    ghosts.Add(new RedGhost(ghostX, ghostY));
+
+                }
                 //Geister an zufälligen Positionen hinzufügen
-                int ghostX = 3 + i * 2;
-                int ghostY = 3 + i * 2;
-                ghosts.Add(new RedGhost(ghostX, ghostY));
+                else if(i==2){
+                    int pinkyX = 6 + i * 3;
+                    int pinkyY = 6 + i * 3;
+                    ghosts.Add(new Pinky(pinkyX,pinkyY));
+                }
+                else if(i==3){
+                    int inkyX = 4 + i * 3;
+                    int inkyY = 4 + i * 3;
+                    ghosts.Add(new Inky(inkyX,inkyY));
+                }
             }
 
             //Spiel-Timer konfigurieren
@@ -57,16 +70,16 @@ namespace PacManGame.Views
             switch (e.Key)
             {
                 case Key.Up:
-                    pacMan.CurrentDirection = Direction.Up;
+                    pacMan.CurrentDirection = (Models.Direction)Direction.Up;
                     break;
                 case Key.Down:
-                    pacMan.CurrentDirection = Direction.Down;
+                    pacMan.CurrentDirection = (Models.Direction)Direction.Down;
                     break;
                 case Key.Left:
-                    pacMan.CurrentDirection = Direction.Left;
+                    pacMan.CurrentDirection = (Models.Direction)Direction.Left;
                     break;
                 case Key.Right:
-                    pacMan.CurrentDirection = Direction.Right;
+                    pacMan.CurrentDirection = (Models.Direction)Direction.Right;
                     break;
             }
         }
@@ -132,20 +145,40 @@ namespace PacManGame.Views
             Canvas.SetLeft(pacManEllipse, pacMan.X * 20);
             Canvas.SetTop(pacManEllipse, pacMan.Y * 20);
             GameCanvas.Children.Add(pacManEllipse);
-
-            //Alle Geister zeichnen
+            // Alle Geister zeichnen
             foreach (var ghost in ghosts)
             {
                 var ghostEllipse = new Ellipse
                 {
                     Width = 20,
                     Height = 20,
-                    Fill = Brushes.Red
+                    Fill = Brushes.Red // Standardfarbe festlegen
                 };
+
+                // Farben der Geister je nach Typ mit switch-case anpassen
+                switch (ghost)
+                {
+                    case RedGhost _:
+                        ghostEllipse.Fill = Brushes.Red;
+                        break;
+                    case Pinky _:
+                        ghostEllipse.Fill = Brushes.Pink;
+                        break;
+                    case Inky _:
+                        ghostEllipse.Fill = Brushes.Turquoise;
+                        break;
+                
+                    default:
+                        ghostEllipse.Fill = Brushes.Gray; // Farbe für unbekannte Typen
+                        break;
+                }
+
+                // Position des Geistes setzen und hinzufügen
                 Canvas.SetLeft(ghostEllipse, ghost.X * 20);
                 Canvas.SetTop(ghostEllipse, ghost.Y * 20);
                 GameCanvas.Children.Add(ghostEllipse);
             }
+
         }
     }
 }
