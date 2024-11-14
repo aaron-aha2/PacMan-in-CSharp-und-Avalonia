@@ -15,15 +15,15 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = PacManGame
-build_property.ProjectDir = C:\Users\Aaron\Documents\codeworriers-pacman-cs-1\
+build_property.ProjectDir = C:\Users\oezka\OneDrive\Dokumente\Pacmanneu\codeworriers-pacman-cs\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[c:/Users/Aaron/Documents/codeworriers-pacman-cs-1/App.axaml]
+[C:/Users/oezka/OneDrive/Dokumente/Pacmanneu/codeworriers-pacman-cs/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[c:/Users/Aaron/Documents/codeworriers-pacman-cs-1/Views/MainWindow.axaml]
+[C:/Users/oezka/OneDrive/Dokumente/Pacmanneu/codeworriers-pacman-cs/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[c:/Users/Aaron/Documents/codeworriers-pacman-cs-1/Views/MenuWindow.axaml]
+[C:/Users/oezka/OneDrive/Dokumente/Pacmanneu/codeworriers-pacman-cs/Views/MenuWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
