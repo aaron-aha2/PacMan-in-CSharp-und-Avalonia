@@ -74,7 +74,7 @@ namespace PacManGame.Views
         //TODO: Implement lives
         public void UpdateLives()
         {
-            LiveCounter.Text = $"Lives: {lives}";
+            LifeCounter.Text = $"Lives: {lives}";
         }
 
         //Pacman control
