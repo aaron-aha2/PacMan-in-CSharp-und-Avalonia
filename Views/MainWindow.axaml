@@ -13,7 +13,6 @@
             <Canvas x:Name="GameCanvas" Width="600" Height="600" Background="White"/>
         </Border>
 
-        <!-- TODO: Add ScoreCounter -->
         <TextBlock x:Name="ScoreCounter" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Text="Score: 0"/>
 
         <!-- TODO: Add LiveCounter -->
