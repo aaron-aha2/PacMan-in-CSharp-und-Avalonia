@@ -2,30 +2,22 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="PacManGame.Views.MainWindow"
-        Width="600" Height="600"
+        Width="650" Height="650"
         WindowStartupLocation="CenterScreen"
         Title="PacMan Game">
 
-     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+     <Grid ColumnDefinitions="*,600,*" RowDefinitions="*,600,*"> <!-- "*": Those columns/rows are get the same size out of the remaining space-->
 
-        <TextBlock x:Name="ScoreCounter" Grid.Row="0" Grid.Column="0">
-            Score: 0
-        </TextBlock>
-
-        <Border Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Canvas x:Name="GameCanvas" Width="400" Height="400" Background="White"/>
+        <!-- TODO: Add different colour options -->
+        <Border Grid.Row="1" Grid.Column="1">
+            <Canvas x:Name="GameCanvas" Width="600" Height="600" Background="White"/>
         </Border>
 
-        <TextBlock x:Name="LiveCounter" Grid.Row="2" Grid.Column="0">
-            Lives: 3
-        </TextBlock>
+        <!-- TODO: Add ScoreCounter -->
+        <TextBlock x:Name="ScoreCounter" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Text="Score: 0"/>
+
+        <!-- TODO: Add LiveCounter -->
+        <TextBlock x:Name="LiveCounter" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Text="Lives: 3" />
+        
     </Grid>
 </Window>

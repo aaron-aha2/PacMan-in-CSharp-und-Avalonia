@@ -12,14 +12,18 @@ namespace PacManGame.Views
     public partial class MainWindow : Window
     {
         private Pacman pacMan;
+        private int score = 0;
+        private int lives = 3;
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
-        private List <Ghost> ghosts;  //Liste für mehrere Geister
+        private List <Ghost> ghosts;
         private bool isWhiteBackground;
 
         public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
+            UpdateScore();
+            UpdateLives();
 
             //Backround-color
             this.isWhiteBackground = isWhiteBackground;
@@ -28,8 +32,8 @@ namespace PacManGame.Views
             //Initializing pacman and gamefield
             pacMan = new Pacman { X = 1, Y = 1 };
             gamefield = new Gamefield(ghostCount, isWhiteBackground);
-
-            //Geister-Liste initialisieren und basierend auf ghostCount Geister hinzufügen
+            
+            //Initialize ghost list and add ghosts based on ghostCount
             ghosts = new List<Ghost>();
             for (int i = 0; i < ghostCount; i++)
             {
@@ -39,7 +43,7 @@ namespace PacManGame.Views
                     ghosts.Add(new RedGhost(ghostX, ghostY));
 
                 }
-                //Geister an zufälligen Positionen hinzufügen
+                //Add ghosts to random positions
                 else if(i==2){
                     int pinkyX = 6 + i * 3;
                     int pinkyY = 6 + i * 3;
@@ -60,6 +64,17 @@ namespace PacManGame.Views
 
             //Initializing Pacman control
             KeyDown += OnKeyDown;
+        }
+
+        public void UpdateScore()
+        {
+            ScoreCounter.Text = $"Score: {score}";
+        }
+
+        //TODO: Implement lives
+        public void UpdateLives()
+        {
+            LiveCounter.Text = $"Lives: {lives}";
         }
 
         //Pacman control
@@ -87,6 +102,13 @@ namespace PacManGame.Views
         {
             pacMan.Move(gamefield);
 
+            if (gamefield.GameFieldData[pacMan.Y, pacMan.X] == 2)
+            {
+                score += 10;
+                UpdateScore();
+                gamefield.GameFieldData[pacMan.Y, pacMan.X] = 0;
+            }
+
             //Move all ghosts
             foreach (var ghost in ghosts)
             {
@@ -96,7 +118,7 @@ namespace PacManGame.Views
             DrawGame();
         }
 
-        //Draw Gamefield and all objects
+        //Draw gamefield and all objects
         private void DrawGame()
         {
             GameCanvas.Children.Clear();
@@ -143,17 +165,18 @@ namespace PacManGame.Views
             Canvas.SetLeft(pacManEllipse, pacMan.X * 20);
             Canvas.SetTop(pacManEllipse, pacMan.Y * 20);
             GameCanvas.Children.Add(pacManEllipse);
-            // Alle Geister zeichnen
+
+            //Draw Ghosts
             foreach (var ghost in ghosts)
             {
                 var ghostEllipse = new Ellipse
                 {
                     Width = 20,
                     Height = 20,
-                    Fill = Brushes.Red // Standardfarbe festlegen
+                    Fill = Brushes.Red
                 };
 
-                // Farben der Geister je nach Typ mit switch-case anpassen
+                //Set colour based on ghost type
                 switch (ghost)
                 {
                     case RedGhost _:
@@ -167,11 +190,11 @@ namespace PacManGame.Views
                         break;
                 
                     default:
-                        ghostEllipse.Fill = Brushes.Gray; // Farbe für unbekannte Typen
+                        ghostEllipse.Fill = Brushes.Gray; //Colour for unknown ghost type
                         break;
                 }
 
-                // Position des Geistes setzen und hinzufügen
+                //Set and add ghost position to canvas
                 Canvas.SetLeft(ghostEllipse, ghost.X * 20);
                 Canvas.SetTop(ghostEllipse, ghost.Y * 20);
                 GameCanvas.Children.Add(ghostEllipse);

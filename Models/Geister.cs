@@ -11,7 +11,4 @@ namespace PacManGame.Models
         public string Name { get; set; }
         public abstract void Move(Pacman pacman, Gamefield gamefield);
     }
-
-    
-    
 }
