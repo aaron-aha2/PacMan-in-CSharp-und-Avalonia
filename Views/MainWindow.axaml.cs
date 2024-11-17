@@ -6,7 +6,7 @@ using Avalonia.Input;
 using PacManGame.Models;
 using System;
 using System.Collections.Generic;
-
+using System.Windows;
 namespace PacManGame.Views
 {
     public partial class MainWindow : Window
@@ -154,18 +154,47 @@ namespace PacManGame.Views
                     }
                 }
             }
+        // Erstellen Sie einen Pacman mit einem "Kuchenstück"-Mund
+        var pacManPath = new Path
+        {
+            Fill = Brushes.Yellow
+        };
 
-            //Draw Pacman
-            var pacManEllipse = new Ellipse
-            {
-                Width = 20,
-                Height = 20,
-                Fill = Brushes.Yellow
-            };
-            Canvas.SetLeft(pacManEllipse, pacMan.X * 20);
-            Canvas.SetTop(pacManEllipse, pacMan.Y * 20);
-            GameCanvas.Children.Add(pacManEllipse);
+        // Definieren Sie die Geometrie
+        var pacManGeometry = new PathGeometry();
 
+        // Startpunkt in der Mitte von Pac-Man
+        var pacManFigure = new PathFigure
+        {
+            StartPoint = new Avalonia.Point(10, 10) // Mittelpunkt
+        };
+
+        // Erstellen des "Mundes" (Dreieck)
+        pacManFigure.Segments.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
+        pacManFigure.Segments.Add(new LineSegment { Point = new Avalonia.Point(20, 15) }); // Zurück an die untere Spitze
+
+        // Kreisförmigen Rest zeichnen
+        pacManFigure.Segments.Add(new ArcSegment
+        {
+            Point = new Avalonia.Point(10, 10), // Zurück zum Startpunkt
+            Size = new Avalonia.Size(10, 10), // Größe des Kreises
+            SweepDirection = SweepDirection.Clockwise,
+            IsLargeArc = true
+        });
+
+        // Hinzufügen der Geometrie
+        pacManFigure.IsClosed = true;
+        pacManGeometry.Figures.Add(pacManFigure);
+
+        // Hinzufügen der Geometrie zum Path
+        pacManPath.Data = pacManGeometry;
+
+        // Platzieren von Pac-Man
+        Canvas.SetLeft(pacManPath, pacMan.X * 20 - 1);
+        Canvas.SetTop(pacManPath, pacMan.Y * 20 - 10);
+
+        // Hinzufügen zum Canvas
+        GameCanvas.Children.Add(pacManPath);
             //Draw Ghosts
             foreach (var ghost in ghosts)
             {

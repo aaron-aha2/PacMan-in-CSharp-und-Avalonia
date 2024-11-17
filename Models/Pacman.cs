@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace PacManGame.Models
 {
     // Enum zur Definition der Bewegungsrichtungen für Pac-Man
@@ -16,6 +18,8 @@ namespace PacManGame.Models
         {
             int newX = X;
             int newY = Y;
+            int prevX = X;
+            int prevY = Y;
 
             // Neue Position basierend auf Richtung berechnen
             switch (CurrentDirection)
@@ -41,6 +45,16 @@ namespace PacManGame.Models
             {
                 X = newX;
                 Y = newY;
+            }
+            if(newX == 0 && newY == 14 && prevX!=26)
+            {
+                X = 25;
+                newX = X;
+            }
+            if(newX == 26 && newY == 14 && prevX!=0)
+            {
+                X = 1;
+                newX = X;
             }
         }
     }
