@@ -86,19 +86,20 @@ namespace PacManGame.Views
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+
             switch (e.Key)
             {
                 case Key.Up:
-                    pacMan.CurrentDirection = (Models.Direction)Direction.Up;
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Up;
                     break;
                 case Key.Down:
-                    pacMan.CurrentDirection = (Models.Direction)Direction.Down;
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Down;
                     break;
                 case Key.Left:
-                    pacMan.CurrentDirection = (Models.Direction)Direction.Left;
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Left;
                     break;
                 case Key.Right:
-                    pacMan.CurrentDirection = (Models.Direction)Direction.Right;
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Right;
                     break;
             }
         }
@@ -259,16 +260,48 @@ namespace PacManGame.Views
 
         private void DrawPacMan()
         {
-            var pacManEllipse = new Ellipse
+            var pacManPath = new Path
             {
-                Width = 20,
-                Height = 20,
                 Fill = Brushes.Yellow
             };
-            Canvas.SetLeft(pacManEllipse, pacMan.X * 20);
-            Canvas.SetTop(pacManEllipse, pacMan.Y * 20);
-            GameCanvas.Children.Add(pacManEllipse);
+
+            // Definieren Sie die Geometrie
+            var pacManGeometry = new PathGeometry();
+
+            // Startpunkt in der Mitte von Pac-Man
+            var pacManFigure = new PathFigure
+            {
+                StartPoint = new Avalonia.Point(10, 10) // Mittelpunkt
+            };
+
+            // Erstellen des "Mundes" (Dreieck)
+            pacManFigure.Segments.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
+            pacManFigure.Segments.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); // Zurück an die untere Spitze
+
+            // Kreisförmigen Rest zeichnen
+            pacManFigure.Segments.Add(new ArcSegment
+            {
+                Point = new Avalonia.Point(10, 10), // Zurück zum Startpunkt
+                Size = new Avalonia.Size(10, 10), // Größe des Kreises
+                SweepDirection = SweepDirection.Clockwise,
+                IsLargeArc = true
+            });
+
+            // Hinzufügen der Geometrie
+            pacManFigure.IsClosed = true;
+            pacManGeometry.Figures.Add(pacManFigure);
+
+            // Hinzufügen der Geometrie zum Path
+            pacManPath.Data = pacManGeometry;
+
+            // Platzieren von Pac-Man
+            Canvas.SetLeft(pacManPath, pacMan.X * 20 );
+            Canvas.SetTop(pacManPath, pacMan.Y * 20 - 9);
+
+            // **Hinzufügen von Pac-Man zum Canvas**
+            GameCanvas.Children.Add(pacManPath);
         }
+
 
         private void DrawGhosts()
         {
