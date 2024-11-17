@@ -7,6 +7,8 @@ using PacManGame.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using PacManGame.Models;
+
 namespace PacManGame.Views
 {
     public partial class MainWindow : Window
@@ -27,7 +29,17 @@ namespace PacManGame.Views
 
             //Backround-color
             this.isWhiteBackground = isWhiteBackground;
-            Background = isWhiteBackground ? Brushes.White : Brushes.Black;
+            GameCanvas.Background = isWhiteBackground ? Brushes.White : Brushes.Black;
+            if(isWhiteBackground)
+            {
+                ScoreCounter.Foreground = Brushes.Black;
+                LifeCounter.Foreground = Brushes.Black;
+            }
+            else
+            {
+                ScoreCounter.Foreground = Brushes.White;
+                LifeCounter.Foreground = Brushes.White;
+            }
 
             //Initializing pacman and gamefield
             pacMan = new Pacman { X = 1, Y = 1 };
@@ -69,12 +81,29 @@ namespace PacManGame.Views
         public void UpdateScore()
         {
             ScoreCounter.Text = $"Score: {score}";
+            // Setze die Textfarbe abhängig vom Hintergrund
+            if (isWhiteBackground)
+            {
+                ScoreCounter.Foreground = Brushes.Black; // Dunkler Text für weißen Hintergrund
+            }
+            else
+            {
+                ScoreCounter.Foreground = Brushes.White; // Heller Text für schwarzen Hintergrund
+            }
         }
 
         //TODO: Implement lives
         public void UpdateLives()
         {
             LifeCounter.Text = $"Lives: {lives}";
+            if (isWhiteBackground)
+            {
+                LifeCounter.Foreground = Brushes.Black; // Dunkler Text für weißen Hintergrund
+            }
+            else
+            {
+                LifeCounter.Foreground = Brushes.White; // Heller Text für schwarzen Hintergrund
+            }
         }
 
         //Pacman control
@@ -97,26 +126,56 @@ namespace PacManGame.Views
             }
         }
 
-        //Game-Update-Tick
-        private void OnGameTick(object sender, EventArgs e)
+private void OnGameTick(object sender, EventArgs e)
+{
+    pacMan.Move(gamefield);
+
+    // Pac-Man isst normales Futter
+    if (gamefield.GameFieldData[pacMan.Y, pacMan.X] == 2)
+    {
+        score += 10;
+        UpdateScore();
+        gamefield.GameFieldData[pacMan.Y, pacMan.X] = 0;
+    }
+    // Pac-Man isst Super-Futter
+    else if (gamefield.GameFieldData[pacMan.Y, pacMan.X] == 3)
+    {
+        MakeGhostsVulnerable();
+        gamefield.GameFieldData[pacMan.Y, pacMan.X] = 0;
+    }
+
+    // Bewegung und Kollisionserkennung für Geister
+    foreach (var ghost in ghosts)
+    {
+        ghost.Move(pacMan, gamefield);
+
+        // Prüfen, ob Pac-Man einen Geist getroffen hat
+        if (pacMan.X == ghost.X && pacMan.Y == ghost.Y)
         {
-            pacMan.Move(gamefield);
-
-            if (gamefield.GameFieldData[pacMan.Y, pacMan.X] == 2)
+            if (ghost.IsVulnerable)
             {
-                score += 10;
-                UpdateScore();
-                gamefield.GameFieldData[pacMan.Y, pacMan.X] = 0;
+                eatGhost(ghost); // Geist fressen
             }
-
-            //Move all ghosts
-            foreach (var ghost in ghosts)
+            else
             {
-                ghost.Move(pacMan, gamefield);
+                lives--; // Pac-Man verliert ein Leben
+                UpdateLives();
+                if(lives == 0)
+                {
+                    GameCanvas.Children.Clear();
+                    gameOverTextBlock.Text = "Game Over! Your score: " + score;                
+                    gameTimer.Stop(); 
+                }
+                pacMan.X = 1;
+                
             }
-
-            DrawGame();
         }
+            
+    }
+
+    DrawGame();
+}
+
 
         //Draw gamefield and all objects
         private void DrawGame()
@@ -146,6 +205,18 @@ namespace PacManGame.Views
                         {
                             Width = 10,
                             Height = 10,
+                            Fill = isWhiteBackground ? Brushes.Black : Brushes.Gray
+                        };
+                        Canvas.SetLeft(pointEllipse, x * 20 + 5);
+                        Canvas.SetTop(pointEllipse, y * 20 + 5);
+                        GameCanvas.Children.Add(pointEllipse);
+                    }
+                    else if (gamefield.GameFieldData[y, x] == 3)  //Super-Food
+                    {
+                        var pointEllipse = new Ellipse
+                        {
+                            Width = 15,
+                            Height = 15,
                             Fill = isWhiteBackground ? Brushes.Black : Brushes.White
                         };
                         Canvas.SetLeft(pointEllipse, x * 20 + 5);
@@ -195,40 +266,71 @@ namespace PacManGame.Views
 
         // Hinzufügen zum Canvas
         GameCanvas.Children.Add(pacManPath);
-            //Draw Ghosts
             foreach (var ghost in ghosts)
             {
                 var ghostEllipse = new Ellipse
                 {
                     Width = 20,
                     Height = 20,
-                    Fill = Brushes.Red
+                    Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red // Blau, wenn verwundbar
                 };
 
-                //Set colour based on ghost type
+                // Setze Farbe basierend auf Geist-Typ und Verwundbarkeit
                 switch (ghost)
                 {
                     case RedGhost _:
-                        ghostEllipse.Fill = Brushes.Red;
+                        ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red;
                         break;
                     case Pinky _:
-                        ghostEllipse.Fill = Brushes.Pink;
+                        ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Pink;
                         break;
                     case Inky _:
-                        ghostEllipse.Fill = Brushes.Turquoise;
+                        ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Turquoise;
                         break;
-                
                     default:
-                        ghostEllipse.Fill = Brushes.Gray; //Colour for unknown ghost type
+                        ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Gray;
                         break;
                 }
 
-                //Set and add ghost position to canvas
                 Canvas.SetLeft(ghostEllipse, ghost.X * 20);
                 Canvas.SetTop(ghostEllipse, ghost.Y * 20);
                 GameCanvas.Children.Add(ghostEllipse);
+}
+}   
+        private void MakeGhostsVulnerable()
+        {
+            foreach (var ghost in ghosts)
+            {
+                ghost.IsVulnerable = true; // Geister verwundbar machen
             }
 
+            // Starte einen Timer, um die Verwundbarkeit nach 10 Sekunden zu beenden
+            var vulnerableTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(10) // Verwundbar für 10 Sekunden
+            };
+
+            vulnerableTimer.Tick += (s, e) =>
+            {
+                foreach (var ghost in ghosts)
+                {
+                    ghost.IsVulnerable = false; // Geister wieder normal machen
+                }
+                vulnerableTimer.Stop(); // Timer beenden
+            };
+
+            vulnerableTimer.Start();
+        }
+        private void eatGhost(Ghost ghost)
+        {
+            if (ghost.IsVulnerable)
+            {
+                score += 100;
+                UpdateScore();
+                ghost.X = 10;
+                ghost.Y = 10;
+            }
         }
     }
+
 }
