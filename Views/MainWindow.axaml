@@ -17,6 +17,7 @@
 
         <!-- TODO: Add LiveCounter -->
         <TextBlock x:Name="LifeCounter" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Text="Lives: 3" />
+        <TextBlock x:Name="gameOverTextBlock" />
         
     </Grid>
 </Window>
