@@ -1,106 +1,102 @@
 using System;
-using System.Collections.Generic;
 
 namespace PacManGame.Models
 {
     public class Clyde : Ghost
     {
-        private const int ChaseDistance = 4; // Der Abstand, bei dem Clyde den direkten Verfolgemodus verlässt
-        
+        private const int ChaseDistance = 4; //Abstand, bei dem Clyde in den Zufallsmodus wechselt
 
-        public Clyde(int startX, int startY, List<Ghost> ghosts)
+        public Clyde(int startX, int startY)
         {
             X = startX;
             Y = startY;
-            Name = "Clyde"; // Identifikation
-            Speed = 1; // Standardgeschwindigkeit
-            
+            Name = "Clyde"; //Identifikation
         }
 
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
-            // Berechne den Abstand zu Pac-Man
+            //Berechne den Abstand zu Pac-Man
             int dx = pacman.X - X;
             int dy = pacman.Y - Y;
             double distance = Math.Sqrt(dx * dx + dy * dy);
 
             if (distance < ChaseDistance)
             {
-                // Wenn er in der Nähe von Pac-Man ist, gehe in eine zufällige Richtung
-                Random random = new Random();
-                int randomDirection = random.Next(4); // Zufällige Richtung auswählen
+                //Wenn er in der Nähe von Pac-Man ist, bewege dich zufällig
+                MoveRandom(gamefield);
+            }
+            else
+            {
+                //Wenn Clyde weiter entfernt ist, verfolgt er Pac-Man
+                MoveTowards(pacman.X, pacman.Y, gamefield);
+            }
+        }
 
-                switch (randomDirection)
+        //Bewegt Clyde in Richtung eines Zielpunkts (Pac-Man), ohne in Wände zu laufen
+        private void MoveTowards(int targetX, int targetY, Gamefield gamefield)
+        {
+            int dx = targetX - X;
+            int dy = targetY - Y;
+
+            if (Math.Abs(dx) > Math.Abs(dy))
+            {
+                //Bevorzugte Bewegung in X-Richtung
+                if (dx > 0 && CanMoveRight(gamefield))
                 {
-                    case 0: // Nach oben bewegen
-                        MoveUp(gamefield);
-                        break;
-                    case 1: // Nach unten bewegen
-                        MoveDown(gamefield);
-                        break;
-                    case 2: // Nach links bewegen
-                        MoveLeft(gamefield);
-                        break;
-                    case 3: // Nach rechts bewegen
-                        MoveRight(gamefield);
-                        break;
+                    MoveRight(gamefield);
+                }
+                else if (dx < 0 && CanMoveLeft(gamefield))
+                {
+                    MoveLeft(gamefield);
+                }
+                else
+                {
+                    //Wenn X blockiert, bewege dich in Y-Richtung
+                    MoveVertical(dy, gamefield);
                 }
             }
             else
             {
-                // Wenn Clyde weiter entfernt ist, verfolgt er Pac-Man
-                if (Math.Abs(dx) > Math.Abs(dy))
+                //Bevorzugte Bewegung in Y-Richtung
+                if (dy > 0 && CanMoveDown(gamefield))
                 {
-                    // Bewege in horizontaler Richtung
-                    if (dx > 0)
-                        MoveLeft(gamefield);
-                    else
-                        MoveRight(gamefield);
+                    MoveDown(gamefield);
+                }
+                else if (dy < 0 && CanMoveUp(gamefield))
+                {
+                    MoveUp(gamefield);
                 }
                 else
                 {
-                    // Bewege in vertikaler Richtung
-                    if (dy > 0)
-                        MoveUp(gamefield);
-                    else
-                        MoveDown(gamefield);
+                    //Wenn Y blockiert, bewege dich in X-Richtung
+                    MoveHorizontal(dx, gamefield);
                 }
             }
         }
 
-        // Bewegt den Geist nach oben, prüft dabei Wände
-        private void MoveUp(Gamefield gamefield)
+        //Versuch einer vertikalen Bewegung
+        private void MoveVertical(int dy, Gamefield gamefield)
         {
-            if (Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1) // Keine Wand
+            if (dy > 0 && CanMoveDown(gamefield))
             {
-                Y--;
+                MoveDown(gamefield);
+            }
+            else if (dy < 0 && CanMoveUp(gamefield))
+            {
+                MoveUp(gamefield);
             }
         }
 
-        // Bewegt den Geist nach unten, prüft dabei Wände
-        private void MoveDown(Gamefield gamefield)
+        //Versuch einer horizontalen Bewegung
+        private void MoveHorizontal(int dx, Gamefield gamefield)
         {
-            if (Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1) // Keine Wand
+            if (dx > 0 && CanMoveRight(gamefield))
             {
-                Y++;
+                MoveRight(gamefield);
             }
-        }
-
-        // Bewegt den Geist nach links, prüft dabei Wände
-        private void MoveLeft(Gamefield gamefield)
-        {
-            if (X > 0 && gamefield.GameFieldData[Y, X - 1] != 1) // Keine Wand
+            else if (dx < 0 && CanMoveLeft(gamefield))
             {
-                X--;
-            }
-        }
-
-        // Bewegt den Geist nach rechts, prüft dabei Wände
-        private void MoveRight(Gamefield gamefield)
-        {
-            if (X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1) // Keine Wand
-            {
-                X++;
+                MoveLeft(gamefield);
             }
         }
     }

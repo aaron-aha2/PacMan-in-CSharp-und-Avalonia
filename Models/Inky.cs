@@ -5,26 +5,33 @@ namespace PacManGame.Models
 {
     public class Inky : Ghost
     {
-        private List<Ghost> ghosts; // Zugriff auf andere Geister
+        private List<Ghost> ghosts; //Zugriff auf andere Geister
 
-        // Konstruktor: Startposition und Geisterliste
+        //Konstruktor: Startposition und Geisterliste
         public Inky(int startX, int startY, List<Ghost> ghosts)
         {
             X = startX;
             Y = startY;
-            Name = "Inky"; // Name zur Identifikation in der Liste
+            Name = "Inky"; //Name zur Identifikation in der Liste
             this.ghosts = ghosts;
         }
 
-        // Bewegt sich zu einem Punkt, der relativ zur Position von Pac-Man und Blinky ist
+        //Überschreibt die Move-Methode von Ghost, um Inkys spezifische Bewegungslogik zu implementieren
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
-            // Blinky in der Geisterliste finden
+            if (IsVulnerable)
+            {
+                //Verwundbarer Modus: Bewegt sich zufällig
+                MoveRandom(gamefield);
+                return;
+            }
+
+            //Blinky in der Geisterliste finden
             var blinky = ghosts.Find(g => g.Name == "Blinky");
             if (blinky == null)
-                return; // Bewegung abbrechen, wenn Blinky nicht existiert
+                return; //Bewegung abbrechen, wenn Blinky nicht existiert
 
-            // Vorhersagepunkt basierend auf Pac-Mans Richtung
+            //Vorhersagepunkt basierend auf Pac-Mans Richtung
             int targetX = pacman.X;
             int targetY = pacman.Y;
 
@@ -44,25 +51,80 @@ namespace PacManGame.Models
                     break;
             }
 
-            // Zielpunkt für Inky basierend auf Blinkys Position
+            //Zielpunkt für Inky basierend auf Blinkys Position
             int inkyTargetX = targetX + (targetX - blinky.X);
             int inkyTargetY = targetY + (targetY - blinky.Y);
 
-            // Bewegung in Richtung des berechneten Zielpunkts
-            int dx = inkyTargetX - X;
-            int dy = inkyTargetY - Y;
+            //Bewegung in Richtung des berechneten Zielpunkts
+            MoveTowards(inkyTargetX, inkyTargetY, gamefield);
+        }
 
+        //Bewegt Inky in Richtung des Zielpunkts
+        private void MoveTowards(int targetX, int targetY, Gamefield gamefield)
+        {
+            int dx = targetX - X;
+            int dy = targetY - Y;
+
+            //Bevorzugt horizontale Bewegung, falls keine Wand
             if (Math.Abs(dx) > Math.Abs(dy))
-                X += dx > 0 ? Speed : -Speed;
+            {
+                if (dx > 0 && CanMoveRight(gamefield))
+                {
+                    MoveRight(gamefield);
+                }
+                else if (dx < 0 && CanMoveLeft(gamefield))
+                {
+                    MoveLeft(gamefield);
+                }
+                else
+                {
+                    //Wenn die horizontale Bewegung blockiert ist, versuche vertikal
+                    MoveVertical(dy, gamefield);
+                }
+            }
             else
-                Y += dy > 0 ? Speed : -Speed;
+            {
+                //Bevorzugt vertikale Bewegung, falls keine Wand
+                if (dy > 0 && CanMoveDown(gamefield))
+                {
+                    MoveDown(gamefield);
+                }
+                else if (dy < 0 && CanMoveUp(gamefield))
+                {
+                    MoveUp(gamefield);
+                }
+                else
+                {
+                    //Wenn die vertikale Bewegung blockiert ist, versuche horizontal
+                    MoveHorizontal(dx, gamefield);
+                }
+            }
+        }
 
-            // Wandkollisionen überprüfen und Bewegung zurücknehmen
-            if (X < 0 || X >= gamefield.GameFieldData.GetLength(1) || gamefield.GameFieldData[Y, X] == 1)
-                X -= dx > 0 ? Speed : -Speed;
+        //Versuch einer vertikalen Bewegung
+        private void MoveVertical(int dy, Gamefield gamefield)
+        {
+            if (dy > 0 && CanMoveDown(gamefield))
+            {
+                MoveDown(gamefield);
+            }
+            else if (dy < 0 && CanMoveUp(gamefield))
+            {
+                MoveUp(gamefield);
+            }
+        }
 
-            if (Y < 0 || Y >= gamefield.GameFieldData.GetLength(0) || gamefield.GameFieldData[Y, X] == 1)
-                Y -= dy > 0 ? Speed : -Speed;
+        //Versuch einer horizontalen Bewegung
+        private void MoveHorizontal(int dx, Gamefield gamefield)
+        {
+            if (dx > 0 && CanMoveRight(gamefield))
+            {
+                MoveRight(gamefield);
+            }
+            else if (dx < 0 && CanMoveLeft(gamefield))
+            {
+                MoveLeft(gamefield);
+            }
         }
     }
 }

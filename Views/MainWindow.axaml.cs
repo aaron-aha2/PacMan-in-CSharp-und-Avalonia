@@ -54,25 +54,27 @@ namespace PacManGame.Views
 
         private void InitializeGhosts(int ghostCount)
         {
-            for (int i = 0; i < ghostCount; i++)
+            for (int i = 1; i <= ghostCount; i++) // Beginnt bei 1, da die Fälle ab 1 definiert waren
             {
-                switch (i)
+                if (i == 1)
                 {
-                    case 1:
-                        ghosts.Add(new RedGhost(3 + i * 2, 3 + i * 2));
-                        break;
-                    case 2:
-                        ghosts.Add(new Pinky(6 + i * 3, 6 + i * 3));
-                        break;
-                    case 3:
-                        ghosts.Add(new Inky(4 + i * 3, 4 + i * 3, ghosts));
-                        break;
-                    case 4:
-                        ghosts.Add(new Clyde(5, 5, ghosts)); // Generische Geister
-                        break;
+                    ghosts.Add(new Blinky(3 + i * 2, 3 + i * 2));
+                }
+                else if (i == 2)
+                {
+                    ghosts.Add(new Pinky(6 + i * 3, 6 + i * 3));
+                }
+                else if (i == 3)
+                {
+                    ghosts.Add(new Inky(4 + i * 3, 4 + i * 3, ghosts));
+                }
+                else
+                {
+                    ghosts.Add(new Clyde(5, 5)); // Standardmäßiger Clyde für alle anderen
                 }
             }
         }
+
 
         private void UpdateScore()
         {
@@ -313,7 +315,7 @@ namespace PacManGame.Views
                     Height = 20,
                     Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red
                 };  
-                if (ghost is RedGhost)
+                if (ghost is Blinky)
                 {
                     ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red;
                 }
