@@ -131,6 +131,7 @@ namespace PacManGame.Views
                     }
                 }
             }
+            checkWinCase();
 
             // Spiel neu zeichnen
             DrawGame();
@@ -344,21 +345,31 @@ namespace PacManGame.Views
                 GameCanvas.Children.Add(ghostEllipse);
             }
         }
-        private void winCase(){
-            for(int i=0; i<gamefield.GameFieldData.GetLength(0); i++){
-                for(int j=0; j<gamefield.GameFieldData.GetLength(1); j++){
-                    if(gamefield.GameFieldData[i,j] == 0){
-                        // Timer stoppen
-                        gameTimer.Stop();
-                        // Neues GameOver-Fenster anzeigen
-                        var winWindow = new WinWindow(score);
-                        winWindow.Show();
-
-                        // Aktuelles Fenster schließen
-                        this.Close();
+        private void checkWinCase()
+        {
+            // Annahme: Der Gewinn tritt ein, wenn kein Futter (2) oder Super-Futter (3) mehr übrig ist.
+            for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
+            {
+                for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
+                {
+                    // Wenn noch Futter (2) oder Super-Futter (3) übrig ist, kein Gewinn
+                    if (gamefield.GameFieldData[y, x] == 2 || gamefield.GameFieldData[y, x] == 3)
+                    {
+                        return; // Es gibt noch Punkte zu sammeln, Gewinnbedingung ist nicht erfüllt
                     }
                 }
             }
+
+            // Alle Punkte sind aufgebraucht, Spieler hat gewonnen
+            gameTimer.Stop(); // Timer anhalten
+
+            // Neues Gewinn-Fenster anzeigen
+            var winWindow = new WinWindow(score);
+            winWindow.Show();
+
+            // Aktuelles Fenster schließen
+            this.Close();
         }
+
     }
 }
