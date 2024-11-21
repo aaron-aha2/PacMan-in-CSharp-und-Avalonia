@@ -195,10 +195,16 @@ namespace PacManGame.Views
 
         private void GameOver()
         {
-            GameCanvas.Children.Clear();
-            gameOverTextBlock.Text = $"Game Over! Your score: {score}";
+            // Timer stoppen
             gameTimer.Stop();
+            // Neues GameOver-Fenster anzeigen
+            var gameOverWindow = new GameOverWindow(score);
+            gameOverWindow.Show();
+
+            // Aktuelles Fenster schließen
+            this.Close();
         }
+
 
         private void DrawGame()
         {
@@ -336,6 +342,22 @@ namespace PacManGame.Views
                 Canvas.SetLeft(ghostEllipse, ghost.X * 20);
                 Canvas.SetTop(ghostEllipse, ghost.Y * 20);
                 GameCanvas.Children.Add(ghostEllipse);
+            }
+        }
+        private void winCase(){
+            for(int i=0; i<gamefield.GameFieldData.GetLength(0); i++){
+                for(int j=0; j<gamefield.GameFieldData.GetLength(1); j++){
+                    if(gamefield.GameFieldData[i,j] == 0){
+                        // Timer stoppen
+                        gameTimer.Stop();
+                        // Neues GameOver-Fenster anzeigen
+                        var winWindow = new WinWindow(score);
+                        winWindow.Show();
+
+                        // Aktuelles Fenster schließen
+                        this.Close();
+                    }
+                }
             }
         }
     }

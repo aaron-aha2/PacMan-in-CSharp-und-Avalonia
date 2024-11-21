@@ -11,7 +11,7 @@ namespace PacManGame.Views
             InitializeComponent();
         }
 
-        private void OnStartButtonClick(object sender, RoutedEventArgs e)
+        private void OnStartButtonClick(object? sender, RoutedEventArgs e)
         {
             //Anzahl der Geister abrufen
             var selectedGhostCountItem = GhostCountComboBox.SelectedItem as ComboBoxItem;
