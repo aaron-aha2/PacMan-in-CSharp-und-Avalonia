@@ -10,6 +10,7 @@ namespace PacManGame.Models
             X = startX;
             Y = startY;
             Name = "Pinky";  //Name des Geistes
+            this.currentDirection = (Direction)random.Next(4);
         }
 
         //Überschreibt die Move-Methode von Ghost, um Pinkys spezifische Bewegungslogik zu implementieren

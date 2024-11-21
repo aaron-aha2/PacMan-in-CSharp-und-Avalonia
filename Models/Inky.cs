@@ -13,6 +13,7 @@ namespace PacManGame.Models
             X = startX;
             Y = startY;
             Name = "Inky"; //Name zur Identifikation in der Liste
+            this.currentDirection = (Direction)random.Next(4);
             this.ghosts = ghosts;
         }
 

@@ -7,6 +7,7 @@ namespace PacManGame.Models
             X = startX;
             Y = startY;
             Name = "Blinky"; //Name des Geistes
+            this.currentDirection = (Direction)random.Next(4);
         }
 
         //Override der Move-Methode für Blinky

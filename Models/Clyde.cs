@@ -11,6 +11,7 @@ namespace PacManGame.Models
             X = startX;
             Y = startY;
             Name = "Clyde"; //Identifikation
+            this.currentDirection = (Direction)random.Next(4);
         }
 
         public override void Move(Pacman pacman, Gamefield gamefield)
