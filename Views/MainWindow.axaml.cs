@@ -22,6 +22,7 @@ namespace PacManGame.Views
         public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
+            
 
             // Score und Lives initialisieren
             UpdateScore();
@@ -47,6 +48,9 @@ namespace PacManGame.Views
             gameTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
             gameTimer.Tick += OnGameTick;
             gameTimer.Start();
+
+            ExitButton.Click += OnExitButtonClick;
+            ResetButton.Click += OnRestartButtonClick;
 
             // Steuerung für Pac-Man
             KeyDown += OnKeyDown;
@@ -86,7 +90,7 @@ namespace PacManGame.Views
             LifeCounter.Text = $"Lives: {lives}";
         }
 
-        private void OnKeyDown(object sender, KeyEventArgs e)
+        private void OnKeyDown(object? sender, KeyEventArgs e)
         {
 
             switch (e.Key)
@@ -106,7 +110,7 @@ namespace PacManGame.Views
             }
         }
 
-        private void OnGameTick(object sender, EventArgs e)
+        private void OnGameTick(object? sender, EventArgs e)
         {
             // Pac-Man bewegen
             pacMan.Move(gamefield);
@@ -293,11 +297,11 @@ namespace PacManGame.Views
             };
 
             // Erstellen des "Mundes" (Dreieck)
-            pacManFigure.Segments.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
-            pacManFigure.Segments.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); // Zurück an die untere Spitze
+            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
+            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); // Zurück an die untere Spitze
 
             // Kreisförmigen Rest zeichnen
-            pacManFigure.Segments.Add(new ArcSegment
+            pacManFigure.Segments?.Add(new ArcSegment
             {
                 Point = new Avalonia.Point(10, 10), // Zurück zum Startpunkt
                 Size = new Avalonia.Size(10, 10), // Größe des Kreises
@@ -307,7 +311,7 @@ namespace PacManGame.Views
 
             // Hinzufügen der Geometrie
             pacManFigure.IsClosed = true;
-            pacManGeometry.Figures.Add(pacManFigure);
+            pacManGeometry?.Figures?.Add(pacManFigure);
 
             // Hinzufügen der Geometrie zum Path
             pacManPath.Data = pacManGeometry;
@@ -378,6 +382,17 @@ namespace PacManGame.Views
 
             // Aktuelles Fenster schließen
             this.Close();
+        }
+        private void OnExitButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            Close(); // Schließt das Fenster
+        }
+        private void OnRestartButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+        {
+            MenuWindow mwindow = new MenuWindow();
+            mwindow.Show();
+            Close(); // Schließt das Fenster
+            
         }
 
     }

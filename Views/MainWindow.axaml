@@ -11,8 +11,10 @@
         <!-- Upper Pane with Grid: Counters -->
         <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="150"/> <!-- Score -->
+                <ColumnDefinition Width="Auto"/> <!-- Restart -->
+                <ColumnDefinition Width="Auto"/> <!-- Exit -->
+                <ColumnDefinition Width="150"/> <!-- Lives -->
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="ScoreCounter"
@@ -20,12 +22,30 @@
                        Text="Score: 0"
                        VerticalAlignment="Bottom"
                        HorizontalAlignment="Center"
-                       FontSize="20"
+                       FontSize="15"
                        FontWeight="Bold"/>
                        
+            <Button Content="Reset"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="10"
+                Width="80"
+                Focusable="False"
+                Name="ResetButton"/>    
+
+            <Button Content="Exit"
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="10"
+                Width="80"
+                Focusable="False"
+                Name="ExitButton"/>       
+            
                        
             <TextBlock x:Name="LifeCounter"
-                       Grid.Column="1"
+                       Grid.Column="3"
                        Text="Lives: 3"
                        VerticalAlignment="Bottom"
                        HorizontalAlignment="Center"

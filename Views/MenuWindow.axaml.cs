@@ -15,7 +15,7 @@ namespace PacManGame.Views
         {
             //Anzahl der Geister abrufen
             var selectedGhostCountItem = GhostCountComboBox.SelectedItem as ComboBoxItem;
-            int ghostCount = int.Parse(selectedGhostCountItem?.Content.ToString() ?? "1");
+            int ghostCount = int.Parse(selectedGhostCountItem?.Content?.ToString() ?? "1");
 
             //Hintergrundfarbe bestimmen
             bool isWhiteBackground = WhiteBackgroundRadio.IsChecked ?? true;
