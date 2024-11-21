@@ -20,8 +20,10 @@ namespace PacManGame.Views
             //Hintergrundfarbe bestimmen
             bool isWhiteBackground = WhiteBackgroundRadio.IsChecked ?? true;
 
+            int level = 1;
+
             //Hauptspiel-Fenster mit den Einstellungen öffnen
-            MainWindow mwindow = new MainWindow(ghostCount, isWhiteBackground);
+            MainWindow mwindow = new MainWindow(level, ghostCount, isWhiteBackground);
             mwindow.Show();
             this.Close(); // Menüfenster schließen
         }

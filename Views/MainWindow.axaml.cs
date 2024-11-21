@@ -19,7 +19,7 @@ namespace PacManGame.Views
         private List<Ghost> ghosts;
         private bool isWhiteBackground;
 
-        public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
+        public MainWindow(int level = 1, int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
 
@@ -28,7 +28,7 @@ namespace PacManGame.Views
             UpdateLives();
 
             // Hintergrundfarbe
-            this.isWhiteBackground = isWhiteBackground;
+            
             GameCanvas.Background = isWhiteBackground ? Brushes.White : Brushes.Black;
 
             // Textfarben anpassen
@@ -37,7 +37,7 @@ namespace PacManGame.Views
 
             // Pac-Man und Spielfeld initialisieren
             pacMan = new Pacman { X = 1, Y = 1 };
-            gamefield = new Gamefield(ghostCount, isWhiteBackground);
+            gamefield = new Gamefield(level, ghostCount, isWhiteBackground);
 
             // Geister-Liste initialisieren und Geister hinzufügen
             ghosts = new List<Ghost>();
