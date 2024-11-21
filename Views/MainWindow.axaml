@@ -6,18 +6,41 @@
         WindowStartupLocation="CenterScreen"
         Title="PacMan Game">
 
-     <Grid ColumnDefinitions="*,600,*" RowDefinitions="*,600,*"> <!-- "*": Those columns/rows are get the same size out of the remaining space-->
 
-        <!-- TODO: Add different colour options -->
+ <Grid ColumnDefinitions="*,600,*" RowDefinitions="*,600,*"> <!-- 3x3 Grid -->
+        <!-- Upper Pane with Grid: Counters -->
+        <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="ScoreCounter"
+                       Grid.Column="0"
+                       Text="Score: 0"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Center"
+                       FontSize="20"
+                       FontWeight="Bold"/>
+                       
+                       
+            <TextBlock x:Name="LifeCounter"
+                       Grid.Column="1"
+                       Text="Lives: 3"
+                       VerticalAlignment="Bottom"
+                       HorizontalAlignment="Center"
+                       FontSize="20"
+                       FontWeight="Bold"/>
+                       
+                       
+        </Grid>
+
+        <!-- Lower Pane: Gamefield -->
         <Border Grid.Row="1" Grid.Column="1">
-            <Canvas x:Name="GameCanvas" Width="600" Height="600" Background="White"/>
+            <Canvas x:Name="GameCanvas" Width="540" Height="580" Background="White"/>
         </Border>
-
-        <TextBlock x:Name="ScoreCounter" Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom" Text="Score: 0"/>
-
-        <!-- TODO: Add LiveCounter -->
-        <TextBlock x:Name="LifeCounter" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Text="Lives: 3" />
-        <TextBlock x:Name="gameOverTextBlock" />
+        
+        <TextBlock x:Name="gameOverTextBlock"/>
         
     </Grid>
 </Window>

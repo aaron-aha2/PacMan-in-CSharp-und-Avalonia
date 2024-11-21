@@ -32,8 +32,8 @@ namespace PacManGame.Views
             GameCanvas.Background = isWhiteBackground ? Brushes.White : Brushes.Black;
 
             // Textfarben anpassen
-            ScoreCounter.Foreground = isWhiteBackground ? Brushes.Black : Brushes.White;
-            LifeCounter.Foreground = isWhiteBackground ? Brushes.Black : Brushes.White;
+            ScoreCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
+            LifeCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
 
             // Pac-Man und Spielfeld initialisieren
             pacMan = new Pacman { X = 1, Y = 1 };
@@ -190,8 +190,8 @@ namespace PacManGame.Views
         {
             score += 100;
             UpdateScore();
-            ghost.X = 10; // Reset-Position
-            ghost.Y = 10;
+            ghost.X = 14; // Set Ghost Position to Ghost Spawn
+            ghost.Y = 14;
         }
 
         private void GameOver()
@@ -211,13 +211,10 @@ namespace PacManGame.Views
         {
             GameCanvas.Children.Clear();
 
-            // Spielfeld zeichnen
             DrawGamefield();
 
-            // Pac-Man zeichnen
             DrawPacMan();
 
-            // Geister zeichnen
             DrawGhosts();
         }
 
@@ -227,41 +224,53 @@ namespace PacManGame.Views
             {
                 for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
                 {
-                    if (gamefield.GameFieldData[y, x] == 1) // Wand
+                    if (gamefield.GameFieldData[y, x] == 1) //Wall
                     {
                         var wall = new Rectangle
                         {
                             Width = 20,
                             Height = 20,
-                            Fill = Brushes.Gray
+                            Fill = new SolidColorBrush(Color.Parse("#1919A6")),
                         };
                         Canvas.SetLeft(wall, x * 20);
                         Canvas.SetTop(wall, y * 20);
                         GameCanvas.Children.Add(wall);
                     }
-                    else if (gamefield.GameFieldData[y, x] == 2) // Futter
+                    else if (gamefield.GameFieldData[y, x] == 2) //Food
                     {
                         var food = new Ellipse
                         {
-                            Width = 10,
-                            Height = 10,
-                            Fill = isWhiteBackground ? Brushes.Black : Brushes.White
+                            Width = 5,
+                            Height = 5,
+                            Fill = new SolidColorBrush(Color.Parse("#ffbe47")),
                         };
-                        Canvas.SetLeft(food, x * 20 + 5);
-                        Canvas.SetTop(food, y * 20 + 5);
+                        Canvas.SetLeft(food, x * 20 + (20 - food.Width) /2); //Centers food in middle of cell
+                        Canvas.SetTop(food, y * 20 + (20 - food.Height) / 2);
                         GameCanvas.Children.Add(food);
                     }
-                    else if (gamefield.GameFieldData[y, x] == 3) // Super-Futter
+                    else if (gamefield.GameFieldData[y, x] == 3) //Superfood
                     {
                         var superFood = new Ellipse
                         {
-                            Width = 15,
-                            Height = 15,
+                            Width = 10,
+                            Height = 10,
                             Fill = Brushes.Gold
                         };
-                        Canvas.SetLeft(superFood, x * 20 + 5);
-                        Canvas.SetTop(superFood, y * 20 + 5);
+                        Canvas.SetLeft(superFood, x * 20 + (20 - superFood.Width) / 2);
+                        Canvas.SetTop(superFood, y * 20 + (20 - superFood.Height) / 2);
                         GameCanvas.Children.Add(superFood);
+                    }
+                    else if (gamefield.GameFieldData[y, x] == 4) //Ghost exit
+                    {
+                        var ghostExit = new Rectangle
+                        {
+                            Width = 20,
+                            Height = 5,
+                            Fill = new SolidColorBrush(Color.Parse("#DEA185")),
+                        };
+                        Canvas.SetLeft(ghostExit, x * 20);
+                        Canvas.SetTop(ghostExit, y * 20);
+                        GameCanvas.Children.Add(ghostExit);
                     }
                 }
             }
@@ -271,7 +280,7 @@ namespace PacManGame.Views
         {
             var pacManPath = new Path
             {
-                Fill = Brushes.Yellow
+                Fill = new SolidColorBrush(Color.Parse("#fdff00"))
             };
 
             // Definieren Sie die Geometrie
@@ -280,7 +289,7 @@ namespace PacManGame.Views
             // Startpunkt in der Mitte von Pac-Man
             var pacManFigure = new PathFigure
             {
-                StartPoint = new Avalonia.Point(10, 10) // Mittelpunkt
+                StartPoint = new Avalonia.Point(10, 10)
             };
 
             // Erstellen des "Mundes" (Dreieck)
@@ -324,19 +333,19 @@ namespace PacManGame.Views
                 };  
                 if (ghost is Blinky)
                 {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red;
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#d03e19"));
                 }
                 else if (ghost is Pinky)
                 {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Pink;
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#ea82e5"));
                 }
                 else if (ghost is Inky)
                 {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Cyan;
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#46bfee"));
                 }
                 else if (ghost is Clyde)
                 {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Orange;
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#db851c"));
                 }
                 
 
