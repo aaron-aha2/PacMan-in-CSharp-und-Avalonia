@@ -10,7 +10,7 @@ namespace PacManGame.Models
         public int Speed { get; set; } = 1;
         public bool IsVulnerable { get; set; } = false; // Standardmäßig nicht verwundbar
         public bool IsDead { get; set; } = false; // Standardmäßig nicht tot
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public abstract void Move(Pacman pacman, Gamefield gamefield);
         public Random random = new Random();
         public void MoveRandom(Gamefield gamefield)
