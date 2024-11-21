@@ -190,8 +190,8 @@ namespace PacManGame.Views
         {
             score += 100;
             UpdateScore();
-            ghost.X = 10; // Reset-Position
-            ghost.Y = 10;
+            ghost.X = 14; // Set Ghost Position to Ghost Spawn
+            ghost.Y = 14;
         }
 
         private void GameOver()
@@ -259,6 +259,18 @@ namespace PacManGame.Views
                         Canvas.SetLeft(superFood, x * 20 + (20 - superFood.Width) / 2);
                         Canvas.SetTop(superFood, y * 20 + (20 - superFood.Height) / 2);
                         GameCanvas.Children.Add(superFood);
+                    }
+                    else if (gamefield.GameFieldData[y, x] == 4) //Ghost exit
+                    {
+                        var ghostExit = new Rectangle
+                        {
+                            Width = 20,
+                            Height = 5,
+                            Fill = new SolidColorBrush(Color.Parse("#DEA185")),
+                        };
+                        Canvas.SetLeft(ghostExit, x * 20);
+                        Canvas.SetTop(ghostExit, y * 20);
+                        GameCanvas.Children.Add(ghostExit);
                     }
                 }
             }
