@@ -6,6 +6,7 @@ using Avalonia.Input;
 using PacManGame.Models;
 using System;
 using System.Collections.Generic;
+using Avalonia.Metadata;
 
 namespace PacManGame.Views
 {
@@ -18,31 +19,34 @@ namespace PacManGame.Views
         private DispatcherTimer gameTimer;
         private List<Ghost> ghosts;
         private bool isWhiteBackground;
+        int currentLevel = 1;
 
         public MainWindow(int level = 1, int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
-            
-            // Score und Lives initialisieren
+
+            //Initialize score and lives
             UpdateScore();
             UpdateLives();
+            UpdateLevel();
 
-            // Hintergrundfarbe
+            //Background colour
             GameCanvas.Background = isWhiteBackground ? Brushes.White : Brushes.Black;
 
-            // Textfarben anpassen
+            //Text colour
             ScoreCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
             LifeCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
+            LevelCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
 
-            // Pac-Man und Spielfeld initialisieren
-            pacMan = new Pacman { X = 1, Y = 1 };
+            //Inizialize Pacman and Gamefield
+            pacMan = new Pacman { X = 13, Y = 17 };
             gamefield = new Gamefield(level, ghostCount, isWhiteBackground);
 
-            // Geister-Liste initialisieren und Geister hinzufügen
+            //Initialize Ghosts and add them to the list
             ghosts = new List<Ghost>();
             InitializeGhosts(ghostCount);
 
-            // Spiel-Timer konfigurieren
+            //Game Timer
             gameTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
             gameTimer.Tick += OnGameTick;
             gameTimer.Start();
@@ -50,7 +54,7 @@ namespace PacManGame.Views
             ExitButton.Click += OnExitButtonClick;
             ResetButton.Click += OnRestartButtonClick;
 
-            // Steuerung für Pac-Man
+            //Pacman movement
             KeyDown += OnKeyDown;
         }
 
@@ -88,6 +92,11 @@ namespace PacManGame.Views
             LifeCounter.Text = $"Lives: {lives}";
         }
 
+        private void UpdateLevel()
+        {
+            LevelCounter.Text = $"Level: {currentLevel}";
+        }
+
         private void OnKeyDown(object? sender, KeyEventArgs e)
         {
 
@@ -110,13 +119,11 @@ namespace PacManGame.Views
 
         private void OnGameTick(object? sender, EventArgs e)
         {
-            // Pac-Man bewegen
             pacMan.Move(gamefield);
 
-            // Punkte einsammeln
             CollectFood();
 
-            // Geister bewegen und Kollision prüfen
+            //Move ghosts and check for collisions
             foreach (var ghost in ghosts)
             {
                 ghost.Move(pacMan, gamefield);
@@ -134,8 +141,6 @@ namespace PacManGame.Views
                 }
             }
             checkWinCase();
-
-            // Spiel neu zeichnen
             DrawGame();
         }
 
@@ -164,8 +169,8 @@ namespace PacManGame.Views
             }
             else
             {
-                pacMan.X = 1;
-                pacMan.Y = 1;
+                pacMan.X = 13;
+                pacMan.Y = 17;
             }
         }
 
@@ -192,7 +197,9 @@ namespace PacManGame.Views
         {
             score += 100;
             UpdateScore();
-            ghost.X = 14; // Set Ghost Position to Ghost Spawn
+            
+            //Set Ghost Position to Ghost Spawn
+            ghost.X = 14;
             ghost.Y = 14;
         }
 
@@ -212,11 +219,8 @@ namespace PacManGame.Views
         private void DrawGame()
         {
             GameCanvas.Children.Clear();
-
             DrawGamefield();
-
             DrawPacMan();
-
             DrawGhosts();
         }
 
@@ -234,6 +238,7 @@ namespace PacManGame.Views
                             Height = 20,
                             Fill = new SolidColorBrush(Color.Parse("#1919A6")),
                         };
+
                         Canvas.SetLeft(wall, x * 20);
                         Canvas.SetTop(wall, y * 20);
                         GameCanvas.Children.Add(wall);
@@ -246,8 +251,11 @@ namespace PacManGame.Views
                             Height = 5,
                             Fill = new SolidColorBrush(Color.Parse("#ffbe47")),
                         };
-                        Canvas.SetLeft(food, x * 20 + (20 - food.Width) /2); //Centers food in middle of cell
+                        
+                        //Centers food in middle of cell:
+                        Canvas.SetLeft(food, x * 20 + (20 - food.Width) /2);
                         Canvas.SetTop(food, y * 20 + (20 - food.Height) / 2);
+
                         GameCanvas.Children.Add(food);
                     }
                     else if (gamefield.GameFieldData[y, x] == 3) //Superfood
@@ -258,6 +266,7 @@ namespace PacManGame.Views
                             Height = 10,
                             Fill = Brushes.Gold
                         };
+
                         Canvas.SetLeft(superFood, x * 20 + (20 - superFood.Width) / 2);
                         Canvas.SetTop(superFood, y * 20 + (20 - superFood.Height) / 2);
                         GameCanvas.Children.Add(superFood);
@@ -270,6 +279,7 @@ namespace PacManGame.Views
                             Height = 5,
                             Fill = new SolidColorBrush(Color.Parse("#DEA185")),
                         };
+
                         Canvas.SetLeft(ghostExit, x * 20);
                         Canvas.SetTop(ghostExit, y * 20);
                         GameCanvas.Children.Add(ghostExit);
@@ -350,37 +360,53 @@ namespace PacManGame.Views
                     ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#db851c"));
                 }
                 
-
                 Canvas.SetLeft(ghostEllipse, ghost.X * 20);
                 Canvas.SetTop(ghostEllipse, ghost.Y * 20);
                 GameCanvas.Children.Add(ghostEllipse);
             }
         }
+
         private void checkWinCase()
         {
-            // Annahme: Der Gewinn tritt ein, wenn kein Futter (2) oder Super-Futter (3) mehr übrig ist.
+            //Win condition: No more food or superfood left
+            bool allFoodCollected = true;
             for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
             {
                 for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
                 {
-                    // Wenn noch Futter (2) oder Super-Futter (3) übrig ist, kein Gewinn
+                    //When there is still food (2) or superfood (3) left: no win
                     if (gamefield.GameFieldData[y, x] == 2 || gamefield.GameFieldData[y, x] == 3)
-                    {
-                        return; // Es gibt noch Punkte zu sammeln, Gewinnbedingung ist nicht erfüllt
+                    {   
+                        allFoodCollected = false;
+                        break;
                     }
                 }
             }
 
-            // Alle Punkte sind aufgebraucht, Spieler hat gewonnen
-            gameTimer.Stop(); // Timer anhalten
+            if (allFoodCollected)
+            {
+                currentLevel++;
+                if (currentLevel > 2)
+                {   
+                    //Player has won: No more levels left
+                    
+                    var winWindow = new WinWindow(score);
+                    winWindow.Show();
+                    this.Close();
+                }
+                else
+                {
+                    //Player has won: Next level
+                    gamefield.LoadLevel(currentLevel);
+                    pacMan = new Pacman { X = 13, Y = 17 };
+                    InitializeGhosts(ghosts.Count);
+                    UpdateLevel();
+                    DrawGame();
+                }
 
-            // Neues Gewinn-Fenster anzeigen
-            var winWindow = new WinWindow(score);
-            winWindow.Show();
-
-            // Aktuelles Fenster schließen
-            this.Close();
+            }
         }
+
         private void OnExitButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             Close(); // Schließt das Fenster
@@ -390,8 +416,6 @@ namespace PacManGame.Views
             MenuWindow mwindow = new MenuWindow();
             mwindow.Show();
             Close(); // Schließt das Fenster
-            
         }
-
     }
 }

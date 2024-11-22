@@ -4,7 +4,7 @@ namespace PacManGame.Models
     {
         public int[,] GameFieldData { get; set; }
 
-        private int[,] Level1 = new int[,]
+        private int[,] level1 = new int[,]
         {
             // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghostexit
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -38,7 +38,7 @@ namespace PacManGame.Models
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
         };
 
-        private int[,] Level2 = new int[,]
+        private int[,] level2 = new int[,]
         {
             // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghostexit
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -72,25 +72,25 @@ namespace PacManGame.Models
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
         };
 
-        private void LoadLevel(int level)
+        public Gamefield(int level, int ghostCount, bool isWhiteBackground)
+        {
+            LoadLevel(level);
+        }
+
+        public void LoadLevel(int level)
         {
             switch (level)
             {
                 case 1:
-                    GameFieldData = Level1;
+                    GameFieldData = level1;
                     break;
                 case 2:
-                    GameFieldData = Level2;
+                    GameFieldData = level2;
                     break;
                 default:
-                    GameFieldData = Level1;
+                    GameFieldData = level1;
                     break;
             }
-        }   
-
-        public Gamefield(int level, int ghostCount, bool isWhiteBackground)
-        {
-            LoadLevel(level);
         }
     }
 }
