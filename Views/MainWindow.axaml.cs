@@ -23,13 +23,11 @@ namespace PacManGame.Views
         {
             InitializeComponent();
             
-
             // Score und Lives initialisieren
             UpdateScore();
             UpdateLives();
 
             // Hintergrundfarbe
-            
             GameCanvas.Background = isWhiteBackground ? Brushes.White : Brushes.Black;
 
             // Textfarben anpassen

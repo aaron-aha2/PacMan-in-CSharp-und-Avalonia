@@ -11,7 +11,7 @@ namespace PacManGame.Tests
 
             var pacman = new Pacman { X = 10, Y = 10 };
             var blinky = new Blinky(5, 10); 
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             blinky.Move(pacman, gamefield);
 
@@ -36,7 +36,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var clyde = new Clyde(8, 10); // Clyde ist nah an Pacman
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             clyde.Move(pacman, gamefield);
@@ -60,7 +60,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var clyde = new Clyde(2, 10); // Clyde ist weit von Pacman entfernt
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             clyde.Move(pacman, gamefield);
@@ -84,7 +84,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10, CurrentDirection = (Models.Direction)Direction.Right };
             var pinky = new Pinky(5, 10); // Pinky startet links von Pacman
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             pinky.Move(pacman, gamefield);
@@ -109,7 +109,7 @@ namespace PacManGame.Tests
             var pacman = new Pacman { X = 10, Y = 10, CurrentDirection = (Models.Direction)Direction.Up };
             var blinky = new Blinky(8, 8); // Blinky ist in der Nähe
             var inky = new Inky(5, 5, new System.Collections.Generic.List<Ghost> { blinky });
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             inky.Move(pacman, gamefield);
@@ -125,7 +125,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var blinky = new Blinky(5, 10) { IsVulnerable = true }; // Blinky ist verwundbar
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             int oldX = blinky.X;

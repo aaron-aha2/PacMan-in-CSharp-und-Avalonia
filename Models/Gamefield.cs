@@ -72,7 +72,7 @@ namespace PacManGame.Models
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
         };
 
-        public void LoadLevel(int level)
+        private void LoadLevel(int level)
         {
             switch (level)
             {
