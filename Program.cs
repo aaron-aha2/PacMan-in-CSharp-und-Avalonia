@@ -21,9 +21,9 @@ class Program
             .LogToTrace();
     
 
-    /*Tests 
+    //Tests 
 
-    public static void Main(string[] args)
+    /*public static void Main(string[] args)
     {
         /*Test: Movement Pacman
         PacManGame.Tests.PacManTests.TestPacmanMoves();
@@ -41,5 +41,6 @@ class Program
         PacManGame.Tests.GhostTests.TestPinkyMovesAheadOfPacman();
         PacManGame.Tests.GhostTests.TestInkyCalculatesTargetCorrectly();
         PacManGame.Tests.GhostTests.TestBlinkyMovesRandomlyWhenVulnerable();
+        PacManGame.Tests.GhostTests.TestGhostgetsEatenAndRespawnsInBase();
     }*/
 }

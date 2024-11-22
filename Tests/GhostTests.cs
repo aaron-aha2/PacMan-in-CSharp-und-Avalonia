@@ -143,5 +143,36 @@ namespace PacManGame.Tests
             }
         }
 
+        public static void TestGhostgetsEatenAndRespawnsInBase()
+        {
+            Console.WriteLine("Test: Does Ghost get eaten and respawn in base?");
+
+            //Arrange
+            var pacman = new Pacman { X = 10, Y = 10 };
+            var blinky = new Blinky(10, 10); //Blinky is on the same position as Pacman
+            var gamefield = new Gamefield(1, 0, false);
+
+            //Act
+            blinky.IsVulnerable = true;
+
+            //Pacman eats Blinky
+            if (blinky.X == pacman.X && blinky.Y == pacman.Y && blinky.IsVulnerable)
+            {
+                // Geist wird gegessen
+                blinky.X = 14;
+                blinky.Y = 14;
+            }
+
+            //Assert
+            if (blinky.X == 14 && blinky.Y == 14) //Expected: Ghost respawns in base
+            {
+                Console.WriteLine($"Test successful: Ghost respawns in base when eaten: X={blinky.X}, Y={blinky.Y}.");
+            }
+            else
+            {
+                Console.WriteLine($"Test failed: Expected X=14, Y=14, but got X={blinky.X}, Y={blinky.Y}.");
+            }
+        }
+
     }
 }

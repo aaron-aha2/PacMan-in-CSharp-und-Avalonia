@@ -201,6 +201,8 @@ namespace PacManGame.Views
             //Set Ghost Position to Ghost Spawn
             ghost.X = 14;
             ghost.Y = 14;
+
+            DrawGame();
         }
 
         private void GameOver()
