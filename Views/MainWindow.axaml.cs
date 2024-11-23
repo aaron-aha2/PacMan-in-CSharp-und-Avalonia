@@ -313,8 +313,8 @@ namespace PacManGame.Views
             // Kreisförmigen Rest zeichnen
             pacManFigure.Segments?.Add(new ArcSegment
             {
-                Point = new Avalonia.Point(10, 10), // Zurück zum Startpunkt
-                Size = new Avalonia.Size(10, 10), // Größe des Kreises
+                Point = new Avalonia.Point(10, 10),
+                Size = new Avalonia.Size(9, 9), // Größe des Kreises
                 SweepDirection = SweepDirection.Clockwise,
                 IsLargeArc = true
             });
@@ -326,8 +326,9 @@ namespace PacManGame.Views
             // Hinzufügen der Geometrie zum Path
             pacManPath.Data = pacManGeometry;
 
+
             // Platzieren von Pac-Man
-            Canvas.SetLeft(pacManPath, pacMan.X * 20 );
+            Canvas.SetLeft(pacManPath, pacMan.X * 20 - 2);
             Canvas.SetTop(pacManPath, pacMan.Y * 20 - 9);
 
             // **Hinzufügen von Pac-Man zum Canvas**
@@ -401,7 +402,6 @@ namespace PacManGame.Views
                     //Player has won: Next level
                     gamefield.LoadLevel(currentLevel);
                     pacMan = new Pacman { X = 13, Y = 17 };
-                    InitializeGhosts(ghosts.Count);
                     UpdateLevel();
                     DrawGame();
                 }
