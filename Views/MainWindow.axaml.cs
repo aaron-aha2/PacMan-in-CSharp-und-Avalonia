@@ -392,7 +392,6 @@ namespace PacManGame.Views
                 if (currentLevel > 2)
                 {   
                     //Player has won: No more levels left
-                    
                     var winWindow = new WinWindow(score);
                     winWindow.Show();
                     this.Close();
