@@ -4,7 +4,7 @@ namespace PacManGame.Models
     {
         public int[,] GameFieldData { get; set; }
 
-        private int[,] level2 = new int[,]
+        private int[,] level1 = new int[,]
         {
             // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghostexit
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -38,7 +38,7 @@ namespace PacManGame.Models
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
         };
 
-        private int[,] level1 = new int[,]
+        private int[,] level2 = new int[,]
         {
             // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghostexit
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },

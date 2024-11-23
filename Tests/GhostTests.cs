@@ -173,6 +173,5 @@ namespace PacManGame.Tests
                 Console.WriteLine($"Test failed: Expected X=14, Y=14, but got X={blinky.X}, Y={blinky.Y}.");
             }
         }
-
     }
 }
