@@ -37,7 +37,7 @@ namespace PacManGame.Views
             LifeCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
 
             // Pac-Man und Spielfeld initialisieren
-            pacMan = new Pacman { X = 1, Y = 1 };
+            pacMan = new Pacman { X = 14, Y =  13};
             gamefield = new Gamefield(ghostCount, isWhiteBackground);
 
             // Geister-Liste initialisieren und Geister hinzufügen
@@ -62,7 +62,7 @@ namespace PacManGame.Views
             {
                 if (i == 1)
                 {
-                    ghosts.Add(new Blinky(3 + i * 2, 3 + i * 2));
+                    ghosts.Add(new Blinky(14,15));
                 }
                 else if (i == 2)
                 {
@@ -128,9 +128,44 @@ namespace PacManGame.Views
                     if (ghost.IsVulnerable)
                     {
                         EatGhost(ghost);
+                        return;
                     }
                     else
                     {
+                        LoseLife();
+                        return;
+                    }
+                }
+                
+                if(ghost.Y==pacMan.Y && ghost.X==pacMan.X+1 &&  ghost.currentDirection== Models.Direction.Right && pacMan.CurrentDirection==Models.Direction.Left){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
+                    }
+                }
+                if(ghost.Y==pacMan.Y && ghost.X==pacMan.X-1 &&  ghost.currentDirection== Models.Direction.Left && pacMan.CurrentDirection==Models.Direction.Right){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
+                    }
+                }
+                if(ghost.Y==pacMan.Y+1 && ghost.X==pacMan.X &&  ghost.currentDirection== Models.Direction.Up && pacMan.CurrentDirection==Models.Direction.Down){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
+                    }
+                }
+                if(ghost.Y==pacMan.Y-1 && ghost.X==pacMan.X &&  ghost.currentDirection== Models.Direction.Down && pacMan.CurrentDirection==Models.Direction.Up){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
                         LoseLife();
                     }
                 }

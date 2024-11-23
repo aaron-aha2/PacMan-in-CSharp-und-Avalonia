@@ -58,7 +58,7 @@ namespace PacManGame.Models
         // Prüfen, ob die Bewegung in der aktuellen Richtung möglich ist
         if (newX >= 0 && newX < gamefield.GameFieldData.GetLength(1) &&
             newY >= 0 && newY < gamefield.GameFieldData.GetLength(0) &&
-            gamefield.GameFieldData[newY, newX] != 1)
+            gamefield.GameFieldData[newY, newX] != 1 && gamefield.GameFieldData[newY, newX] != 4)
         {
             // Bewegung ausführen
             X = newX;

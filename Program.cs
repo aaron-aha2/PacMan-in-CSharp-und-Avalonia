@@ -6,22 +6,18 @@ namespace PacManGame;
 class Program
 {
     
-    // Initialization code. Don't use any Avalonia, third-party APIs or any
-    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-    // yet and stuff might break.
-    [STAThread]
+    /*[STAThread]
     public static void Main(string[] args) => BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
 
-    // Avalonia configuration, don't remove; also used by visual designer.
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace();*/
     
 
-    /*Tests 
+    //Tests 
 
     public static void Main(string[] args)
     {
@@ -41,5 +37,9 @@ class Program
         PacManGame.Tests.GhostTests.TestPinkyMovesAheadOfPacman();
         PacManGame.Tests.GhostTests.TestInkyCalculatesTargetCorrectly();
         PacManGame.Tests.GhostTests.TestBlinkyMovesRandomlyWhenVulnerable();
-    }*/
+        */
+
+        /*Tests: Spawnpunkt*/
+        PacManGame.Tests.GhostTests.TestGhostDoesNotReenterSpawn();
+    }
 }
