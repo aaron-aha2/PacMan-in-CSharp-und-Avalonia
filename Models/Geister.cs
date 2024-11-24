@@ -1,4 +1,5 @@
 using System;
+using Avalonia.Controls.Documents;
 
 namespace PacManGame.Models
 {
@@ -11,6 +12,7 @@ namespace PacManGame.Models
         public bool IsVulnerable { get; set; } = false; // Standardmäßig nicht verwundbar
         public bool IsDead { get; set; } = false; // Standardmäßig nicht tot
         public string? Name { get; set; }
+        public bool exitFlag{ get; set; }
         public abstract void Move(Pacman pacman, Gamefield gamefield);
         public Random random = new Random();
         public Direction currentDirection;
@@ -62,7 +64,7 @@ namespace PacManGame.Models
         public bool CanMoveUp(Gamefield gamefield) => Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1;
         
         // Überprüft, ob der Geist sich nach unten bewegen kann (keine Wand)
-        public bool CanMoveDown(Gamefield gamefield) => Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1;
+        public bool CanMoveDown(Gamefield gamefield) => Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==11&&Y==13);
 
         // Überprüft, ob der Geist sich nach links bewegen kann (keine Wand)
         public bool CanMoveLeft(Gamefield gamefield) => X > 0 && gamefield.GameFieldData[Y, X - 1] != 1;
@@ -77,16 +79,24 @@ namespace PacManGame.Models
             if(Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1) // Keine Wand
             {
                 Y--;
+                currentDirection = Direction.Up;
+
             }
+            /*if(X==14 && Y==14){
+                exitFlag = false;
+            }*/
         }
 
         // Bewegt den Geist nach unten, prüft dabei Wände
         public void MoveDown(Gamefield gamefield)
         {
-            if(Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1) // Keine Wand
+            if(Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==11&&Y==13)) // Keine Wand
             {
                 Y++;
+                currentDirection = Direction.Down;
+
             }
+            
         }
 
         // Bewegt den Geist nach links, prüft dabei Wände
@@ -94,7 +104,9 @@ namespace PacManGame.Models
         {
             if(X > 0 && gamefield.GameFieldData[Y, X - 1] != 1) // Keine Wand
             {
-                X--;
+                X--;                
+                currentDirection = Direction.Left;
+
             }
         }
 
@@ -104,6 +116,8 @@ namespace PacManGame.Models
             if(X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1) // Keine Wand
             {
                 X++;
+                currentDirection = Direction.Right;
+
             }
         }
 

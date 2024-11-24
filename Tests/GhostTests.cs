@@ -142,6 +142,37 @@ namespace PacManGame.Tests
                 Console.WriteLine($"Test failed: Blinky didn't move. Position remains X={blinky.X}, Y={blinky.Y}.");
             }
         }
+        public static void TestGhostDoesNotReenterSpawn()
+        {
+            Console.WriteLine("Test: Does the ghost stay out of the spawn area after leaving it?");
+
+            // Arrange
+            var pacman = new Pacman { X = 10, Y = 10 };
+            var ghost = new Blinky(13, 13); // Startet im Spawnbereich (z.B., auf der 4)
+            var gamefield = new Gamefield(1, 0, false);
+
+            // Simuliere, dass der Geist das Spawnfeld verlässt
+            ghost.Move(pacman, gamefield); // Bewegung einmal, um aus dem Spawn zu gehen
+            int initialX = ghost.X;
+            int initialY = ghost.Y;
+
+            // Act
+            for (int i = 0; i < 10; i++) // Mehrere Bewegungen simulieren
+            {
+                ghost.Move(pacman, gamefield);
+            }
+
+            // Assert: Geist sollte nicht zurück im Spawnbereich (13,13) sein
+            if (gamefield.GameFieldData[ghost.Y, ghost.X] != 4) // 4 repräsentiert den Spawnbereich
+            {
+                Console.WriteLine("Test successful: Ghost does not reenter the spawn area.");
+            }
+            else
+            {
+                Console.WriteLine($"Test failed: Ghost reentered spawn area at X={ghost.X}, Y={ghost.Y}.");
+            }
+        }
+
 
         public static void TestGhostgetsEatenAndRespawnsInBase()
         {
