@@ -6,45 +6,49 @@ using Avalonia.Input;
 using PacManGame.Models;
 using System;
 using System.Collections.Generic;
+using Avalonia.Controls.Documents;
 
 namespace PacManGame.Views
 {
     public partial class MainWindow : Window
     {
         private Pacman pacMan;
-        private int score = 0;
-        private int lives = 3;
+        private int score = 0; //TODO: Move to Pacman class
+        private int lives = 3;  //TODO: Move to Pacman class
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
         private List<Ghost> ghosts;
-        private bool isWhiteBackground;
+        int currentLevel = 1;
+        private bool allFoodCollected = false;
 
-        public MainWindow(int ghostCount = 1, bool isWhiteBackground = false)
+        public MainWindow(int level = 1, int ghostCount = 1, bool isWhiteBackground = false)
         {
             InitializeComponent();
-            
 
-            // Score und Lives initialisieren
             UpdateScore();
             UpdateLives();
+            UpdateLevel();
 
-            // Hintergrundfarbe
-            this.isWhiteBackground = isWhiteBackground;
+            //Background colour
             GameCanvas.Background = isWhiteBackground ? Brushes.White : Brushes.Black;
 
-            // Textfarben anpassen
+            //Text colour
             ScoreCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
             LifeCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
+            LevelCounter.Foreground = new SolidColorBrush(Color.Parse("#1919A6"));
 
-            // Pac-Man und Spielfeld initialisieren
-            pacMan = new Pacman { X = 14, Y =  13};
-            gamefield = new Gamefield(ghostCount, isWhiteBackground);
+            //Inizialize Pacman and Gamefield
+            pacMan = new Pacman { X = 13, Y = 17 };
+            gamefield = new Gamefield(level, ghostCount, isWhiteBackground);
 
-            // Geister-Liste initialisieren und Geister hinzufügen
+            //Pacman movement
+            KeyDown += OnKeyDown;
+
+            //Initialize Ghosts and add them to the list
             ghosts = new List<Ghost>();
             InitializeGhosts(ghostCount);
 
-            // Spiel-Timer konfigurieren
+            //Initialize and start game Timer
             gameTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(200) };
             gameTimer.Tick += OnGameTick;
             gameTimer.Start();
@@ -52,73 +56,16 @@ namespace PacManGame.Views
             ExitButton.Click += OnExitButtonClick;
             ResetButton.Click += OnRestartButtonClick;
 
-            // Steuerung für Pac-Man
-            KeyDown += OnKeyDown;
+            DrawGame();
         }
 
-        private void InitializeGhosts(int ghostCount)
-        {
-            for (int i = 1; i <= ghostCount; i++) // Beginnt bei 1, da die Fälle ab 1 definiert waren
-            {
-                if (i == 1)
-                {
-                    ghosts.Add(new Blinky(14,15));
-                }
-                else if (i == 2)
-                {
-                    ghosts.Add(new Pinky(6 + i * 3, 6 + i * 3));
-                }
-                else if (i == 3)
-                {
-                    ghosts.Add(new Inky(4 + i * 3, 4 + i * 3, ghosts));
-                }
-                else
-                {
-                    ghosts.Add(new Clyde(5, 5)); // Standardmäßiger Clyde für alle anderen
-                }
-            }
-        }
-
-
-        private void UpdateScore()
-        {
-            ScoreCounter.Text = $"Score: {score}";
-        }
-
-        private void UpdateLives()
-        {
-            LifeCounter.Text = $"Lives: {lives}";
-        }
-
-        private void OnKeyDown(object? sender, KeyEventArgs e)
-        {
-
-            switch (e.Key)
-            {
-                case Key.Up:
-                    pacMan.QueuedDirection = (Models.Direction)Direction.Up;
-                    break;
-                case Key.Down:
-                    pacMan.QueuedDirection = (Models.Direction)Direction.Down;
-                    break;
-                case Key.Left:
-                    pacMan.QueuedDirection = (Models.Direction)Direction.Left;
-                    break;
-                case Key.Right:
-                    pacMan.QueuedDirection = (Models.Direction)Direction.Right;
-                    break;
-            }
-        }
-
+        //Eventhandler for the whole game logic
         private void OnGameTick(object? sender, EventArgs e)
-        {
-            // Pac-Man bewegen
+        {   
             pacMan.Move(gamefield);
+            CollectFood(); //TODO: Move to Pacman class
 
-            // Punkte einsammeln
-            CollectFood();
-
-            // Geister bewegen und Kollision prüfen
+            //Move ghosts and check for collisions
             foreach (var ghost in ghosts)
             {
                 ghost.Move(pacMan, gamefield);
@@ -127,16 +74,16 @@ namespace PacManGame.Views
                 {
                     if (ghost.IsVulnerable)
                     {
-                        EatGhost(ghost);
+                        EatGhost(ghost); //TODO: Move to Pacman class
                         return;
                     }
                     else
                     {
-                        LoseLife();
+                        LoseLife(); //TODO: Move to Pacman class
                         return;
                     }
                 }
-                
+
                 if(ghost.Y==pacMan.Y && ghost.X==pacMan.X+1 &&  ghost.currentDirection== Models.Direction.Right && pacMan.CurrentDirection==Models.Direction.Left){
                     if(ghost.IsVulnerable){
                         EatGhost(ghost);
@@ -170,10 +117,267 @@ namespace PacManGame.Views
                     }
                 }
             }
-            checkWinCase();
 
-            // Spiel neu zeichnen
+            CheckAllFoodCollected();
+
+            if (allFoodCollected == true)
+            {
+                currentLevel++;
+                if (currentLevel > 2)
+                {   
+                    //Player has won: No more levels left
+                    var winWindow = new WinWindow(score);
+                    winWindow.Show();
+                    this.Close();
+                }
+                else
+                {
+                    //Player has won: Next level
+                    gamefield.LoadLevel(currentLevel);
+
+                    pacMan = new Pacman { X = 13, Y = 17 };
+
+                    //Keep old score, update level and draw new game
+                    UpdateScore();
+                    UpdateLevel();
+                    DrawGame();
+                    allFoodCollected = false;
+                }
+            }
+            //Redraw game after every tick
             DrawGame();
+        }
+
+        private void DrawGamefield()
+        {
+            for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
+            {
+                for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
+                {
+                    if (gamefield.GameFieldData[y, x] == 1) //Wall
+                    {
+                        var wall = new Rectangle
+                        {
+                            Width = 20,
+                            Height = 20,
+                            Fill = new SolidColorBrush(Color.Parse("#1919A6")),
+                        };
+
+                        Canvas.SetLeft(wall, x * 20);
+                        Canvas.SetTop(wall, y * 20);
+                        GameCanvas.Children.Add(wall);
+                    }
+                    else if (gamefield.GameFieldData[y, x] == 2) //Food
+                    {
+                        var food = new Ellipse
+                        {
+                            Width = 5,
+                            Height = 5,
+                            Fill = new SolidColorBrush(Color.Parse("#ffbe47")),
+                        };
+                        
+                        //Centers food in middle of cell:
+                        Canvas.SetLeft(food, x * 20 + (20 - food.Width) /2);
+                        Canvas.SetTop(food, y * 20 + (20 - food.Height) / 2);
+
+                        GameCanvas.Children.Add(food);
+                    }
+                    else if (gamefield.GameFieldData[y, x] == 3) //Superfood
+                    {
+                        var superFood = new Ellipse
+                        {
+                            Width = 10,
+                            Height = 10,
+                            Fill = Brushes.Gold
+                        };
+
+                        Canvas.SetLeft(superFood, x * 20 + (20 - superFood.Width) / 2);
+                        Canvas.SetTop(superFood, y * 20 + (20 - superFood.Height) / 2);
+                        GameCanvas.Children.Add(superFood);
+                    }
+                    else if (gamefield.GameFieldData[y, x] == 4) //Ghost exit
+                    {
+                        var ghostExit = new Rectangle
+                        {
+                            Width = 20,
+                            Height = 5,
+                            Fill = new SolidColorBrush(Color.Parse("#DEA185")),
+                        };
+
+                        Canvas.SetLeft(ghostExit, x * 20);
+                        Canvas.SetTop(ghostExit, y * 20);
+                        GameCanvas.Children.Add(ghostExit);
+                    }
+                }
+            }
+        }
+
+         private void DrawPacMan()
+        {
+            var pacManPath = new Path
+            {
+                Fill = new SolidColorBrush(Color.Parse("#fdff00"))
+            };
+
+            // Definieren Sie die Geometrie
+            var pacManGeometry = new PathGeometry();
+
+            // Startpunkt in der Mitte von Pac-Man
+            var pacManFigure = new PathFigure
+            {
+                StartPoint = new Avalonia.Point(10, 10)
+            };
+
+            // Erstellen des "Mundes" (Dreieck)
+            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
+            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); // Zurück an die untere Spitze
+
+            // Kreisförmigen Rest zeichnen
+            pacManFigure.Segments?.Add(new ArcSegment
+            {
+                Point = new Avalonia.Point(10, 10),
+                Size = new Avalonia.Size(9, 9), // Größe des Kreises
+                SweepDirection = SweepDirection.Clockwise,
+                IsLargeArc = true
+            });
+
+            // Hinzufügen der Geometrie
+            pacManFigure.IsClosed = true;
+            pacManGeometry?.Figures?.Add(pacManFigure);
+
+            // Hinzufügen der Geometrie zum Path
+            pacManPath.Data = pacManGeometry;
+
+
+            // Platzieren von Pac-Man
+            Canvas.SetLeft(pacManPath, pacMan.X * 20 - 2);
+            Canvas.SetTop(pacManPath, pacMan.Y * 20 - 9);
+
+            // **Hinzufügen von Pac-Man zum Canvas**
+            GameCanvas.Children.Add(pacManPath);
+        }
+
+        private void DrawGhosts()
+        {
+            foreach (var ghost in ghosts)
+            {
+                var ghostEllipse = new Ellipse
+                {
+                    Width = 18,
+                    Height = 18,
+                    Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red
+                };  
+                if (ghost is Blinky)
+                {
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#d03e19"));
+                }
+                else if (ghost is Pinky)
+                {
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#ea82e5"));
+                }
+                else if (ghost is Inky)
+                {
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#46bfee"));
+                }
+                else if (ghost is Clyde)
+                {
+                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#db851c"));
+                }
+                
+                Canvas.SetLeft(ghostEllipse, ghost.X * 20);
+                Canvas.SetTop(ghostEllipse, ghost.Y * 20);
+                GameCanvas.Children.Add(ghostEllipse);
+            }
+        }
+
+        private void InitializeGhosts(int ghostCount)
+        {
+            for (int i = 1; i <= ghostCount; i++) // Beginnt bei 1, da die Fälle ab 1 definiert waren
+            {
+                if (i == 1)
+                {
+                    ghosts.Add(new Blinky(3 + i * 2, 3 + i * 2));
+                }
+                else if (i == 2)
+                {
+                    ghosts.Add(new Pinky(6 + i * 3, 6 + i * 3));
+                }
+                else if (i == 3)
+                {
+                    ghosts.Add(new Inky(4 + i * 3, 4 + i * 3, ghosts));
+                }
+                else
+                {
+                    ghosts.Add(new Clyde(5, 5)); // Standardmäßiger Clyde für alle anderen
+                }
+            }
+        }
+
+        public void MakeGhostsVulnerable()
+        {
+            foreach (var ghost in ghosts)
+            {
+                ghost.IsVulnerable = true;
+            }
+
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
+            timer.Tick += (s, e) =>
+            {
+                foreach (var ghost in ghosts)
+                {
+                    ghost.IsVulnerable = false;
+                }
+                timer.Stop();
+            };
+            timer.Start();
+        }
+
+        private void CheckAllFoodCollected()
+        {
+            allFoodCollected = true;
+            for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
+            {
+                for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
+                {
+                    if (gamefield.GameFieldData[y, x] == 2 || gamefield.GameFieldData[y, x] == 3)
+                    {      
+                        allFoodCollected = false;
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void GameOver()
+        {
+            // Timer stoppen
+            gameTimer.Stop();
+            // Neues GameOver-Fenster anzeigen
+            var gameOverWindow = new GameOverWindow(score);
+            gameOverWindow.Show();
+
+            // Aktuelles Fenster schließen
+            this.Close();
+        }
+
+        //Eventhandler for Pacman movement
+        private void OnKeyDown(object? sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Up;
+                    break;
+                case Key.Down:
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Down;
+                    break;
+                case Key.Left:
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Left;
+                    break;
+                case Key.Right:
+                    pacMan.QueuedDirection = (Models.Direction)Direction.Right;
+                    break;
+            }
         }
 
         private void CollectFood()
@@ -201,234 +405,57 @@ namespace PacManGame.Views
             }
             else
             {
-                pacMan.X = 1;
-                pacMan.Y = 1;
+                pacMan.X = 13;
+                pacMan.Y = 17;
             }
         }
 
-        private void MakeGhostsVulnerable()
+        public void EatGhost(Ghost ghost)
         {
-            foreach (var ghost in ghosts)
-            {
-                ghost.IsVulnerable = true;
-            }
-
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
-            timer.Tick += (s, e) =>
-            {
-                foreach (var ghost in ghosts)
-                {
-                    ghost.IsVulnerable = false;
-                }
-                timer.Stop();
-            };
-            timer.Start();
-        }
-
-        private void EatGhost(Ghost ghost)
-        {
+            
             score += 100;
             UpdateScore();
-            ghost.X = 14; // Set Ghost Position to Ghost Spawn
+            
+            //Set Ghost Position to Ghost Spawn
+            ghost.X = 14;
             ghost.Y = 14;
+            
+            DrawGame();  
         }
-
-        private void GameOver()
-        {
-            // Timer stoppen
-            gameTimer.Stop();
-            // Neues GameOver-Fenster anzeigen
-            var gameOverWindow = new GameOverWindow(score);
-            gameOverWindow.Show();
-
-            // Aktuelles Fenster schließen
-            this.Close();
-        }
-
 
         private void DrawGame()
         {
             GameCanvas.Children.Clear();
-
             DrawGamefield();
-
             DrawPacMan();
-
             DrawGhosts();
         }
 
-        private void DrawGamefield()
+        private void UpdateScore()
         {
-            for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
-            {
-                for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
-                {
-                    if (gamefield.GameFieldData[y, x] == 1) //Wall
-                    {
-                        var wall = new Rectangle
-                        {
-                            Width = 20,
-                            Height = 20,
-                            Fill = new SolidColorBrush(Color.Parse("#1919A6")),
-                        };
-                        Canvas.SetLeft(wall, x * 20);
-                        Canvas.SetTop(wall, y * 20);
-                        GameCanvas.Children.Add(wall);
-                    }
-                    else if (gamefield.GameFieldData[y, x] == 2) //Food
-                    {
-                        var food = new Ellipse
-                        {
-                            Width = 5,
-                            Height = 5,
-                            Fill = new SolidColorBrush(Color.Parse("#ffbe47")),
-                        };
-                        Canvas.SetLeft(food, x * 20 + (20 - food.Width) /2); //Centers food in middle of cell
-                        Canvas.SetTop(food, y * 20 + (20 - food.Height) / 2);
-                        GameCanvas.Children.Add(food);
-                    }
-                    else if (gamefield.GameFieldData[y, x] == 3) //Superfood
-                    {
-                        var superFood = new Ellipse
-                        {
-                            Width = 10,
-                            Height = 10,
-                            Fill = Brushes.Gold
-                        };
-                        Canvas.SetLeft(superFood, x * 20 + (20 - superFood.Width) / 2);
-                        Canvas.SetTop(superFood, y * 20 + (20 - superFood.Height) / 2);
-                        GameCanvas.Children.Add(superFood);
-                    }
-                    else if (gamefield.GameFieldData[y, x] == 4) //Ghost exit
-                    {
-                        var ghostExit = new Rectangle
-                        {
-                            Width = 20,
-                            Height = 5,
-                            Fill = new SolidColorBrush(Color.Parse("#DEA185")),
-                        };
-                        Canvas.SetLeft(ghostExit, x * 20);
-                        Canvas.SetTop(ghostExit, y * 20);
-                        GameCanvas.Children.Add(ghostExit);
-                    }
-                }
-            }
+            ScoreCounter.Text = $"Score: {score}";
         }
 
-        private void DrawPacMan()
+        private void UpdateLives()
         {
-            var pacManPath = new Path
-            {
-                Fill = new SolidColorBrush(Color.Parse("#fdff00"))
-            };
-
-            // Definieren Sie die Geometrie
-            var pacManGeometry = new PathGeometry();
-
-            // Startpunkt in der Mitte von Pac-Man
-            var pacManFigure = new PathFigure
-            {
-                StartPoint = new Avalonia.Point(10, 10)
-            };
-
-            // Erstellen des "Mundes" (Dreieck)
-            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
-            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); // Zurück an die untere Spitze
-
-            // Kreisförmigen Rest zeichnen
-            pacManFigure.Segments?.Add(new ArcSegment
-            {
-                Point = new Avalonia.Point(10, 10), // Zurück zum Startpunkt
-                Size = new Avalonia.Size(10, 10), // Größe des Kreises
-                SweepDirection = SweepDirection.Clockwise,
-                IsLargeArc = true
-            });
-
-            // Hinzufügen der Geometrie
-            pacManFigure.IsClosed = true;
-            pacManGeometry?.Figures?.Add(pacManFigure);
-
-            // Hinzufügen der Geometrie zum Path
-            pacManPath.Data = pacManGeometry;
-
-            // Platzieren von Pac-Man
-            Canvas.SetLeft(pacManPath, pacMan.X * 20 );
-            Canvas.SetTop(pacManPath, pacMan.Y * 20 - 9);
-
-            // **Hinzufügen von Pac-Man zum Canvas**
-            GameCanvas.Children.Add(pacManPath);
+            LifeCounter.Text = $"Lives: {lives}";
         }
 
-
-        private void DrawGhosts()
+        private void UpdateLevel()
         {
-            foreach (var ghost in ghosts)
-            {
-                var ghostEllipse = new Ellipse
-                {
-                    Width = 20,
-                    Height = 20,
-                    Fill = ghost.IsVulnerable ? Brushes.Blue : Brushes.Red
-                };  
-                if (ghost is Blinky)
-                {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#d03e19"));
-                }
-                else if (ghost is Pinky)
-                {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#ea82e5"));
-                }
-                else if (ghost is Inky)
-                {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#46bfee"));
-                }
-                else if (ghost is Clyde)
-                {
-                    ghostEllipse.Fill = ghost.IsVulnerable ? Brushes.Blue : new SolidColorBrush(Color.Parse("#db851c"));
-                }
-                
-
-                Canvas.SetLeft(ghostEllipse, ghost.X * 20);
-                Canvas.SetTop(ghostEllipse, ghost.Y * 20);
-                GameCanvas.Children.Add(ghostEllipse);
-            }
+            LevelCounter.Text = $"Level: {currentLevel}";
         }
-        private void checkWinCase()
-        {
-            // Annahme: Der Gewinn tritt ein, wenn kein Futter (2) oder Super-Futter (3) mehr übrig ist.
-            for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
-            {
-                for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
-                {
-                    // Wenn noch Futter (2) oder Super-Futter (3) übrig ist, kein Gewinn
-                    if (gamefield.GameFieldData[y, x] == 2 || gamefield.GameFieldData[y, x] == 3)
-                    {
-                        return; // Es gibt noch Punkte zu sammeln, Gewinnbedingung ist nicht erfüllt
-                    }
-                }
-            }
 
-            // Alle Punkte sind aufgebraucht, Spieler hat gewonnen
-            gameTimer.Stop(); // Timer anhalten
-
-            // Neues Gewinn-Fenster anzeigen
-            var winWindow = new WinWindow(score);
-            winWindow.Show();
-
-            // Aktuelles Fenster schließen
-            this.Close();
-        }
         private void OnExitButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            Close(); // Schließt das Fenster
+            Close();
         }
+        
         private void OnRestartButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             MenuWindow mwindow = new MenuWindow();
             mwindow.Show();
-            Close(); // Schließt das Fenster
-            
+            Close();
         }
-
     }
 }

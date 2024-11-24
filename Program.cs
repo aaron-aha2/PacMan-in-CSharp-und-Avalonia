@@ -6,7 +6,7 @@ namespace PacManGame;
 class Program
 {
     
-    /*[STAThread]
+    [STAThread]
     public static void Main(string[] args) => BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
 
@@ -14,12 +14,12 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();*/
+            .LogToTrace();
     
 
-    //Tests 
+    //Tests
 
-    public static void Main(string[] args)
+    /*public static void Main(string[] args)
     {
         /*Test: Movement Pacman
         PacManGame.Tests.PacManTests.TestPacmanMoves();
@@ -37,9 +37,6 @@ class Program
         PacManGame.Tests.GhostTests.TestPinkyMovesAheadOfPacman();
         PacManGame.Tests.GhostTests.TestInkyCalculatesTargetCorrectly();
         PacManGame.Tests.GhostTests.TestBlinkyMovesRandomlyWhenVulnerable();
-        */
-
-        /*Tests: Spawnpunkt*/
-        PacManGame.Tests.GhostTests.TestGhostDoesNotReenterSpawn();
-    }
+        PacManGame.Tests.GhostTests.TestGhostgetsEatenAndRespawnsInBase();
+    }*/
 }

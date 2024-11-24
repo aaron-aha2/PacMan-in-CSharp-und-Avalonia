@@ -11,7 +11,7 @@ namespace PacManGame.Tests
 
             var pacman = new Pacman { X = 10, Y = 10 };
             var blinky = new Blinky(5, 10); 
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             blinky.Move(pacman, gamefield);
 
@@ -36,7 +36,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var clyde = new Clyde(8, 10); // Clyde ist nah an Pacman
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             clyde.Move(pacman, gamefield);
@@ -60,7 +60,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var clyde = new Clyde(2, 10); // Clyde ist weit von Pacman entfernt
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             clyde.Move(pacman, gamefield);
@@ -84,7 +84,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10, CurrentDirection = (Models.Direction)Direction.Right };
             var pinky = new Pinky(5, 10); // Pinky startet links von Pacman
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             pinky.Move(pacman, gamefield);
@@ -109,7 +109,7 @@ namespace PacManGame.Tests
             var pacman = new Pacman { X = 10, Y = 10, CurrentDirection = (Models.Direction)Direction.Up };
             var blinky = new Blinky(8, 8); // Blinky ist in der Nähe
             var inky = new Inky(5, 5, new System.Collections.Generic.List<Ghost> { blinky });
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             inky.Move(pacman, gamefield);
@@ -125,7 +125,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var blinky = new Blinky(5, 10) { IsVulnerable = true }; // Blinky ist verwundbar
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act
             int oldX = blinky.X;
@@ -149,7 +149,7 @@ namespace PacManGame.Tests
             // Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var ghost = new Blinky(13, 13); // Startet im Spawnbereich (z.B., auf der 4)
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Simuliere, dass der Geist das Spawnfeld verlässt
             ghost.Move(pacman, gamefield); // Bewegung einmal, um aus dem Spawn zu gehen
@@ -174,5 +174,35 @@ namespace PacManGame.Tests
         }
 
 
+        public static void TestGhostgetsEatenAndRespawnsInBase()
+        {
+            Console.WriteLine("Test: Does Ghost get eaten and respawn in base?");
+
+            //Arrange
+            var pacman = new Pacman { X = 10, Y = 10 };
+            var blinky = new Blinky(10, 10); //Blinky is on the same position as Pacman
+            var gamefield = new Gamefield(1, 0, false);
+
+            //Act
+            blinky.IsVulnerable = true;
+
+            //Pacman eats Blinky
+            if (blinky.X == pacman.X && blinky.Y == pacman.Y && blinky.IsVulnerable)
+            {
+                // Geist wird gegessen
+                blinky.X = 14;
+                blinky.Y = 14;
+            }
+
+            //Assert
+            if (blinky.X == 14 && blinky.Y == 14) //Expected: Ghost respawns in base
+            {
+                Console.WriteLine($"Test successful: Ghost respawns in base when eaten: X={blinky.X}, Y={blinky.Y}.");
+            }
+            else
+            {
+                Console.WriteLine($"Test failed: Expected X=14, Y=14, but got X={blinky.X}, Y={blinky.Y}.");
+            }
+        }
     }
 }

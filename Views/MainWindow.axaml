@@ -2,65 +2,77 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="PacManGame.Views.MainWindow"
-        Width="650" Height="650"
+        Width="650" Height="680"
         WindowStartupLocation="CenterScreen"
         Title="PacMan Game">
 
 
- <Grid ColumnDefinitions="*,600,*" RowDefinitions="*,600,*"> <!-- 3x3 Grid -->
+ <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="*,Auto,*"> <!-- 3x3 Grid -->
         <!-- Upper Pane with Grid: Counters -->
         <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/> <!-- Score -->
-                <ColumnDefinition Width="Auto"/> <!-- Restart -->
-                <ColumnDefinition Width="Auto"/> <!-- Exit -->
+                <ColumnDefinition Width="240"/> <!-- Level -->
                 <ColumnDefinition Width="150"/> <!-- Lives -->
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="ScoreCounter"
-                       Grid.Column="0"
-                       Text="Score: 0"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Center"
-                       FontSize="15"
-                       FontWeight="Bold"/>
-                       
-            <Button Content="Reset"
-                Grid.Column="1"
-                HorizontalAlignment="Center"
+                Grid.Column="0"
+                Text="Score: 0"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                FontSize="10"
-                Width="80"
-                Focusable="False"
-                Name="ResetButton"/>    
+                FontSize="15"
+                FontWeight="Bold"/>
 
-            <Button Content="Exit"
-                Grid.Column="2"
+            <TextBlock x:Name="LevelCounter"
+                Grid.Column="1"
+                Text="Level: 1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="10"
-                Width="80"
-                Focusable="False"
-                Name="ExitButton"/>       
-            
-                       
+                FontSize="18"
+                FontWeight="Bold"/>  
+
             <TextBlock x:Name="LifeCounter"
-                       Grid.Column="3"
-                       Text="Lives: 3"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Center"
-                       FontSize="20"
-                       FontWeight="Bold"/>
-                       
-                       
+                Grid.Column="2"
+                Text="Lives: 3"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                FontSize="15"
+                FontWeight="Bold"/>      
         </Grid>
 
-        <!-- Lower Pane: Gamefield -->
+        <!-- Middle Pane: Gamefield -->
         <Border Grid.Row="1" Grid.Column="1">
             <Canvas x:Name="GameCanvas" Width="540" Height="580" Background="White"/>
         </Border>
-        
-        <TextBlock x:Name="gameOverTextBlock"/>
-        
+
+        <!-- Lower Pane with Grid: Restart & Exit -->
+        <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="270"/> <!-- Restart -->
+                <ColumnDefinition Width="270"/> <!-- Exit -->
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Reset"
+                Grid.Column="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="14"
+                Width="80"
+                Focusable="False"
+                Name="ResetButton"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"/>    
+
+            <Button Content="Exit"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                FontSize="14"
+                Width="80"
+                Focusable="False"
+                Name="ExitButton"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"/>  
+        </Grid>
     </Grid>
 </Window>

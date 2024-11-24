@@ -10,7 +10,7 @@ namespace PacManGame.Tests
             Console.WriteLine("Test: does Pacman move correctly?");
 
             var pacman = new Pacman { X = 5, Y = 5, CurrentDirection = (Models.Direction)Direction.Right };
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             pacman.Move(gamefield);
             Console.WriteLine(pacman.X == 6 && pacman.Y == 5 ? "Move Right: OK" : "Move Right: FAILED");
@@ -35,7 +35,7 @@ namespace PacManGame.Tests
 
             // Arrange: Spiel initialisieren und Pacman an den linken Portalrand setzen
             var pacman = new Pacman { X = 0, Y = 14, CurrentDirection = (Models.Direction)Direction.Left };
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act: Bewegung auslösen
             pacman.Move(gamefield);
@@ -56,7 +56,7 @@ namespace PacManGame.Tests
 
             // Arrange: Spiel initialisieren und Pacman an den linken Portalrand setzen
             var pacman = new Pacman { X = 25, Y = 14, CurrentDirection = (Models.Direction)Direction.Right };
-            var gamefield = new Gamefield(0, false);
+            var gamefield = new Gamefield(1, 0, false);
 
             // Act: Bewegung auslösen
             pacman.Move(gamefield);
