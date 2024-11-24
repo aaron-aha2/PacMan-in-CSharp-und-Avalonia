@@ -18,7 +18,7 @@ namespace PacManGame.Views
         private Gamefield gamefield;
         private DispatcherTimer gameTimer;
         private List<Ghost> ghosts;
-        int currentLevel = 1;
+        public int currentLevel = 1;
         private bool allFoodCollected = false;
 
         public MainWindow(int level = 1, int ghostCount = 1, bool isWhiteBackground = false)

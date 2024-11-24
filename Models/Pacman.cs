@@ -65,15 +65,32 @@ namespace PacManGame.Models
                 Y = newY;
             }
 
-            // 3. Portalbewegung
-            if (X == 0 && Y == 14) // Linkes Portal
+            //3. Protalmovement
+            if (gamefield.GameFieldData[Y, X] == 5 && X == 0 && Y == 14) //Left portal Level 1
             {
-                X = 25; // Gehe zum rechten Rand
+                X = 25; //Move to right edge
             }
-            else if (X == 26 && Y == 14) // Rechtes Portal
+            else if (gamefield.GameFieldData[Y, X] == 5 && X == 26 && Y == 14) //Right portal Level 1
             {
-                X = 1; // Gehe zum linken Rand
+                X = 0; //Move to left edge
             }
+            else if (gamefield.GameFieldData[Y, X] == 6 && X == 0 && Y == 8) //Left upper portal Level 2
+            {
+                X = 25; //Move to right edge
+            }
+            else if (gamefield.GameFieldData[Y, X] == 6 && X == 26 && Y ==8) //Right upper portal Level 2
+            {
+                X = 0; //Move to left edge
+            }
+            else if (gamefield.GameFieldData[Y, X] == 7 && X == 0 && Y == 18) //Left lower portal Level 2
+            {
+                X = 25; //Move to right edge
+            }
+            else if (gamefield.GameFieldData[Y, X] == 7 && X == 26 && Y == 18) //Right lower portal Level 2
+            {
+                X = 0; //Move to left edge
+            }
+            
         }
     }
 }
