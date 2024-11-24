@@ -13,19 +13,18 @@ namespace PacManGame.Views
 
         private void OnStartButtonClick(object? sender, RoutedEventArgs e)
         {
-            //Anzahl der Geister abrufen
+            //Get number of ghosts
             var selectedGhostCountItem = GhostCountComboBox.SelectedItem as ComboBoxItem;
             int ghostCount = int.Parse(selectedGhostCountItem?.Content?.ToString() ?? "1");
 
-            //Hintergrundfarbe bestimmen
             bool isWhiteBackground = WhiteBackgroundRadio.IsChecked ?? true;
 
             int level = 1;
 
-            //Hauptspiel-Fenster mit den Einstellungen öffnen
+            //Open main game window with the settings
             MainWindow mwindow = new MainWindow(level, ghostCount, isWhiteBackground);
             mwindow.Show();
-            this.Close(); // Menüfenster schließen
+            this.Close();
         }
     }
 }

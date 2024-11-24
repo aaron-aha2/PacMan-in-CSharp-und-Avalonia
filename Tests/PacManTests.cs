@@ -28,19 +28,18 @@ namespace PacManGame.Tests
             Console.WriteLine(pacman.X == 5 && pacman.Y == 5 ? "Move Down: OK" : "Move Down: FAILED");
         }
 
-            // Assert: Überprüfen, ob Pacman sich in die
         public static void TestPacmanPortalLEFT()
         {
             Console.WriteLine("Test: does the teleportation at the left side work correctly?");
 
-            // Arrange: Spiel initialisieren und Pacman an den linken Portalrand setzen
+            //Arrange: Place Pacman at the left portal edge
             var pacman = new Pacman { X = 0, Y = 14, CurrentDirection = (Models.Direction)Direction.Left };
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act: Bewegung auslösen
+            //Act
             pacman.Move(gamefield);
 
-            // Assert: Überprüfen, ob Pacman auf die andere Seite teleportiert wurde
+            //Assert: Check if Pacman was teleported to the right side
             if (pacman.X == 25 && pacman.Y == 14)
             {
                 Console.WriteLine("Test was successful: Pacman got teleported to the right side.");
@@ -54,14 +53,14 @@ namespace PacManGame.Tests
         {
             Console.WriteLine("Test: does the teleportation at the right side work correctly?");
 
-            // Arrange: Spiel initialisieren und Pacman an den linken Portalrand setzen
+            //Arrange: Place Pacman at the right portal edge
             var pacman = new Pacman { X = 25, Y = 14, CurrentDirection = (Models.Direction)Direction.Right };
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act: Bewegung auslösen
+            //Act
             pacman.Move(gamefield);
 
-            // Assert: Überprüfen, ob Pacman auf die andere Seite teleportiert wurde
+            //Assert: Check if Pacman was teleported to the left side
             if (pacman.X == 1 && pacman.Y == 14)
             {
                 Console.WriteLine("Test was successful: Pacman got teleported to the left side.");

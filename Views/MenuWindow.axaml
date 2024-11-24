@@ -8,10 +8,10 @@
         
     <StackPanel Margin="20" Spacing="10">
 
-        <!-- Titel -->
+        <!-- Title -->
         <TextBlock Text="PacMan Settings" FontSize="20" FontWeight="Bold" />
 
-        <!-- Dropdown zur Auswahl der Geisteranzahl -->
+        <!-- Dropdown for Ghost Count selection -->
         <TextBlock Text="Number of Ghosts: " />
         <ComboBox x:Name="GhostCountComboBox" Width="200">
             <ComboBoxItem Content="1" />
@@ -20,7 +20,7 @@
             <ComboBoxItem Content="4" />
         </ComboBox>
 
-        <!-- Radiobuttons zur Auswahl des Hintergrunds -->
+        <!-- Radiobuttons for Background color selection -->
         <TextBlock Text="Backgroundcolor: " />
         <StackPanel Orientation="Horizontal">
             <RadioButton x:Name="WhiteBackgroundRadio" Content="Light " GroupName="Background" IsChecked="True"/>

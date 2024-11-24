@@ -6,29 +6,28 @@ namespace PacManGame.Models
         {
             X = startX;
             Y = startY;
-            Name = "Blinky"; //Name des Geistes
+            Name = "Blinky";
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        //Override der Move-Methode für Blinky
+        //Override for the Move method for Blinky
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
             if (IsVulnerable)
             {
-                //Im verwundbaren Modus bewegt sich Blinky zufällig
+                //Blinky moves randomly when vulnerable
                 MoveRandom(gamefield);
             }
             else
             {
-                //Im normalen Modus folgt Blinky Pac-Man
+                //Blinky follows Pacman when in normal mode
                 FollowPacMan(pacman, gamefield);
             }
         }
 
-        //Bewegt Blinky, indem er Pac-Man verfolgt
+        //Moves Blinky: follows Pacman
         private void FollowPacMan(Pacman pacman, Gamefield gamefield)
         {
-            //Versuche, in die Richtung von Pac-Man zu gehen
             if (X < pacman.X && CanMoveRight(gamefield))
             {
                 MoveRight(gamefield);
@@ -47,8 +46,7 @@ namespace PacManGame.Models
             }
             else
             {
-                //Wenn keine der direkten Richtungen zu Pac-Man möglich ist, versuche zufällige Bewegung
-                //Hier wird überprüft, ob jede Richtung begehbar ist
+                //If none of the direct directions to Pacman are possible: move randomly
                 MoveRandom(gamefield);
             }
             

@@ -4,36 +4,36 @@ namespace PacManGame.Models
 {
     public class Clyde : Ghost
     {
-        private const int ChaseDistance = 4; //Abstand, bei dem Clyde in den Zufallsmodus wechselt
+        private const int ChaseDistance = 4; //Distance at which Clyde switches to random mode
 
         public Clyde(int startX, int startY)
         {
             X = startX;
             Y = startY;
-            Name = "Clyde"; //Identifikation
+            Name = "Clyde";
             this.currentDirection = (Direction)random.Next(4);
         }
 
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
-            //Berechne den Abstand zu Pac-Man
+            //Calculate distance to Pacman
             int dx = pacman.X - X;
             int dy = pacman.Y - Y;
             double distance = Math.Sqrt(dx * dx + dy * dy);
 
             if (distance < ChaseDistance)
             {
-                //Wenn er in der Nähe von Pac-Man ist, bewege dich zufällig
+                //When close to Pacman: move randomly
                 MoveRandom(gamefield);
             }
             else
             {
-                //Wenn Clyde weiter entfernt ist, verfolgt er Pac-Man
+                //When further away from Pacman: follow Pacman
                 MoveTowards(pacman.X, pacman.Y, gamefield);
             }
         }
 
-        //Bewegt Clyde in Richtung eines Zielpunkts (Pac-Man), ohne in Wände zu laufen
+        //Move Clyde towards target point (Pacman) without running into walls
         private void MoveTowards(int targetX, int targetY, Gamefield gamefield)
         {
             int dx = targetX - X;
@@ -41,7 +41,7 @@ namespace PacManGame.Models
 
             if (Math.Abs(dx) > Math.Abs(dy))
             {
-                //Bevorzugte Bewegung in X-Richtung
+                //Move in X direction
                 if (dx > 0 && CanMoveRight(gamefield))
                 {
                     MoveRight(gamefield);
@@ -52,13 +52,13 @@ namespace PacManGame.Models
                 }
                 else
                 {
-                    //Wenn X blockiert, bewege dich in Y-Richtung
+                    //If X is blocked: move in Y direction
                     MoveVertical(dy, gamefield);
                 }
             }
             else
             {
-                //Bevorzugte Bewegung in Y-Richtung
+                //Move in Y direction
                 if (dy > 0 && CanMoveDown(gamefield))
                 {
                     MoveDown(gamefield);
@@ -69,13 +69,12 @@ namespace PacManGame.Models
                 }
                 else
                 {
-                    //Wenn Y blockiert, bewege dich in X-Richtung
+                    //If Y is blocked: move in X direction
                     MoveHorizontal(dx, gamefield);
                 }
             }
         }
 
-        //Versuch einer vertikalen Bewegung
         private void MoveVertical(int dy, Gamefield gamefield)
         {
             if (dy > 0 && CanMoveDown(gamefield))
@@ -88,7 +87,6 @@ namespace PacManGame.Models
             }
         }
 
-        //Versuch einer horizontalen Bewegung
         private void MoveHorizontal(int dx, Gamefield gamefield)
         {
             if (dx > 0 && CanMoveRight(gamefield))

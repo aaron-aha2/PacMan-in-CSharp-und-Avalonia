@@ -2,26 +2,22 @@ using System.ComponentModel;
 
 namespace PacManGame.Models
 {
-    // Enum zur Definition der Bewegungsrichtungen für Pac-Man
     public enum Direction { Up, Down, Left, Right }
 
-    // Klasse, die den Pac-Man-Charakter repräsentiert
     public class Pacman
     {
-        public int X { get; set; } // X-Koordinate
-        public int Y { get; set; } // Y-Koordinate
-        public Direction CurrentDirection { get; set; } // Aktuelle Bewegungsrichtung
-        public int Speed { get; set; } = 1; // Bewegungsgeschwindigkeit
-        public Direction? QueuedDirection { get; set; } // Geplante Richtung, falls die aktuelle blockiert ist
+        public int X { get; set; }
+        public int Y { get; set; }
+        public Direction CurrentDirection { get; set; }
+        public int Speed { get; set; } = 1;
+        public Direction? QueuedDirection { get; set; } //Direction that shall be taken next
 
-
-        // Methode zur Aktualisierung der Position von Pac-Man basierend auf der aktuellen Richtung
         public void Move(Gamefield gamefield)
         {
             int newX = X;
             int newY = Y;
 
-            // 1. Versuche, die geplante Richtung zu verwenden
+            //1. Try to move in the queued direction
             if (QueuedDirection.HasValue)
             {
                 switch (QueuedDirection.Value)
@@ -32,18 +28,18 @@ namespace PacManGame.Models
                     case Direction.Right: newX = X + Speed; break;
                 }
 
-                // Prüfen, ob die Bewegung in der geplanten Richtung möglich ist
+                //Chgeck if movement in the queued direction is possible
                 if (newX >= 0 && newX < gamefield.GameFieldData.GetLength(1) &&
                     newY >= 0 && newY < gamefield.GameFieldData.GetLength(0) &&
                     gamefield.GameFieldData[newY, newX] != 1)
                 {
-                    // Geplante Richtung übernehmen
+                    //Execute movement
                     CurrentDirection = QueuedDirection.Value;
-                    QueuedDirection = null; // Geplante Richtung nur zurücksetzen, wenn erfolgreich
+                    QueuedDirection = null; //Reset queued direction if movement was successful
                 }
             }
 
-            // 2. Bewegung in der aktuellen Richtung fortsetzen
+            //2. Try to move in the current direction
             newX = X;
             newY = Y;
 
@@ -55,12 +51,12 @@ namespace PacManGame.Models
                 case Direction.Right: newX = X + Speed; break;
             }
 
-            // Prüfen, ob die Bewegung in der aktuellen Richtung möglich ist
+            //Check if movement in the current direction is possible
             if (newX >= 0 && newX < gamefield.GameFieldData.GetLength(1) &&
                 newY >= 0 && newY < gamefield.GameFieldData.GetLength(0) &&
                 gamefield.GameFieldData[newY, newX] != 1)
             {
-                // Bewegung ausführen
+                //Execute movement
                 X = newX;
                 Y = newY;
             }
@@ -89,8 +85,7 @@ namespace PacManGame.Models
             else if (gamefield.GameFieldData[Y, X] == 7 && X == 26 && Y == 18) //Right lower portal Level 2
             {
                 X = 0; //Move to left edge
-            }
-            
+            }  
         }
     }
 }
