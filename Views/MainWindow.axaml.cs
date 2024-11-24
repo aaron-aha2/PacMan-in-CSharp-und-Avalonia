@@ -75,10 +75,45 @@ namespace PacManGame.Views
                     if (ghost.IsVulnerable)
                     {
                         EatGhost(ghost); //TODO: Move to Pacman class
+                        return;
                     }
                     else
                     {
                         LoseLife(); //TODO: Move to Pacman class
+                        return;
+                    }
+                }
+
+                if(ghost.Y==pacMan.Y && ghost.X==pacMan.X+1 &&  ghost.currentDirection== Models.Direction.Right && pacMan.CurrentDirection==Models.Direction.Left){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
+                    }
+                }
+                if(ghost.Y==pacMan.Y && ghost.X==pacMan.X-1 &&  ghost.currentDirection== Models.Direction.Left && pacMan.CurrentDirection==Models.Direction.Right){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
+                    }
+                }
+                if(ghost.Y==pacMan.Y+1 && ghost.X==pacMan.X &&  ghost.currentDirection== Models.Direction.Up && pacMan.CurrentDirection==Models.Direction.Down){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
+                    }
+                }
+                if(ghost.Y==pacMan.Y-1 && ghost.X==pacMan.X &&  ghost.currentDirection== Models.Direction.Down && pacMan.CurrentDirection==Models.Direction.Up){
+                    if(ghost.IsVulnerable){
+                        EatGhost(ghost);
+                    }
+                    else{
+                        LoseLife();
                     }
                 }
             }
@@ -385,8 +420,7 @@ namespace PacManGame.Views
             ghost.X = 14;
             ghost.Y = 14;
             
-            DrawGame();
-            
+            DrawGame();  
         }
 
         private void DrawGame()
