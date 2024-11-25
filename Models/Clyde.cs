@@ -4,7 +4,7 @@ namespace PacManGame.Models
 {
     public class Clyde : Ghost
     {
-        private const int ChaseDistance = 4; //Distance at which Clyde switches to random mode
+        private int randomMoveSteps = 0; //Distance at which Clyde switches to random mode
 
         public Clyde(int startX, int startY)
         {
@@ -16,87 +16,42 @@ namespace PacManGame.Models
 
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
-            //Calculate distance to Pacman
-            int dx = pacman.X - X;
-            int dy = pacman.Y - Y;
-            double distance = Math.Sqrt(dx * dx + dy * dy);
-
-            if (distance < ChaseDistance)
+            if (IsVulnerable)
             {
-                //When close to Pacman: move randomly
+                // Clyde bewegt sich zufällig, wenn er verwundbar ist
                 MoveRandom(gamefield);
             }
             else
             {
-                //When further away from Pacman: follow Pacman
-                MoveTowards(pacman.X, pacman.Y, gamefield);
-            }
-        }
-
-        //Move Clyde towards target point (Pacman) without running into walls
-        private void MoveTowards(int targetX, int targetY, Gamefield gamefield)
-        {
-            int dx = targetX - X;
-            int dy = targetY - Y;
-
-            if (Math.Abs(dx) > Math.Abs(dy))
-            {
-                //Move in X direction
-                if (dx > 0 && CanMoveRight(gamefield))
+                if (randomMoveSteps > 0)
                 {
-                    MoveRight(gamefield);
-                }
-                else if (dx < 0 && CanMoveLeft(gamefield))
-                {
-                    MoveLeft(gamefield);
+                    // Solange zufällige Bewegung läuft
+                    MoveRandom(gamefield);
+                    randomMoveSteps--;
                 }
                 else
                 {
-                    //If X is blocked: move in Y direction
-                    MoveVertical(dy, gamefield);
-                }
-            }
-            else
-            {
-                //Move in Y direction
-                if (dy > 0 && CanMoveDown(gamefield))
-                {
-                    MoveDown(gamefield);
-                }
-                else if (dy < 0 && CanMoveUp(gamefield))
-                {
-                    MoveUp(gamefield);
-                }
-                else
-                {
-                    //If Y is blocked: move in X direction
-                    MoveHorizontal(dx, gamefield);
+                    // Wenn Clyde nah an Pac-Man ist, wechselt er in den Zufallsmodus
+                    if (IsNearPacman(pacman))
+                    {
+                        randomMoveSteps = 5; // Anzahl der Schritte im Zufallsmodus
+                    }
+                    else
+                    {
+                        // Verfolge Pac-Man, wenn Clyde weit entfernt ist
+                        FollowPacMan(pacman, gamefield);
+                    }
                 }
             }
         }
 
-        private void MoveVertical(int dy, Gamefield gamefield)
+        // Überprüft, ob Clyde nahe genug an Pac-Man ist
+        private bool IsNearPacman(Pacman pacman)
         {
-            if (dy > 0 && CanMoveDown(gamefield))
-            {
-                MoveDown(gamefield);
-            }
-            else if (dy < 0 && CanMoveUp(gamefield))
-            {
-                MoveUp(gamefield);
-            }
+            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
+            return distance <= 4; // Zum Beispiel: Nähe definiert als <= 4 Felder
         }
 
-        private void MoveHorizontal(int dx, Gamefield gamefield)
-        {
-            if (dx > 0 && CanMoveRight(gamefield))
-            {
-                MoveRight(gamefield);
-            }
-            else if (dx < 0 && CanMoveLeft(gamefield))
-            {
-                MoveLeft(gamefield);
-            }
-        }
+        
     }
 }

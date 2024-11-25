@@ -1,55 +1,47 @@
+using System;
+
 namespace PacManGame.Models
 {
     public class Blinky : Ghost
     {
+        private int randomMoveSteps = 0; // Zählt, wie viele Schritte er im Random-Modus läuft
+
         public Blinky(int startX, int startY)
         {
             X = startX;
             Y = startY;
-            Name = "Blinky";
+            Name = "Blinky"; // Name des Geistes
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        //Override for the Move method for Blinky
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
             if (IsVulnerable)
             {
-                //Blinky moves randomly when vulnerable
+                // Im verwundbaren Modus bewegt sich Blinky zufällig
                 MoveRandom(gamefield);
             }
             else
             {
-                //Blinky follows Pacman when in normal mode
-                FollowPacMan(pacman, gamefield);
+                if (randomMoveSteps > 0)
+                {
+                    // Solange zufällige Bewegung läuft
+                    MoveRandom(gamefield);
+                    randomMoveSteps--;
+                }
+                else
+                {
+                    // Im normalen Modus folgt Blinky Pac-Man
+                    if (!FollowPacMan(pacman, gamefield))
+                    {
+                        // Wenn FollowPacMan blockiert ist, starte den zufälligen Modus für eine bestimmte Anzahl Schritte
+                        randomMoveSteps = 5; // Anzahl der Schritte im Zufallsmodus, bevor erneut verfolgt wird
+                    }
+                }
             }
         }
 
-        //Moves Blinky: follows Pacman
-        private void FollowPacMan(Pacman pacman, Gamefield gamefield)
-        {
-            if (X < pacman.X && CanMoveRight(gamefield))
-            {
-                MoveRight(gamefield);
-            }
-            else if (X > pacman.X && CanMoveLeft(gamefield))
-            {
-                MoveLeft(gamefield);
-            }
-            else if (Y < pacman.Y && CanMoveDown(gamefield))
-            {
-                MoveDown(gamefield);
-            }
-            else if (Y > pacman.Y && CanMoveUp(gamefield))
-            {
-                MoveUp(gamefield);
-            }
-            else
-            {
-                //If none of the direct directions to Pacman are possible: move randomly
-                MoveRandom(gamefield);
-            }
-            
-        }
+    
+        
     }
 }
