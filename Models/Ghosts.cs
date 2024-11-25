@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Avalonia.Controls.Documents;
 
 namespace PacManGame.Models
@@ -15,98 +16,84 @@ namespace PacManGame.Models
         public abstract void Move(Pacman pacman, Gamefield gamefield);
         public Random random = new Random();
         public Direction currentDirection;
-        protected int randomMoveSteps = 0;
-        public void MoveRandom(Gamefield gamefield)
+        protected int randomMoveSteps;
+        protected void MoveRandom(Gamefield gamefield)
         {
-            //Move in current direction
             if (!MoveInCurrentDirection(gamefield))
             {
-                //Else: move in random direction
                 currentDirection = (Direction)random.Next(4);
                 MoveInCurrentDirection(gamefield);
             }
         }
         private bool MoveInCurrentDirection(Gamefield gamefield)
         {
-            switch (currentDirection)
+            //Assert to ensure the gamefield is valid
+            Debug.Assert(gamefield != null, "Gamefield must not be null.");
+            Debug.Assert(X >= 0 && X < gamefield.GameFieldData.GetLength(1), "X is out of gamefield");
+            Debug.Assert(Y >= 0 && Y < gamefield.GameFieldData.GetLength(0), "Y is out of gamefield");
+
+            //Simplified movement logic using switch expressions
+            return currentDirection switch
             {
-                case Direction.Up:
-                    if (CanMoveUp(gamefield))
-                    {
-                        MoveUp(gamefield);
-                        return true;
-                    }
-                    break;
-                case Direction.Down:
-                    if (CanMoveDown(gamefield))
-                    {
-                        MoveDown(gamefield);
-                        return true;
-                    }
-                    break;
-                case Direction.Left:
-                    if (CanMoveLeft(gamefield))
-                    {
-                        MoveLeft(gamefield);
-                        return true;
-                    }
-                    break;
-                case Direction.Right:
-                    if (CanMoveRight(gamefield))
-                    {
-                        MoveRight(gamefield);
-                        return true;
-                    }
-                    break;
-            }
-            return false; //Movement in current direction not possible
+                Direction.Up => MoveUp(gamefield),
+                Direction.Down => MoveDown(gamefield),
+                Direction.Left => MoveLeft(gamefield),
+                Direction.Right => MoveRight(gamefield),
+                _ => false //fallback if the direction is invalid
+            };
         }
 
-        public bool CanMoveUp(Gamefield gamefield) => Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1;
-        public bool CanMoveDown(Gamefield gamefield) => Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==11&&Y==13);
-        public bool CanMoveLeft(Gamefield gamefield) => X > 0 && gamefield.GameFieldData[Y, X - 1] != 1;
-        public bool CanMoveRight(Gamefield gamefield) => X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1;
+        protected bool CanMoveUp(Gamefield gamefield) => Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1;
+        protected bool CanMoveDown(Gamefield gamefield) => Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==11&&Y==13);
+        protected bool CanMoveLeft(Gamefield gamefield) => X > 0 && gamefield.GameFieldData[Y, X - 1] != 1;
+        protected bool CanMoveRight(Gamefield gamefield) => X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1;
 
-        public void MoveUp(Gamefield gamefield)
+       protected bool MoveUp(Gamefield gamefield)
         {
-            if(Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1) //No wall
+            Debug.Assert(gamefield != null, "Gamefield must not be null");
+            if (Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1) 
             {
                 Y--;
                 currentDirection = Direction.Up;
-
+                Debug.Assert(Y >= 0, "Y can't be null"); 
+                return true;
             }
-            /*if(X==14 && Y==14){
-                exitFlag = false;
-            }*/
+            return false; 
         }
 
-        public void MoveDown(Gamefield gamefield)
+        protected bool MoveDown(Gamefield gamefield)
         {
-            if(Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==11&&Y==13)) //No wall
+            if (Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X == 11 && Y == 13)) 
             {
                 Y++;
                 currentDirection = Direction.Down;
+                return true; 
             }
-            
+            return false;
         }
 
-        public void MoveLeft(Gamefield gamefield)
+        protected bool MoveLeft(Gamefield gamefield)
         {
-            if(X > 0 && gamefield.GameFieldData[Y, X - 1] != 1) //No wall
+            if (X > 0 && gamefield.GameFieldData[Y, X - 1] != 1) 
             {
-                X--;                
+                X--;
                 currentDirection = Direction.Left;
+                return true; 
             }
+            return false; 
         }
 
-        public void MoveRight(Gamefield gamefield)
+        protected bool MoveRight(Gamefield gamefield)
         {
-            if(X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1) //No wall
+            if (X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1) 
             {
                 X++;
                 currentDirection = Direction.Right;
+                return true; 
             }
+            return false;
         }
+
         protected bool FollowPacMan(Pacman pacman, Gamefield gamefield)
         {
             //Try to go to pacman

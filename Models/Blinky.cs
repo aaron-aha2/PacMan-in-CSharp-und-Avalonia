@@ -4,7 +4,7 @@ namespace PacManGame.Models
 {
     public class Blinky : Ghost
     {
-        private int randomMoveSteps = 0; //Counts how many steps Blinky moves randomly
+        private int randomMoveSteps = 10; //Counts how many steps Blinky moves randomly
 
         public Blinky(int startX, int startY)
         {
@@ -16,6 +16,9 @@ namespace PacManGame.Models
 
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
+            if (pacman == null || gamefield == null){
+                throw new ArgumentNullException("Pacman or Gamefield is null.");
+            }
             if (IsVulnerable)
             {
                 //In vulnerable mode, Blinky moves randomly
