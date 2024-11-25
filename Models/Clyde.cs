@@ -4,7 +4,7 @@ namespace PacManGame.Models
 {
     public class Clyde : Ghost
     {
-        private int randomMoveSteps = 0; //Distance at which Clyde switches to random mode
+         //Distance at which Clyde switches to random mode
 
         public Clyde(int startX, int startY)
         {

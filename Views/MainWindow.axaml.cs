@@ -128,6 +128,8 @@ namespace PacManGame.Views
                     //Player has won: No more levels left
                     var winWindow = new WinWindow(score);
                     winWindow.Show();
+                    allFoodCollected=false;
+                    gameTimer.Stop();
                     this.Close();
                 }
                 else

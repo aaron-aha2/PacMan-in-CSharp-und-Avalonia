@@ -4,13 +4,13 @@ namespace PacManGame.Models
 {
     public class Blinky : Ghost
     {
-        private int randomMoveSteps = 0; // Zählt, wie viele Schritte er im Random-Modus läuft
+        private int randomMoveSteps = 0; //Counts how many steps Blinky moves randomly
 
         public Blinky(int startX, int startY)
         {
             X = startX;
             Y = startY;
-            Name = "Blinky"; // Name des Geistes
+            Name = "Blinky"; //Name of the ghost
             this.currentDirection = (Direction)random.Next(4);
         }
 
@@ -18,30 +18,27 @@ namespace PacManGame.Models
         {
             if (IsVulnerable)
             {
-                // Im verwundbaren Modus bewegt sich Blinky zufällig
+                //In vulnerable mode, Blinky moves randomly
                 MoveRandom(gamefield);
             }
             else
             {
                 if (randomMoveSteps > 0)
                 {
-                    // Solange zufällige Bewegung läuft
+                    //Continue random movement for a set number of steps
                     MoveRandom(gamefield);
                     randomMoveSteps--;
                 }
                 else
                 {
-                    // Im normalen Modus folgt Blinky Pac-Man
+                    //In normal mode, Blinky follows Pac-Man
                     if (!FollowPacMan(pacman, gamefield))
                     {
-                        // Wenn FollowPacMan blockiert ist, starte den zufälligen Modus für eine bestimmte Anzahl Schritte
-                        randomMoveSteps = 5; // Anzahl der Schritte im Zufallsmodus, bevor erneut verfolgt wird
+                        //If FollowPacMan is blocked, enter random mode for a specific number of steps
+                        randomMoveSteps = 5; //Number of random steps before chasing Pac-Man again
                     }
                 }
             }
         }
-
-    
-        
     }
 }

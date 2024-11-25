@@ -15,6 +15,7 @@ namespace PacManGame.Models
         public abstract void Move(Pacman pacman, Gamefield gamefield);
         public Random random = new Random();
         public Direction currentDirection;
+        protected int randomMoveSteps = 0;
         public void MoveRandom(Gamefield gamefield)
         {
             //Move in current direction
