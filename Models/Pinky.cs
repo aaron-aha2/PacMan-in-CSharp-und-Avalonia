@@ -12,29 +12,26 @@ namespace PacManGame.Models
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        //Overrides the move method of Ghost to implement Pinky's specific movement logic
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
             if (IsVulnerable)
             {
-                //If vulnerable: move randomly
                 MoveRandom(gamefield);
                 return;
             }
 
-             int distanceToPacman = Math.Abs(pacman.X - X) + Math.Abs(pacman.Y - Y);
+            //Calculate the distance to Pacman
+            int distanceToPacman = Math.Abs(pacman.X - X) + Math.Abs(pacman.Y - Y);
 
-             if (distanceToPacman <= 4)
-             {
+            if (distanceToPacman <= 4)
+            {
                 FollowPacMan(pacman, gamefield);
                 return;
-             }
+            }
 
-            //Normal movement logic: Move Pinky 4 tiles ahead of Pac
             int targetX = pacman.X;
             int targetY = pacman.Y;
 
-            //Calculate target position that is 4 tiles ahead of Pacman
             switch (pacman.CurrentDirection)
             {
                 case Direction.Up:
@@ -51,7 +48,6 @@ namespace PacManGame.Models
                     break;
             }
 
-            //Move Pinky towards target point
             if (Math.Abs(targetX - X) > Math.Abs(targetY - Y))
             {
                 if (targetX > X && CanMoveRight(gamefield))
@@ -65,7 +61,7 @@ namespace PacManGame.Models
             }
             else
             {
-                if (targetY > Y && CanMoveDown(gamefield))
+                if(targetY > Y && CanMoveDown(gamefield))
                 {
                     MoveDown(gamefield);
                 }

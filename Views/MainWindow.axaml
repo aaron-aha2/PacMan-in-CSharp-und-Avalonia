@@ -11,9 +11,9 @@
         <!-- Upper Pane with Grid: Counters -->
         <Grid Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/> <!-- Score -->
-                <ColumnDefinition Width="240"/> <!-- Level -->
-                <ColumnDefinition Width="150"/> <!-- Lives -->
+                <ColumnDefinition Width="150"/> <!--Score-->
+                <ColumnDefinition Width="240"/> <!--Level-->
+                <ColumnDefinition Width="150"/> <!--Lives-->
             </Grid.ColumnDefinitions>
 
             <TextBlock x:Name="ScoreCounter"
@@ -41,16 +41,16 @@
                 FontWeight="Bold"/>      
         </Grid>
 
-        <!-- Middle Pane: Gamefield -->
+        <!--Middle Pane: Gamefield-->
         <Border Grid.Row="1" Grid.Column="1">
             <Canvas x:Name="GameCanvas" Width="540" Height="580" Background="White"/>
         </Border>
 
-        <!-- Lower Pane with Grid: Restart & Exit -->
+        <!--Lower Pane with Grid: Restart & Exit-->
         <Grid Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="270"/> <!-- Restart -->
-                <ColumnDefinition Width="270"/> <!-- Exit -->
+                <ColumnDefinition Width="270"/> <!--Restart-->
+                <ColumnDefinition Width="270"/> <!--Exit-->
             </Grid.ColumnDefinitions>
 
             <Button Content="Reset"

@@ -4,8 +4,6 @@ namespace PacManGame.Models
 {
     public class Clyde : Ghost
     {
-        private int randomMoveSteps = 0; //Distance at which Clyde switches to random mode
-
         public Clyde(int startX, int startY)
         {
             X = startX;
@@ -18,40 +16,32 @@ namespace PacManGame.Models
         {
             if (IsVulnerable)
             {
-                // Clyde bewegt sich zufällig, wenn er verwundbar ist
                 MoveRandom(gamefield);
             }
             else
             {
                 if (randomMoveSteps > 0)
                 {
-                    // Solange zufällige Bewegung läuft
                     MoveRandom(gamefield);
                     randomMoveSteps--;
                 }
                 else
                 {
-                    // Wenn Clyde nah an Pac-Man ist, wechselt er in den Zufallsmodus
                     if (IsNearPacman(pacman))
                     {
-                        randomMoveSteps = 5; // Anzahl der Schritte im Zufallsmodus
+                        randomMoveSteps = 5;
                     }
                     else
                     {
-                        // Verfolge Pac-Man, wenn Clyde weit entfernt ist
                         FollowPacMan(pacman, gamefield);
                     }
                 }
             }
         }
-
-        // Überprüft, ob Clyde nahe genug an Pac-Man ist
         private bool IsNearPacman(Pacman pacman)
         {
             int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
-            return distance <= 4; // Zum Beispiel: Nähe definiert als <= 4 Felder
+            return distance <= 4; 
         }
-
-        
     }
 }

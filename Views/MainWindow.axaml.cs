@@ -61,7 +61,8 @@ namespace PacManGame.Views
 
         //Eventhandler for the whole game logic
         private void OnGameTick(object? sender, EventArgs e)
-        {   
+        {    
+            
             pacMan.Move(gamefield);
             CollectFood(); //TODO: Move to Pacman class
 
@@ -128,6 +129,7 @@ namespace PacManGame.Views
                     //Player has won: No more levels left
                     var winWindow = new WinWindow(score);
                     winWindow.Show();
+                    gameTimer.Stop();
                     this.Close();
                 }
                 else
@@ -219,7 +221,7 @@ namespace PacManGame.Views
                 Fill = new SolidColorBrush(Color.Parse("#fdff00"))
             };
 
-            // Geometrie
+            //Geometry
             var pacManGeometry = new PathGeometry();
 
             //Creating pacManFigure (Circle)
@@ -232,11 +234,11 @@ namespace PacManGame.Views
             pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); //Tip of the triangle
             pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); //Right side of the triangle
 
-            // Kreisförmigen Rest zeichnen
+            
             pacManFigure.Segments?.Add(new ArcSegment
             {
                 Point = new Avalonia.Point(10, 10),
-                Size = new Avalonia.Size(9, 9), //Radius
+                Size = new Avalonia.Size(9, 9), 
                 SweepDirection = SweepDirection.Clockwise,
                 IsLargeArc = true
             });
@@ -294,7 +296,7 @@ namespace PacManGame.Views
             {
                 if (i == 1)
                 {
-                    ghosts.Add(new Pinky(3 + i * 2, 3 + i * 2));
+                    ghosts.Add(new Blinky(3 + i * 2, 3 + i * 2));
                 }
                 else if (i == 2)
                 {

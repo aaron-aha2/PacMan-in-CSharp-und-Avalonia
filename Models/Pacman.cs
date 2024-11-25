@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 
 namespace PacManGame.Models
@@ -10,83 +11,74 @@ namespace PacManGame.Models
         public int Y { get; set; }
         public Direction CurrentDirection { get; set; }
         public int Speed { get; set; } = 1;
-        public Direction? QueuedDirection { get; set; } //Direction that shall be taken next
+        public Direction? QueuedDirection { get; set; }
+
+        private (int newX, int newY) CalculateNewPosition(Direction direction, int speed)
+        {
+            return direction switch
+            {
+                Direction.Up => (X, Y - speed),
+                Direction.Down => (X, Y + speed),
+                Direction.Left => (X - speed, Y),
+                Direction.Right => (X + speed, Y),
+                _ => (X, Y)
+            };
+        }
 
         public void Move(Gamefield gamefield)
         {
-            int newX = X;
-            int newY = Y;
+            if(gamefield == null){
+                throw new ArgumentNullException("Pacman or Gamefield is null.");
+            }
+            int newX, newY;
 
-            //1. Try to move in the queued direction
             if (QueuedDirection.HasValue)
             {
-                switch (QueuedDirection.Value)
-                {
-                    case Direction.Up: newY = Y - Speed; break;
-                    case Direction.Down: newY = Y + Speed; break;
-                    case Direction.Left: newX = X - Speed; break;
-                    case Direction.Right: newX = X + Speed; break;
-                }
+                (newX, newY) = CalculateNewPosition(QueuedDirection.Value, Speed);
 
-                //Chgeck if movement in the queued direction is possible
                 if (newX >= 0 && newX < gamefield.GameFieldData.GetLength(1) &&
                     newY >= 0 && newY < gamefield.GameFieldData.GetLength(0) &&
                     gamefield.GameFieldData[newY, newX] != 1)
                 {
-                    //Execute movement
                     CurrentDirection = QueuedDirection.Value;
-                    QueuedDirection = null; //Reset queued direction if movement was successful
+                    QueuedDirection = null;
                 }
             }
 
-            //2. Try to move in the current direction
-            newX = X;
-            newY = Y;
+            (newX, newY) = CalculateNewPosition(CurrentDirection, Speed);
 
-            switch (CurrentDirection)
-            {
-                case Direction.Up: newY = Y - Speed; break;
-                case Direction.Down: newY = Y + Speed; break;
-                case Direction.Left: newX = X - Speed; break;
-                case Direction.Right: newX = X + Speed; break;
-            }
-
-            //Check if movement in the current direction is possible
             if (newX >= 0 && newX < gamefield.GameFieldData.GetLength(1) &&
                 newY >= 0 && newY < gamefield.GameFieldData.GetLength(0) &&
                 gamefield.GameFieldData[newY, newX] != 1)
             {
-                //Execute movement
                 X = newX;
                 Y = newY;
             }
 
-            //3. Protalmovement
-            if (gamefield.GameFieldData[Y, X] == 5 && X == 0 && Y == 14) //Left portal Level 1
+            if (gamefield.GameFieldData[Y, X] == 5 && X == 0 && Y == 14)
             {
-                X = 25; //Move to right edge
+                X = 25;
             }
-            else if (gamefield.GameFieldData[Y, X] == 5 && X == 26 && Y == 14) //Right portal Level 1
+            else if (gamefield.GameFieldData[Y, X] == 5 && X == 26 && Y == 14)
             {
-                X = 0; //Move to left edge
+                X = 0;
             }
-            else if (gamefield.GameFieldData[Y, X] == 6 && X == 0 && Y == 8) //Left upper portal Level 2
+            else if (gamefield.GameFieldData[Y, X] == 6 && X == 0 && Y == 8)
             {
-                X = 25; //Move to right edge
+                X = 25;
             }
-            else if (gamefield.GameFieldData[Y, X] == 6 && X == 26 && Y ==8) //Right upper portal Level 2
+            else if (gamefield.GameFieldData[Y, X] == 6 && X == 26 && Y == 8)
             {
-                X = 0; //Move to left edge
+                X = 0;
             }
-            else if (gamefield.GameFieldData[Y, X] == 7 && X == 0 && Y == 18) //Left lower portal Level 2
+            else if (gamefield.GameFieldData[Y, X] == 7 && X == 0 && Y == 18)
             {
-                X = 25; //Move to right edge
+                X = 25;
             }
-            else if (gamefield.GameFieldData[Y, X] == 7 && X == 26 && Y == 18) //Right lower portal Level 2
+            else if (gamefield.GameFieldData[Y, X] == 7 && X == 26 && Y == 18)
             {
-                X = 0; //Move to left edge
-            }  
+                X = 0;
+            }
         }
     }
 }
-    

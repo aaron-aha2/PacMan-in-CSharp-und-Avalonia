@@ -32,14 +32,11 @@ namespace PacManGame.Tests
         {
             Console.WriteLine("Test: does the teleportation at the left side work correctly?");
 
-            //Arrange: Place Pacman at the left portal edge
             var pacman = new Pacman { X = 0, Y = 14, CurrentDirection = (Models.Direction)Direction.Left };
             var gamefield = new Gamefield(1, 0, false);
 
-            //Act
             pacman.Move(gamefield);
 
-            //Assert: Check if Pacman was teleported to the right side
             if (pacman.X == 25 && pacman.Y == 14)
             {
                 Console.WriteLine("Test was successful: Pacman got teleported to the right side.");
