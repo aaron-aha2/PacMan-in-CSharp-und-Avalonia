@@ -22,6 +22,14 @@ namespace PacManGame.Models
                 return;
             }
 
+             int distanceToPacman = Math.Abs(pacman.X - X) + Math.Abs(pacman.Y - Y);
+
+             if (distanceToPacman <= 4)
+             {
+                FollowPacMan(pacman, gamefield);
+                return;
+             }
+
             //Normal movement logic: Move Pinky 4 tiles ahead of Pac
             int targetX = pacman.X;
             int targetY = pacman.Y;

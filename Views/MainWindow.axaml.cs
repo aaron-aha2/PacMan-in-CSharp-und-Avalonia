@@ -294,7 +294,7 @@ namespace PacManGame.Views
             {
                 if (i == 1)
                 {
-                    ghosts.Add(new Blinky(3 + i * 2, 3 + i * 2));
+                    ghosts.Add(new Pinky(3 + i * 2, 3 + i * 2));
                 }
                 else if (i == 2)
                 {

@@ -106,5 +106,32 @@ namespace PacManGame.Models
                 currentDirection = Direction.Right;
             }
         }
+        protected bool FollowPacMan(Pacman pacman, Gamefield gamefield)
+        {
+            //Try to go to pacman
+            if (X < pacman.X && CanMoveRight(gamefield))
+            {
+                MoveRight(gamefield);
+                return true;
+            }
+            else if (X > pacman.X && CanMoveLeft(gamefield))
+            {
+                MoveLeft(gamefield);
+                return true;
+            }
+            else if (Y < pacman.Y && CanMoveDown(gamefield))
+            {
+                MoveDown(gamefield);
+                return true;
+            }
+            else if (Y > pacman.Y && CanMoveUp(gamefield))
+            {
+                MoveUp(gamefield);
+                return true;
+            }
+
+            //if there is no possible way,then return false
+            return false;
+        }
     }
 }
