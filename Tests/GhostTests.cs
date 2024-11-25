@@ -16,7 +16,7 @@ namespace PacManGame.Tests
             blinky.Move(pacman, gamefield);
 
             // Assert
-            if (blinky.X == 6 && blinky.Y == 10) // Erwartet: Blinky bewegt sich nach rechts
+            if (blinky.X == 6 && blinky.Y == 10) //Expected: Blinky moves to the right
             {
                 Console.WriteLine("Test successful: Blinky follows Pacman correctly.");
             }
@@ -26,22 +26,19 @@ namespace PacManGame.Tests
             }
         }
 
-        // Test für Blinkys Zufallsbewegung im verwundbaren Modus
-       
-        // Test für Clyde, ob er in den Zufallsmodus wechselt, wenn er nahe an Pacman ist
         public static void TestClydeRandomModeWhenClose()
         {
             Console.WriteLine("Test: Does Clyde switch to random mode when close to Pacman?");
 
-            // Arrange
+            //Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
             var clyde = new Clyde(8, 10); // Clyde ist nah an Pacman
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act
+            //Act
             clyde.Move(pacman, gamefield);
 
-            // Assert
+            //Assert
             if (Math.Abs(clyde.X - 8) <= 1 && Math.Abs(clyde.Y - 10) <= 1)
             {
                 Console.WriteLine("Test successful: Clyde moved randomly when near Pacman.");
@@ -52,21 +49,20 @@ namespace PacManGame.Tests
             }
         }
 
-        // Test für Clyde, ob er Pacman verfolgt, wenn er weit weg ist
         public static void TestClydeChasesPacmanWhenFar()
         {
             Console.WriteLine("Test: Does Clyde chase Pacman when far away?");
 
-            // Arrange
+            //Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
-            var clyde = new Clyde(2, 10); // Clyde ist weit von Pacman entfernt
+            var clyde = new Clyde(2, 10); //Clyde is far away from Pacman
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act
+            //Act
             clyde.Move(pacman, gamefield);
 
-            // Assert
-            if (clyde.X == 3 && clyde.Y == 10) // Erwartet: Clyde bewegt sich nach rechts
+            //Assert
+            if (clyde.X == 3 && clyde.Y == 10) //Expected: Clyde moves to the right
             {
                 Console.WriteLine("Test successful: Clyde chases Pacman correctly when far away.");
             }
@@ -76,21 +72,20 @@ namespace PacManGame.Tests
             }
         }
 
-        // Test für Pinky, ob er sich korrekt 4 Felder vor Pacman positioniert
         public static void TestPinkyMovesAheadOfPacman()
         {
             Console.WriteLine("Test: Does Pinky correctly move 4 fields ahead of Pacman?");
 
-            // Arrange
+            //Arrange
             var pacman = new Pacman { X = 10, Y = 10, CurrentDirection = (Models.Direction)Direction.Right };
-            var pinky = new Pinky(5, 10); // Pinky startet links von Pacman
+            var pinky = new Pinky(5, 10); //Pinky starts left of Pacman
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act
+            //Act
             pinky.Move(pacman, gamefield);
 
-            // Assert
-            if (pinky.X == 14 && pinky.Y == 10) // Erwartet: Pinky bewegt sich rechts vor Pacman
+            //Assert
+            if (pinky.X == 14 && pinky.Y == 10) //Expected: Pinky moves 4 fields ahead of Pacman
             {
                 Console.WriteLine("Test successful: Pinky moved correctly ahead of Pacman.");
             }
@@ -100,21 +95,20 @@ namespace PacManGame.Tests
             }
         }
 
-        // Test für Inky, ob er das Ziel korrekt berechnet
         public static void TestInkyCalculatesTargetCorrectly()
         {
             Console.WriteLine("Test: Does Inky calculate the target position correctly?");
 
-            // Arrange
+            //Arrange
             var pacman = new Pacman { X = 10, Y = 10, CurrentDirection = (Models.Direction)Direction.Up };
             var blinky = new Blinky(8, 8); // Blinky ist in der Nähe
             var inky = new Inky(5, 5, new System.Collections.Generic.List<Ghost> { blinky });
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act
+            //Act
             inky.Move(pacman, gamefield);
 
-            // Assert: Inky sollte zum berechneten Ziel basierend auf Pacman und Blinky gehen
+            //Assert: Inky should move towards calculated target position
             Console.WriteLine($"Inky moved to X={inky.X}, Y={inky.Y}. (Target logic was applied, manual verification needed.)");
         }
 
@@ -122,18 +116,18 @@ namespace PacManGame.Tests
         {
             Console.WriteLine("Test: Does Blinky move randomly when vulnerable?");
 
-            // Arrange
+            //Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
-            var blinky = new Blinky(5, 10) { IsVulnerable = true }; // Blinky ist verwundbar
+            var blinky = new Blinky(5, 10) { IsVulnerable = true };
             var gamefield = new Gamefield(1, 0, false);
 
-            // Act
+            //Act
             int oldX = blinky.X;
             int oldY = blinky.Y;
             blinky.Move(pacman, gamefield);
 
-            // Assert
-            if (blinky.X != oldX || blinky.Y != oldY) // Erwartet: Bewegung in eine andere Position
+            //Assert
+            if (blinky.X != oldX || blinky.Y != oldY) //Expected: Blinky moves randomly
             {
                 Console.WriteLine("Test successful: Blinky moves randomly when vulnerable.");
             }
@@ -146,24 +140,24 @@ namespace PacManGame.Tests
         {
             Console.WriteLine("Test: Does the ghost stay out of the spawn area after leaving it?");
 
-            // Arrange
+            //Arrange
             var pacman = new Pacman { X = 10, Y = 10 };
-            var ghost = new Blinky(13, 13); // Startet im Spawnbereich (z.B., auf der 4)
+            var ghost = new Blinky(13, 13); //Starts in the spawn area
             var gamefield = new Gamefield(1, 0, false);
 
-            // Simuliere, dass der Geist das Spawnfeld verlässt
-            ghost.Move(pacman, gamefield); // Bewegung einmal, um aus dem Spawn zu gehen
+            //Ghost moves out of spawn
+            ghost.Move(pacman, gamefield); //Move once to leave the spawn area
             int initialX = ghost.X;
             int initialY = ghost.Y;
 
-            // Act
-            for (int i = 0; i < 10; i++) // Mehrere Bewegungen simulieren
+            //Act
+            for (int i = 0; i < 10; i++) //Move 10 times
             {
                 ghost.Move(pacman, gamefield);
             }
 
-            // Assert: Geist sollte nicht zurück im Spawnbereich (13,13) sein
-            if (gamefield.GameFieldData[ghost.Y, ghost.X] != 4) // 4 repräsentiert den Spawnbereich
+            //Assert: Ghost should not reenter the spawn area
+            if (gamefield.GameFieldData[ghost.Y, ghost.X] != 4) //4 = Entrance to spawn area
             {
                 Console.WriteLine("Test successful: Ghost does not reenter the spawn area.");
             }
@@ -189,7 +183,7 @@ namespace PacManGame.Tests
             //Pacman eats Blinky
             if (blinky.X == pacman.X && blinky.Y == pacman.Y && blinky.IsVulnerable)
             {
-                // Geist wird gegessen
+                //Ghost respawns in base
                 blinky.X = 14;
                 blinky.Y = 14;
             }

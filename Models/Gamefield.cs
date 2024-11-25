@@ -6,7 +6,7 @@ namespace PacManGame.Models
 
         private int[,] level1 = new int[,]
         {
-            // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghostexit, 5 = portal
+            // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghost-door, 5 = portal
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 1 },
             { 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1 },
@@ -40,7 +40,7 @@ namespace PacManGame.Models
 
         private int[,] level2 = new int[,]
         {
-            // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghostexit, 6/7 = portal
+            // Symbols: 0 = empty, 1 = wall, 2 = food, 3 = powerup, 4 = ghost-door, 6/7 = portal
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
             { 1, 2, 2, 3, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 3, 2, 2, 1 },
             { 1, 2, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1 },

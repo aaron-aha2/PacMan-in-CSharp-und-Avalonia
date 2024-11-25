@@ -5,34 +5,33 @@ namespace PacManGame.Models
 {
     public class Inky : Ghost
     {
-        private List<Ghost> ghosts; //Zugriff auf andere Geister
+        private List<Ghost> ghosts; //Access to all ghosts for targeting
 
-        //Konstruktor: Startposition und Geisterliste
         public Inky(int startX, int startY, List<Ghost> ghosts)
         {
             X = startX;
             Y = startY;
-            Name = "Inky"; //Name zur Identifikation in der Liste
+            Name = "Inky";
             this.currentDirection = (Direction)random.Next(4);
             this.ghosts = ghosts;
         }
 
-        //Überschreibt die Move-Methode von Ghost, um Inkys spezifische Bewegungslogik zu implementieren
+        //Overrides the move method of Ghost to implement Inky's specific movement logic
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
             if (IsVulnerable)
             {
-                //Verwundbarer Modus: Bewegt sich zufällig
+                //Vulnerable: move randomly
                 MoveRandom(gamefield);
                 return;
             }
 
-            //Blinky in der Geisterliste finden
+            //Find Blinky in the list of ghosts
             var blinky = ghosts.Find(g => g.Name == "Blinky");
             if (blinky == null)
-                return; //Bewegung abbrechen, wenn Blinky nicht existiert
+                return; //Blinky not found
 
-            //Vorhersagepunkt basierend auf Pac-Mans Richtung
+            //Predicted point based on Pacman's direction
             int targetX = pacman.X;
             int targetY = pacman.Y;
 
@@ -52,21 +51,21 @@ namespace PacManGame.Models
                     break;
             }
 
-            //Zielpunkt für Inky basierend auf Blinkys Position
+            //Aiming point for Inky based on Blinky's position
             int inkyTargetX = targetX + (targetX - blinky.X);
             int inkyTargetY = targetY + (targetY - blinky.Y);
 
-            //Bewegung in Richtung des berechneten Zielpunkts
+            //Movement towards target point
             MoveTowards(inkyTargetX, inkyTargetY, gamefield);
         }
 
-        //Bewegt Inky in Richtung des Zielpunkts
+        //Moves Inky towards target point without running into walls
         private void MoveTowards(int targetX, int targetY, Gamefield gamefield)
         {
             int dx = targetX - X;
             int dy = targetY - Y;
 
-            //Bevorzugt horizontale Bewegung, falls keine Wand
+            //Move in the direction with the larger distance
             if (Math.Abs(dx) > Math.Abs(dy))
             {
                 if (dx > 0 && CanMoveRight(gamefield))
@@ -79,13 +78,13 @@ namespace PacManGame.Models
                 }
                 else
                 {
-                    //Wenn die horizontale Bewegung blockiert ist, versuche vertikal
+                    //If horizontal movement is blocked: try vertical
                     MoveVertical(dy, gamefield);
                 }
             }
             else
             {
-                //Bevorzugt vertikale Bewegung, falls keine Wand
+                //Move in vertical direction if longer distance
                 if (dy > 0 && CanMoveDown(gamefield))
                 {
                     MoveDown(gamefield);
@@ -96,13 +95,12 @@ namespace PacManGame.Models
                 }
                 else
                 {
-                    //Wenn die vertikale Bewegung blockiert ist, versuche horizontal
+                    //If vertical movement is blocked: try horizontal
                     MoveHorizontal(dx, gamefield);
                 }
             }
         }
 
-        //Versuch einer vertikalen Bewegung
         private void MoveVertical(int dy, Gamefield gamefield)
         {
             if (dy > 0 && CanMoveDown(gamefield))
@@ -114,8 +112,7 @@ namespace PacManGame.Models
                 MoveUp(gamefield);
             }
         }
-
-        //Versuch einer horizontalen Bewegung
+        
         private void MoveHorizontal(int dx, Gamefield gamefield)
         {
             if (dx > 0 && CanMoveRight(gamefield))

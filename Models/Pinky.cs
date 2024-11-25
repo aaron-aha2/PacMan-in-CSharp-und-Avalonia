@@ -4,30 +4,29 @@ namespace PacManGame.Models
 {
     public class Pinky : Ghost
     {
-        //Konstruktor, um die Startposition von Pinky zu setzen
         public Pinky(int startX, int startY)
         {
             X = startX;
             Y = startY;
-            Name = "Pinky";  //Name des Geistes
+            Name = "Pinky";
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        //Überschreibt die Move-Methode von Ghost, um Pinkys spezifische Bewegungslogik zu implementieren
+        //Overrides the move method of Ghost to implement Pinky's specific movement logic
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
             if (IsVulnerable)
             {
-                //Wenn Pinky verwundbar ist, bewegt er sich zufällig
+                //If vulnerable: move randomly
                 MoveRandom(gamefield);
                 return;
             }
 
-            //Normale Bewegungslogik: Bewege Pinky 4 Felder vor Pac-Man
+            //Normal movement logic: Move Pinky 4 tiles ahead of Pac
             int targetX = pacman.X;
             int targetY = pacman.Y;
 
-            //Berechne die Zielposition, die 4 Felder vor Pac-Man liegt, basierend auf dessen Bewegungsrichtung
+            //Calculate target position that is 4 tiles ahead of Pacman
             switch (pacman.CurrentDirection)
             {
                 case Direction.Up:
@@ -44,10 +43,9 @@ namespace PacManGame.Models
                     break;
             }
 
-            //Bewege Pinky in Richtung der Zielposition
+            //Move Pinky towards target point
             if (Math.Abs(targetX - X) > Math.Abs(targetY - Y))
             {
-                //Bewege Pinky in die X-Richtung
                 if (targetX > X && CanMoveRight(gamefield))
                 {
                     MoveRight(gamefield);
@@ -59,7 +57,6 @@ namespace PacManGame.Models
             }
             else
             {
-                //Bewege Pinky in die Y-Richtung
                 if (targetY > Y && CanMoveDown(gamefield))
                 {
                     MoveDown(gamefield);

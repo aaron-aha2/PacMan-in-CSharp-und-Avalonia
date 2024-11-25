@@ -219,41 +219,39 @@ namespace PacManGame.Views
                 Fill = new SolidColorBrush(Color.Parse("#fdff00"))
             };
 
-            // Definieren Sie die Geometrie
+            // Geometrie
             var pacManGeometry = new PathGeometry();
 
-            // Startpunkt in der Mitte von Pac-Man
+            //Creating pacManFigure (Circle)
             var pacManFigure = new PathFigure
             {
                 StartPoint = new Avalonia.Point(10, 10)
             };
 
-            // Erstellen des "Mundes" (Dreieck)
-            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); // Zur Mundspitze
-            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); // Zurück an die untere Spitze
+            //Creating the "mouth" (triangle)
+            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(10, 20) }); //Tip of the triangle
+            pacManFigure.Segments?.Add(new LineSegment { Point = new Avalonia.Point(20, 14) }); //Right side of the triangle
 
             // Kreisförmigen Rest zeichnen
             pacManFigure.Segments?.Add(new ArcSegment
             {
                 Point = new Avalonia.Point(10, 10),
-                Size = new Avalonia.Size(9, 9), // Größe des Kreises
+                Size = new Avalonia.Size(9, 9), //Radius
                 SweepDirection = SweepDirection.Clockwise,
                 IsLargeArc = true
             });
 
-            // Hinzufügen der Geometrie
+            //Close circle
             pacManFigure.IsClosed = true;
             pacManGeometry?.Figures?.Add(pacManFigure);
 
-            // Hinzufügen der Geometrie zum Path
             pacManPath.Data = pacManGeometry;
 
 
-            // Platzieren von Pac-Man
+            //Place Pacman in the middle of the cell
             Canvas.SetLeft(pacManPath, pacMan.X * 20 - 2);
             Canvas.SetTop(pacManPath, pacMan.Y * 20 - 9);
 
-            // **Hinzufügen von Pac-Man zum Canvas**
             GameCanvas.Children.Add(pacManPath);
         }
 
@@ -292,7 +290,7 @@ namespace PacManGame.Views
 
         private void InitializeGhosts(int ghostCount)
         {
-            for (int i = 1; i <= ghostCount; i++) // Beginnt bei 1, da die Fälle ab 1 definiert waren
+            for (int i = 1; i <= ghostCount; i++)
             {
                 if (i == 1)
                 {
@@ -308,7 +306,7 @@ namespace PacManGame.Views
                 }
                 else
                 {
-                    ghosts.Add(new Clyde(5, 5)); // Standardmäßiger Clyde für alle anderen
+                    ghosts.Add(new Clyde(5, 5));
                 }
             }
         }
@@ -350,13 +348,11 @@ namespace PacManGame.Views
 
         private void GameOver()
         {
-            // Timer stoppen
             gameTimer.Stop();
-            // Neues GameOver-Fenster anzeigen
+
             var gameOverWindow = new GameOverWindow(score);
             gameOverWindow.Show();
 
-            // Aktuelles Fenster schließen
             this.Close();
         }
 
@@ -431,6 +427,8 @@ namespace PacManGame.Views
             DrawGhosts();
         }
 
+
+        // -- Labels and Buttons -- //
         private void UpdateScore()
         {
             ScoreCounter.Text = $"Score: {score}";

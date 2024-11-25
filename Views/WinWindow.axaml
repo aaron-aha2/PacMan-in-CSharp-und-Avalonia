@@ -9,7 +9,5 @@
         <TextBlock x:Name="ScoreText" Text="Your Score: 0" FontSize="20" HorizontalAlignment="Center"/>
         <Button Content="Restart" Click="OnRestartButtonClick" HorizontalAlignment="Center"/>
         <Button Content="Exit" Click="OnExitButtonClick" HorizontalAlignment="Center"/>
-
-
     </StackPanel>
 </Window>

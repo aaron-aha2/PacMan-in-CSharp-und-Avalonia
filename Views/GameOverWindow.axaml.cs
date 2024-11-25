@@ -14,13 +14,13 @@ namespace PacManGame.Views
 
         private void OnExitButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            Close(); // Schließt das Fenster
+            Close();
         }
         private void OnRestartButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
             MenuWindow mwindow = new MenuWindow();
             mwindow.Show();
-            Close(); // Schließt das Fenster
+            Close();
         }
     }
 }
