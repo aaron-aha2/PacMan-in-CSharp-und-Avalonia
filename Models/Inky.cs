@@ -19,6 +19,9 @@ namespace PacManGame.Models
         //Overrides the move method of Ghost to implement Inky's specific movement logic
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
+            if (pacman == null || gamefield == null){
+                throw new ArgumentNullException("Pacman or Gamefield is null.");
+            }
             if (IsVulnerable)
             {
                 //Vulnerable: move randomly
@@ -123,6 +126,6 @@ namespace PacManGame.Models
             {
                 MoveLeft(gamefield);
             }
-        }
+        } 
     }
 }

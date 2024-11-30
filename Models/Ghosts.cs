@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Avalonia.Controls.Documents;
+using Avalonia.Threading;
 
 namespace PacManGame.Models
 {
@@ -17,6 +18,9 @@ namespace PacManGame.Models
         public Random random = new Random();
         public Direction currentDirection;
         protected int randomMoveSteps;
+         public bool IsWaiting { get; set; } = true; // Ob der Geist noch im Spawn wartet
+        public int SpawnWaitTime { get; set; } // Wartezeit in Millisekunden
+        private DispatcherTimer spawnTimer;
         protected void MoveRandom(Gamefield gamefield)
         {
             if (!MoveInCurrentDirection(gamefield))
@@ -27,10 +31,7 @@ namespace PacManGame.Models
         }
         private bool MoveInCurrentDirection(Gamefield gamefield)
         {
-            //Assert to ensure the gamefield is valid
-            Debug.Assert(gamefield != null, "Gamefield must not be null.");
-            Debug.Assert(X >= 0 && X < gamefield.GameFieldData.GetLength(1), "X is out of gamefield");
-            Debug.Assert(Y >= 0 && Y < gamefield.GameFieldData.GetLength(0), "Y is out of gamefield");
+            
 
             //Simplified movement logic using switch expressions
             return currentDirection switch
@@ -50,12 +51,10 @@ namespace PacManGame.Models
 
        protected bool MoveUp(Gamefield gamefield)
         {
-            Debug.Assert(gamefield != null, "Gamefield must not be null");
             if (Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1) 
             {
                 Y--;
                 currentDirection = Direction.Up;
-                Debug.Assert(Y >= 0, "Y can't be null"); 
                 return true;
             }
             return false; 
@@ -120,6 +119,30 @@ namespace PacManGame.Models
 
             //if there is no possible way,then return false
             return false;
+        }
+        public void StartSpawnTimer()
+        {
+            spawnTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(SpawnWaitTime)
+            };
+            spawnTimer.Tick += (sender, e) =>
+            {
+                IsWaiting = false; // Beenden der Wartezeit
+                spawnTimer.Stop(); // Timer stoppen, da er nicht wiederholt werden muss
+            };
+            spawnTimer.Start();
+        }
+        protected void MoveOutOfSpawn(Gamefield gamefield)
+        {
+            if (IsWaiting)
+            {
+                // Geister bewegen sich im Spawn, bevor sie austreten
+                if (CanMoveUp(gamefield))
+                {
+                    MoveUp(gamefield);
+                }
+            }
         }
     }
 }

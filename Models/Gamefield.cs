@@ -1,3 +1,5 @@
+using System;
+
 namespace PacManGame.Models
 {
     public class Gamefield
@@ -79,18 +81,20 @@ namespace PacManGame.Models
 
         public void LoadLevel(int level)
         {
-            switch (level)
+            if (level < 1 || level > 2)
             {
-                case 1:
-                    GameFieldData = level1;
-                    break;
-                case 2:
-                    GameFieldData = level2;
-                    break;
-                default:
-                    GameFieldData = level1;
-                    break;
+                throw new ArgumentOutOfRangeException(nameof(level), "Level must be 1 or 2.");
             }
+            
+            if(level == 1)
+            {
+                GameFieldData = level1;
+            }
+            else
+            {
+                GameFieldData = level2;
+            }
+            
         }
     }
 }

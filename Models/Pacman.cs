@@ -28,7 +28,7 @@ namespace PacManGame.Models
         public void Move(Gamefield gamefield)
         {
             if(gamefield == null){
-                throw new ArgumentNullException("Pacman or Gamefield is null.");
+                throw new ArgumentNullException("Gamefield is null.");
             }
             int newX, newY;
 

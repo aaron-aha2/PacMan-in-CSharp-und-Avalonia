@@ -14,6 +14,15 @@ namespace PacManGame.Models
 
         public override void Move(Pacman pacman, Gamefield gamefield)
         {
+            if (pacman == null || gamefield == null){
+                throw new ArgumentNullException("Pacman or Gamefield is null.");
+            }
+            if (IsWaiting)
+            {
+                MoveOutOfSpawn(gamefield); // Bewegung nur im Spawn-Bereich
+                return;
+            }
+
             if (IsVulnerable)
             {
                 MoveRandom(gamefield);
