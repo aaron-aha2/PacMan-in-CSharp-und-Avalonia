@@ -292,6 +292,7 @@ namespace PacManGame.Views
 
         private void InitializeGhosts(int ghostCount)
         {
+            ghostCount = 4;
             for (int i = 1; i <= ghostCount; i++)
             {
                 if (i == 1)

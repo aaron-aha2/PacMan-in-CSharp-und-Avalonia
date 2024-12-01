@@ -1,10 +1,10 @@
 using System;
+using System.Runtime.ConstrainedExecution;
 
 namespace PacManGame.Models
 {
     public class Blinky : Ghost
     {
-        private int randomMoveSteps = 10; //Counts how many steps Blinky moves randomly
 
         public Blinky(int startX, int startY)
         {
@@ -14,7 +14,7 @@ namespace PacManGame.Models
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        public override void Move(Pacman pacman, Gamefield gamefield)
+        public override void Move(Pacman pacman, Gamefield gamefield)// Blinky attack Pacman directly. If his way is blocked, he walks random until the way is passable
         {
             if (pacman == null || gamefield == null){
                 throw new ArgumentNullException("Pacman or Gamefield is null.");
@@ -38,7 +38,7 @@ namespace PacManGame.Models
                     if (!FollowPacMan(pacman, gamefield))
                     {
                         //If FollowPacMan is blocked, enter random mode for a specific number of steps
-                        randomMoveSteps = 5; //Number of random steps before chasing Pac-Man again
+                        randomMoveSteps = 10; //Number of random steps before chasing Pac-Man again
                     }
                 }
             }

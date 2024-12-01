@@ -12,7 +12,7 @@ namespace PacManGame.Models
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        public override void Move(Pacman pacman, Gamefield gamefield)
+        public override void Move(Pacman pacman, Gamefield gamefield)// Clyde attack Pacman until he is in a range of four steps. Then he move random. 
         {
             if (pacman == null || gamefield == null){
                 throw new ArgumentNullException("Pacman or Gamefield is null.");
@@ -41,10 +41,6 @@ namespace PacManGame.Models
                 }
             }
         }
-        private bool IsNearPacman(Pacman pacman)
-        {
-            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
-            return distance <= 4; 
-        }
+        
     }
 }

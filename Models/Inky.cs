@@ -17,7 +17,7 @@ namespace PacManGame.Models
         }
 
         //Overrides the move method of Ghost to implement Inky's specific movement logic
-        public override void Move(Pacman pacman, Gamefield gamefield)
+        public override void Move(Pacman pacman, Gamefield gamefield)// Inky search a way between Blinky and Pacman, to attack Pacman. In a range of two steps he attacks Pacman actively.
         {
             if (pacman == null || gamefield == null){
                 throw new ArgumentNullException("Pacman or Gamefield is null.");
@@ -26,6 +26,13 @@ namespace PacManGame.Models
             {
                 //Vulnerable: move randomly
                 MoveRandom(gamefield);
+                return;
+            }
+            distanceToPacman = Math.Abs(pacman.X - X) + Math.Abs(pacman.Y - Y);
+
+            if (distanceToPacman <= 2)
+            {
+                FollowPacMan(pacman, gamefield);
                 return;
             }
 

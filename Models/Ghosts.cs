@@ -21,6 +21,12 @@ namespace PacManGame.Models
          public bool IsWaiting { get; set; } = true; // Ob der Geist noch im Spawn wartet
         public int SpawnWaitTime { get; set; } // Wartezeit in Millisekunden
         private DispatcherTimer spawnTimer;
+        protected int distanceToPacman;
+        protected virtual bool IsNearPacman(Pacman pacman)
+        {
+            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
+            return distance <= 4; 
+        }
         protected void MoveRandom(Gamefield gamefield)
         {
             if (!MoveInCurrentDirection(gamefield))
@@ -120,7 +126,7 @@ namespace PacManGame.Models
             //if there is no possible way,then return false
             return false;
         }
-        public void StartSpawnTimer()
+        /*public void StartSpawnTimer()
         {
             spawnTimer = new DispatcherTimer
             {
@@ -143,6 +149,6 @@ namespace PacManGame.Models
                     MoveUp(gamefield);
                 }
             }
-        }
+        }*/
     }
 }
