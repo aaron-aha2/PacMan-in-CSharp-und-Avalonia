@@ -1,10 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using Avalonia.Controls.Documents;
-using Avalonia.Platform;
-using Avalonia.Threading;
-using PacManGame.Views;
 
 namespace PacManGame.Models
 {
@@ -29,7 +24,7 @@ namespace PacManGame.Models
                 MoveInCurrentDirection(gamefield);
             }
         }
-        protected void SpawnStart(Gamefield gamefield){// if a Ghost spawns he walks to the playground
+        protected void SpawnStart(Gamefield gamefield){//if a Ghost spawns he walks to the playground
             if(X==13 && Y==13)
             {
                 while(Y != 10){

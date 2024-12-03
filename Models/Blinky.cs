@@ -1,4 +1,4 @@
-using System;
+using System.Diagnostics;
 
 namespace PacManGame.Models
 {
@@ -16,10 +16,10 @@ namespace PacManGame.Models
 
         public override void Move(Pacman pacman, Gamefield gamefield)// blinky attack Pacman actively. If the way is blocked, he walks random until the way is passable
         {
+            Debug.Assert(pacman != null, "Pacman darf nicht null sein.");
+            Debug.Assert(gamefield != null, "Gamefield darf nicht null sein.");
+
             SpawnStart(gamefield);
-            if (pacman == null || gamefield == null){
-                throw new ArgumentNullException("Pacman or Gamefield is null.");
-            }
             if (IsVulnerable)
             {
                 //In vulnerable mode, Blinky moves randomly

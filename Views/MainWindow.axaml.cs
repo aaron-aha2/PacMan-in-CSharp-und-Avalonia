@@ -152,6 +152,10 @@ namespace PacManGame.Views
 
         private void DrawGamefield()
         {
+            if (gamefield.GameFieldData == null)
+            {
+                throw new NullReferenceException("Spielfeld-Daten nicht gefunden. Lade die Spielfeld-Daten erneut.");
+            }
             for (int y = 0; y < gamefield.GameFieldData.GetLength(0); y++)
             {
                 for (int x = 0; x < gamefield.GameFieldData.GetLength(1); x++)
@@ -213,6 +217,7 @@ namespace PacManGame.Views
                 }
             }
         }
+        
 
          private void DrawPacMan()
         {
@@ -292,7 +297,9 @@ namespace PacManGame.Views
 
         private void InitializeGhosts(int ghostCount)
         {
-            ghostCount = 4;
+            if (ghostCount <= 0){
+                ghostCount = 4;
+            }
             for (int i = 1; i <= ghostCount; i++)
             {
                 if (i == 1)
@@ -307,11 +314,17 @@ namespace PacManGame.Views
                 {
                     ghosts.Add(new Inky(13,13, ghosts));
                 }
-                else
+                else if (i == 4)
                 {
                     ghosts.Add(new Clyde(13,13));
                 }
+                
             }
+            if (ghosts == null || ghosts.Count == 0)
+            {
+                throw new InvalidOperationException("Keine Geister zum Zeichnen vorhanden. Die Geisterliste ist leer oder nicht initialisiert.");
+            }
+
         }
 
         public void MakeGhostsVulnerable()
@@ -416,8 +429,8 @@ namespace PacManGame.Views
             UpdateScore();
             
             //Set Ghost Position to Ghost Spawn
-            ghost.X = 14;
-            ghost.Y = 14;
+            ghost.X = 13;
+            ghost.Y = 13;
             
             DrawGame();  
         }

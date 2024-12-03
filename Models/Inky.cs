@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PacManGame.Models
 {
@@ -24,6 +25,8 @@ namespace PacManGame.Models
         //Overrides the move method of Ghost to implement Inky's specific movement logic
         public override void Move(Pacman pacman, Gamefield gamefield)//Inky search a way between Blinky and Pacman. In a range of two steps he attacks Pacman actively.
         {
+            Debug.Assert(pacman != null, "Pacman darf nicht null sein.");
+            Debug.Assert(gamefield != null, "Gamefield darf nicht null sein.");
             SpawnStart(gamefield);
             if (IsVulnerable)
             {

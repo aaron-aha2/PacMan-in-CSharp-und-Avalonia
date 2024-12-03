@@ -1,5 +1,4 @@
-using System;
-using System.ComponentModel;
+using System.Diagnostics;
 
 namespace PacManGame.Models
 {
@@ -13,7 +12,7 @@ namespace PacManGame.Models
         public int Speed { get; set; } = 1;
         public Direction? QueuedDirection { get; set; }
 
-        private (int newX, int newY) CalculateNewPosition(Direction direction, int speed)
+        private (int newX, int newY) CalculateNewPosition(Direction direction, int speed)//looks in which direction Pacman walks
         {
             return direction switch
             {
@@ -27,14 +26,12 @@ namespace PacManGame.Models
 
         public void Move(Gamefield gamefield)
         {
-            if(gamefield == null){
-                throw new ArgumentNullException("Gamefield is null.");
-            }
+            Debug.Assert(gamefield != null, "Gamefield cannot be null.");
             int newX, newY;
 
             if (QueuedDirection.HasValue)
             {
-                (newX, newY) = CalculateNewPosition(QueuedDirection.Value, Speed);
+                (newX, newY) = CalculateNewPosition(QueuedDirection.Value, Speed);//if there is a wall, he can`t move in this direction
 
                 if (newX >= 0 && newX < gamefield.GameFieldData.GetLength(1) &&
                     newY >= 0 && newY < gamefield.GameFieldData.GetLength(0) &&
@@ -55,7 +52,7 @@ namespace PacManGame.Models
                 Y = newY;
             }
 
-            if (gamefield.GameFieldData[Y, X] == 5 && X == 0 && Y == 14)
+            if (gamefield.GameFieldData[Y, X] == 5 && X == 0 && Y == 14)//It says, that in this koordinate is a Teleportation
             {
                 X = 25;
             }

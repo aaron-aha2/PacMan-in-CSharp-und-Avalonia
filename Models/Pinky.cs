@@ -1,6 +1,5 @@
 using System;
-using System.Transactions;
-using Avalonia.Media.Imaging;
+using System.Diagnostics;
 
 namespace PacManGame.Models
 {
@@ -16,7 +15,8 @@ namespace PacManGame.Models
 
         public override void Move(Pacman pacman, Gamefield gamefield)//Pinky doesn`t attack Pacman actively, if he is not 4 steps ahead. He intercepts Pacman
         {
-            
+            Debug.Assert(pacman != null, "Pacman darf nicht null sein.");
+            Debug.Assert(gamefield != null, "Gamefield darf nicht null sein.");   
             SpawnStart(gamefield);
             if (IsVulnerable)
             {
