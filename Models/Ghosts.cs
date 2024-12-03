@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Avalonia.Controls.Documents;
+using Avalonia.Platform;
 using Avalonia.Threading;
+using PacManGame.Views;
 
 namespace PacManGame.Models
 {
@@ -13,31 +16,35 @@ namespace PacManGame.Models
         public bool IsVulnerable { get; set; } = false;
         public bool IsDead { get; set; } = false;
         public string? Name { get; set; }
-        public bool exitFlag{ get; set; }
         public abstract void Move(Pacman pacman, Gamefield gamefield);
         public Random random = new Random();
         public Direction currentDirection;
         protected int randomMoveSteps;
-         public bool IsWaiting { get; set; } = true; // Ob der Geist noch im Spawn wartet
-        public int SpawnWaitTime { get; set; } // Wartezeit in Millisekunden
-        private DispatcherTimer spawnTimer;
-        protected int distanceToPacman;
-        protected virtual bool IsNearPacman(Pacman pacman)
-        {
-            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
-            return distance <= 4; 
-        }
         protected void MoveRandom(Gamefield gamefield)
         {
+
             if (!MoveInCurrentDirection(gamefield))
             {
                 currentDirection = (Direction)random.Next(4);
                 MoveInCurrentDirection(gamefield);
             }
         }
+        protected void SpawnStart(Gamefield gamefield){// if a Ghost spawns he walks to the playground
+            if(X==13 && Y==13)
+            {
+                while(Y != 10){
+                    Y--;
+                }
+                
+            }
+
+        }
         private bool MoveInCurrentDirection(Gamefield gamefield)
         {
-            
+            //Assert to ensure the gamefield is valid
+            Debug.Assert(gamefield != null, "Gamefield must not be null.");
+            Debug.Assert(X >= 0 && X < gamefield.GameFieldData.GetLength(1), "X is out of gamefield");
+            Debug.Assert(Y >= 0 && Y < gamefield.GameFieldData.GetLength(0), "Y is out of gamefield");
 
             //Simplified movement logic using switch expressions
             return currentDirection switch
@@ -50,17 +57,19 @@ namespace PacManGame.Models
             };
         }
 
-        protected bool CanMoveUp(Gamefield gamefield) => Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1;
-        protected bool CanMoveDown(Gamefield gamefield) => Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==11&&Y==13);
+        protected bool CanMoveUp(Gamefield gamefield) => Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1;//checks walls to not get into
+        protected bool CanMoveDown(Gamefield gamefield) => Y < gamefield.GameFieldData.GetLength(0) - 1 && gamefield.GameFieldData[Y + 1, X] != 1 && !(X==13 && Y==11);
         protected bool CanMoveLeft(Gamefield gamefield) => X > 0 && gamefield.GameFieldData[Y, X - 1] != 1;
         protected bool CanMoveRight(Gamefield gamefield) => X < gamefield.GameFieldData.GetLength(1) - 1 && gamefield.GameFieldData[Y, X + 1] != 1;
 
        protected bool MoveUp(Gamefield gamefield)
         {
+            Debug.Assert(gamefield != null, "Gamefield must not be null");
             if (Y > 0 && gamefield.GameFieldData[Y - 1, X] != 1) 
             {
                 Y--;
                 currentDirection = Direction.Up;
+                Debug.Assert(Y >= 0, "Y can't be null"); 
                 return true;
             }
             return false; 
@@ -126,29 +135,13 @@ namespace PacManGame.Models
             //if there is no possible way,then return false
             return false;
         }
-        /*public void StartSpawnTimer()
+
+        protected virtual bool IsNearPacman(Pacman pacman)//checks that a Ghost are near Pacman
         {
-            spawnTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(SpawnWaitTime)
-            };
-            spawnTimer.Tick += (sender, e) =>
-            {
-                IsWaiting = false; // Beenden der Wartezeit
-                spawnTimer.Stop(); // Timer stoppen, da er nicht wiederholt werden muss
-            };
-            spawnTimer.Start();
+            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
+            return distance <= 4; 
         }
-        protected void MoveOutOfSpawn(Gamefield gamefield)
-        {
-            if (IsWaiting)
-            {
-                // Geister bewegen sich im Spawn, bevor sie austreten
-                if (CanMoveUp(gamefield))
-                {
-                    MoveUp(gamefield);
-                }
-            }
-        }*/
     }
 }
+
+ 

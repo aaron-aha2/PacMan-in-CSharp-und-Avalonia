@@ -15,22 +15,23 @@ namespace PacManGame.Models
             this.currentDirection = (Direction)random.Next(4);
             this.ghosts = ghosts;
         }
+        protected override bool IsNearPacman(Pacman pacman)
+        {
+            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
+            return distance <= 2;
+        }
 
         //Overrides the move method of Ghost to implement Inky's specific movement logic
-        public override void Move(Pacman pacman, Gamefield gamefield)// Inky search a way between Blinky and Pacman, to attack Pacman. In a range of two steps he attacks Pacman actively.
+        public override void Move(Pacman pacman, Gamefield gamefield)//Inky search a way between Blinky and Pacman. In a range of two steps he attacks Pacman actively.
         {
-            if (pacman == null || gamefield == null){
-                throw new ArgumentNullException("Pacman or Gamefield is null.");
-            }
+            SpawnStart(gamefield);
             if (IsVulnerable)
             {
                 //Vulnerable: move randomly
                 MoveRandom(gamefield);
                 return;
             }
-            distanceToPacman = Math.Abs(pacman.X - X) + Math.Abs(pacman.Y - Y);
-
-            if (distanceToPacman <= 2)
+            if (IsNearPacman(pacman))
             {
                 FollowPacMan(pacman, gamefield);
                 return;
@@ -133,6 +134,7 @@ namespace PacManGame.Models
             {
                 MoveLeft(gamefield);
             }
-        } 
+        }
+
     }
 }

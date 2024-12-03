@@ -1,10 +1,10 @@
 using System;
-using System.Runtime.ConstrainedExecution;
 
 namespace PacManGame.Models
 {
     public class Blinky : Ghost
     {
+        
 
         public Blinky(int startX, int startY)
         {
@@ -14,8 +14,9 @@ namespace PacManGame.Models
             this.currentDirection = (Direction)random.Next(4);
         }
 
-        public override void Move(Pacman pacman, Gamefield gamefield)// Blinky attack Pacman directly. If his way is blocked, he walks random until the way is passable
+        public override void Move(Pacman pacman, Gamefield gamefield)// blinky attack Pacman actively. If the way is blocked, he walks random until the way is passable
         {
+            SpawnStart(gamefield);
             if (pacman == null || gamefield == null){
                 throw new ArgumentNullException("Pacman or Gamefield is null.");
             }
@@ -43,5 +44,5 @@ namespace PacManGame.Models
                 }
             }
         }
-    }
+    }  
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Transactions;
+using Avalonia.Media.Imaging;
 
 namespace PacManGame.Models
 {
@@ -11,30 +13,27 @@ namespace PacManGame.Models
             Name = "Pinky";
             this.currentDirection = (Direction)random.Next(4);
         }
-        protected override bool IsNearPacman(Pacman pacman)
-        {
-            int distance = Math.Abs(X - pacman.X) + Math.Abs(Y - pacman.Y);
-            return distance <= 2; // overide the method to change the distance
-        }
-        public override void Move(Pacman pacman, Gamefield gamefield)// Pinky doesn`t attack Pacman actively, if he is not 4 steps ahead. He intercepts Pacman
+
+        public override void Move(Pacman pacman, Gamefield gamefield)//Pinky doesn`t attack Pacman actively, if he is not 4 steps ahead. He intercepts Pacman
         {
             
-
+            SpawnStart(gamefield);
             if (IsVulnerable)
             {
                 MoveRandom(gamefield);
                 return;
             }
-            else if(IsNearPacman(pacman))
+            else if (IsNearPacman(pacman))
                 {
-                    FollowPacMan(pacman, gamefield);
-                    
+                FollowPacMan(pacman, gamefield);
+                return;
                 }
-      
+
+            //Calculate the distance to Pacman
             int targetX = pacman.X;
             int targetY = pacman.Y;
 
-            switch (pacman.CurrentDirection)// with the direction of Pacman he walks four steps ahead .
+            switch (pacman.CurrentDirection)
             {
                 case Direction.Up:
                     targetY = pacman.Y - 4;
@@ -50,7 +49,7 @@ namespace PacManGame.Models
                     break;
             }
 
-            if (Math.Abs(targetX - X) > Math.Abs(targetY - Y))// if Pacmans X+4 is higher dann Pinkys and he can move right, he walks Right.
+            if (Math.Abs(targetX - X) > Math.Abs(targetY - Y))
             {
                 if (targetX > X && CanMoveRight(gamefield))
                 {
@@ -73,6 +72,7 @@ namespace PacManGame.Models
                 }
             }
         }
+
+        
     }
 }
-

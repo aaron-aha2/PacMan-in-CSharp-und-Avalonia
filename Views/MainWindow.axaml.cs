@@ -297,19 +297,19 @@ namespace PacManGame.Views
             {
                 if (i == 1)
                 {
-                    ghosts.Add(new Blinky(3 + i * 2, 3 + i * 2));
+                    ghosts.Add(new Blinky(13,13));
                 }
                 else if (i == 2)
                 {
-                    ghosts.Add(new Pinky(6 + i * 3, 6 + i * 3));
+                    ghosts.Add(new Pinky(13,13));
                 }
                 else if (i == 3)
                 {
-                    ghosts.Add(new Inky(4 + i * 3, 4 + i * 3, ghosts));
+                    ghosts.Add(new Inky(13,13, ghosts));
                 }
                 else
                 {
-                    ghosts.Add(new Clyde(5, 5));
+                    ghosts.Add(new Clyde(13,13));
                 }
             }
         }
